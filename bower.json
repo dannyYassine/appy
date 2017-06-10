@@ -1,0 +1,17 @@
+{
+  "name": "swish-ios",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Danny Yassine"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
