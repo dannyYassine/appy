@@ -7,13 +7,13 @@ const addProject = require('./../useCases/AddNewProject');
 
 export const middlewareControllerProject = (request, response, next) => {
     let projectId = request.params.project_id
-    let dataManager = new ProjectDataManager()
-    dataManager.loadProjectData(projectId, (project) => {
+
+    ProjectDataManager.loadProjectData(projectId, (project) => {
         if (project) {
             next()
         } else {
             response.status(400).json({error: "No project"})
-        }
+        }git 
     })
 }
 
@@ -25,8 +25,7 @@ export const allProjects = (request, response) => {
 
 export const projectRoot = (request, response) => {
     let projectId = request.params.project_id
-    let dataManager = new ProjectDataManager()
-    dataManager.loadProjectData(projectId, (project) => {
+    ProjectDataManager.loadProjectData(projectId, (project) => {
         response.status(200).json({data: project})
     })
 }
