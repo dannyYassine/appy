@@ -1,8 +1,5 @@
 Cloning into 'swish-ios'...
-error: RPC failed; curl 56 SSLRead() return error -9806
-fatal: The remote end hung up unexpectedly
-fatal: early EOF
-fatal: index-pack failed
+fatal: unable to access 'https://dannyyassine@bitbucket.org/dannyyassine/swish-ios.git/': Could not resolve host: bitbucket.org
 ./src/script.sh: line 9: cd: swish-ios: No such file or directory
 ./src/script.sh: line 11: xcode_build_fabric.sh: No such file or directory
 
@@ -16,6 +13,7 @@ git clone -b next "https://dannyyassine@bitbucket.org/dannyyassine/swish-ios.git
 cd "swish-ios"
 
 . xcode_build_fabric.sh
+    
     
     
     

@@ -3,11 +3,15 @@
  */
 
 import express from 'express'
-import { projectRoot } from './../controllers/project'
+import { middlewareControllerProject, allProjects, projectRoot, addNewProject } from './../controllers/project'
 
 let router = express.Router()
 
 router.route('/project/:project_id')
+    .all(middlewareControllerProject)
     .get(projectRoot)
+
+router.route('/projects/add')
+    .post(addNewProject)
 
 module.exports = router

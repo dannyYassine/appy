@@ -2,13 +2,14 @@
  * Created by dannyyassine on 2017-04-23.
  */
 // set up ========================
-var express     = require('express');
-var app         = express();                               // create our app w/ express
-var bodyParser  = require('body-parser');    // pull information from HTML POST (express4)
-const fs = require('fs');
-var nunjucks = require('nunjucks');
-const path = require('path');
-var detailProjectRouter = require('./api/v1/routes/project')
+import express from 'express'
+let app         = express();                               // create our app w/ express
+import bodyParser from 'body-parser'
+import fs from 'fs'
+import nunjucks from 'nunjucks'
+import path from 'path'
+import detailProjectRouter from './api/v1/routes/project'
+import homeProjects from './api/v1/routes/homeProjects'
 
 // configuration =================
 
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({'extended':'true'}));            // parse applica
 app.use(bodyParser.json());                                     // parse application/json
 
 app.use('/api', detailProjectRouter);
+app.use('/api', homeProjects);
 
 nunjucks.configure('views', {
     autoescape: true,
@@ -157,6 +159,7 @@ app.get('/run-script', (request, response) => {
         fs.writeFile('./src/run-progressive-log.txt', '', function(){
             return 1;
         });
+
         fs.readFile('./src/script.sh', (error, data) => {
             const spawn = require('child_process').spawn;
             const ls = spawn('sh', ['./src/script.sh'], {
@@ -215,8 +218,8 @@ app.get('*', (request, response) => {
 
 // listen (start app with node server.js) ======================================
 app.set('port', process.env.PORT || 3002);
-var server = app.listen(app.get('port'), function () {
-    console.log("*\n*")
+var server = app.listen(app.get('port'), '0.0.0.0', function () {
+    console.log("*\n*");
     console.log("/****************************************/");
     console.log('server listening on port ' + server.address().port);
     console.log("/****************************************/");

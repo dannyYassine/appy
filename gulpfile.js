@@ -15,10 +15,10 @@ gulp.task('moveFiles', function () {
 });
 
 gulp.task('compile', ['moveFiles'], function () {
-    return gulp.src('src/**/*.js')
+    return gulp.src(['src/**/*.js', '!src/web/**'])
         .pipe(sourcemaps.init())
         .pipe(babel({
-            presets: ["react", "es2015", "stage-0"]
+            presets: ["es2015"]
         }))
         .pipe(sourcemaps.write('.', { sourceRoot: path.join(__dirname, 'src') }))
         .pipe(gulp.dest('dist'));
@@ -28,7 +28,10 @@ gulp.task('nodemon', ['compile'], function (cb) {
     var started = false;
 
     return nodemon({
-        script: 'dist/server.js'
+        script: 'dist/server.js',
+        watch: ['src/**/*.js'],
+        tasks: ['compile'],
+        ignore: ['src/web/**']
     })
         .on('start', function () {
             if (!started) {
