@@ -7,12 +7,12 @@ var Project = require('./../../../core/models/project');
 
 module.exports = function addProject (name, callback) {
     if (name === undefined || name === '') {
-        callback({error: 'missing name'})
+        callback({error: 'missing name'});
     } else {
         let project = new Project();
         project.name = name;
         ProjectDataManager.saveNewProject(project, (error) => {
-            callback(error)
-        })
+            callback(error);
+        });
     }
-}
+};

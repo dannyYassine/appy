@@ -2,16 +2,23 @@
  * Created by dannyyassine on 2017-06-10.
  */
 
-import express from 'express'
-import { middlewareControllerProject, allProjects, projectRoot, addNewProject } from './../controllers/project'
+const express = require('express');
+const { middlewareControllerProject, updateProject, projectRoot, addNewProject, allProjects } = require('./../controllers/project');
 
-let router = express.Router()
+let router = express.Router();
+
+router.route('/projects/add')
+    .post(addNewProject);
+
+router.route('/projects')
+    .get(allProjects);
 
 router.route('/project/:project_id')
     .all(middlewareControllerProject)
-    .get(projectRoot)
+    .get(projectRoot);
 
-router.route('/projects/add')
-    .post(addNewProject)
+router.route('/project/:project_id/edit')
+    .all(middlewareControllerProject)
+    .patch(updateProject);
 
-module.exports = router
+module.exports = router;

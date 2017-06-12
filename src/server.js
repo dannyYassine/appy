@@ -2,14 +2,14 @@
  * Created by dannyyassine on 2017-04-23.
  */
 // set up ========================
-import express from 'express'
+let express     = require('express');
 let app         = express();                               // create our app w/ express
-import bodyParser from 'body-parser'
-import fs from 'fs'
-import nunjucks from 'nunjucks'
-import path from 'path'
-import detailProjectRouter from './api/v1/routes/project'
-import homeProjects from './api/v1/routes/homeProjects'
+let bodyParser = require('body-parser');
+let fs = require('fs');
+let nunjucks = require('nunjucks');
+let path = require('path');
+let detailProjectRouter = require('./api/v1/routes/project');
+let homeProjects = require('./api/v1/routes/home');
 
 // configuration =================
 
@@ -223,5 +223,5 @@ var server = app.listen(app.get('port'), '0.0.0.0', function () {
     console.log("/****************************************/");
     console.log('server listening on port ' + server.address().port);
     console.log("/****************************************/");
-    console.log("*\n*")
+    console.log("*\n*");
 });

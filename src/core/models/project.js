@@ -12,7 +12,9 @@ var Project = function() {
     this.pid = -1;
     this.repo = new Repository();
     this.isRunning = false;
-}
+    this.createdOn = new Date();
+    this.updatedOn = new Date();
+};
 
 Project.prototype = BaseModel.prototype;
 

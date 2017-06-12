@@ -24,13 +24,12 @@ gulp.task('compile', ['moveFiles'], function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('nodemon', ['compile'], function (cb) {
+gulp.task('nodemon', function (cb) {
     var started = false;
 
     return nodemon({
-        script: 'dist/server.js',
+        script: 'src/server.js',
         watch: ['src/**/*.js'],
-        tasks: ['compile'],
         ignore: ['src/web/**']
     })
         .on('start', function () {

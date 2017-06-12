@@ -7,8 +7,8 @@ import { HTTPService }from './HTTPService'
 export default class ProjectWebService extends HTTPService {
 
     constructor() {
-        super()
-        this.url = "http://localhost:3002/api"
+        super();
+        this.url = "http://localhost:3002/api";
     }
 
     addNewProject(projectName) {
