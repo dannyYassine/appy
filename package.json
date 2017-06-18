@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc mocha test/**/*",
+    "report": "nyc mocha test/**/*",
     "start": "node server.js",
     "serve": "nodemon -L --watch views --watch src/server.js --watch public --watch data.json src/server.js",
     "pack": "webpack --progress --config webpack.config.js",
@@ -35,18 +36,35 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "browser-sync": "^2.17.0",
+    "chai": "^4.0.2",
     "eslint": "^3.3.1",
     "eslint-plugin-react": "^6.1.2",
     "gulp": "^3.9.1",
-    "gulp-shell": "^0.6.3",
-    "gulp-uglify": "^2.1.2",
     "gulp-babel": "^6.1.2",
-    "gulp-sourcemaps": "^1.6.0",
     "gulp-nodemon": "^2.2.1",
+    "gulp-shell": "^0.6.3",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^2.1.2",
+    "mocha": "^3.4.2",
+    "ngrok": "",
+    "node-mocks-http": "^1.6.3",
     "react-hot-loader": "^1.3.0",
     "webpack": "",
-    "webpack-dev-server": "^1.16.2",
-    "ngrok": ""
+    "webpack-dev-server": "^1.16.2"
   },
-  "description": ""
+  "description": "",
+  "nyc": {
+    "check-coverage": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "reporter": [
+      "html",
+      "text"
+    ],
+    "extension": [
+      ".js"
+    ],
+    "all": true
+  }
 }

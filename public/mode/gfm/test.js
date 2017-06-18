@@ -66,19 +66,19 @@
      "[variable-2 * ][link&variable-2 [[]]][variable-2 foo]", // Invalid; must have space or x between []
      "[variable-2 * ][link&variable-2 [[ ]]][variable-2 bar]", // Invalid; must have space after ]
      "[variable-2 * ][link&variable-2 [[x]]][variable-2 hello]", // Invalid; must have space after ]
-     "[variable-2 * ][meta [ ]]][variable-2  ][link&variable-2 [[world]]]", // Valid; tests reference style links
+     "[variable-2 * ][meta [ ]]][variable-2  ][link&variable-2 [[world]]]", // Valid; test reference style links
      "    [variable-3 * ][property [x]]][variable-3  foo]"); // Valid; can be nested
 
   MT("taskListPlus",
      "[variable-2 + ][link&variable-2 [[]]][variable-2 foo]", // Invalid; must have space or x between []
      "[variable-2 + ][link&variable-2 [[x]]][variable-2 hello]", // Invalid; must have space after ]
-     "[variable-2 + ][meta [ ]]][variable-2  ][link&variable-2 [[world]]]", // Valid; tests reference style links
+     "[variable-2 + ][meta [ ]]][variable-2  ][link&variable-2 [[world]]]", // Valid; test reference style links
      "    [variable-3 + ][property [x]]][variable-3  foo]"); // Valid; can be nested
 
   MT("taskListDash",
      "[variable-2 - ][link&variable-2 [[]]][variable-2 foo]", // Invalid; must have space or x between []
      "[variable-2 - ][link&variable-2 [[x]]][variable-2 hello]", // Invalid; must have space after ]
-     "[variable-2 - ][meta [ ]]][variable-2  world]", // Valid; tests reference style links
+     "[variable-2 - ][meta [ ]]][variable-2  world]", // Valid; test reference style links
      "    [variable-3 - ][property [x]]][variable-3  foo]"); // Valid; can be nested
 
   MT("taskListNumber",

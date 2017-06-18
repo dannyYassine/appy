@@ -17,6 +17,15 @@ const ProjectDataManager = (function () {
         });
     };
 
+    const saveData = function (data) {
+        return new Promise(function (resolve, reject) {
+            fs.writeFile(dataPath, JSON.stringify(data), (error) => {
+                if (error) reject(Error());
+                resolve();
+            });
+        });
+    };
+
     const loadProject = (project) => {
         return new Promise(function (resolve, reject) {
             loadData().then((data) => {
@@ -27,15 +36,6 @@ const ProjectDataManager = (function () {
                 reject(Error());
             }).catch(() => {
 
-            });
-        });
-    };
-
-    const saveData = function (data) {
-        return new Promise(function (resolve, reject) {
-            fs.writeFile(dataPath, JSON.stringify(data), (error) => {
-                if (error) reject(Error());
-                resolve();
             });
         });
     };

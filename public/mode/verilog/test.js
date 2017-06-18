@@ -139,7 +139,7 @@
      ""
   );
 
-  // Indentation tests
+  // Indentation test
   MT("indent_single_statement_if",
       "[keyword if] [bracket (][variable foo][bracket )]",
       "    [keyword break];",
