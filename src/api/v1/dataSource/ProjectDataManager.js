@@ -26,16 +26,16 @@ const ProjectDataManager = (function () {
         });
     };
 
-    const loadProject = (project) => {
+    const loadProject = (projectId) => {
         return new Promise(function (resolve, reject) {
             loadData().then((data) => {
                 let project = data.projects.filter((enumeratedProject) => {
-                    return enumeratedProject.id === project.id;
+                    return enumeratedProject.id === projectId;
                 });
                 if (project) resolve(project);
                 reject(Error());
             }).catch(() => {
-
+                reject(Error("no project"));
             });
         });
     };
@@ -62,7 +62,7 @@ const ProjectDataManager = (function () {
             data.projects.push(project);
             saveData(data, callback);
         }).catch((error) => {
-
+            callback(null, error);
         });
     };
 
@@ -83,11 +83,33 @@ const ProjectDataManager = (function () {
         });
     };
 
+    const deleteProject = (projectId) => {
+        return new Promise(function (resolve, reject) {
+            loadData().then((data) => {
+                console.log(data.projects.length);
+                for (let i = 0; i < data.projects.length; i++) {
+                    let project = data.projects[i];
+                    if (project.id == projectId) {
+                        data.projects = data.projects.filter((aProject) => {
+                            return aProject.id !== projectId;
+                        });
+                        break;
+                    }
+                }
+                saveData(data).then(() => {
+                    resolve();
+                });
+            }).catch(reject);
+        });
+    };
+
     return {
         loadAllProjects,
         loadProjectData,
         saveNewProject,
-        updateProject
+        updateProject,
+        deleteProject,
+        loadProject
     };
 
 }());

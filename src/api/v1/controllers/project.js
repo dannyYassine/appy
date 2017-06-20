@@ -4,6 +4,7 @@
 
 const ProjectDataManager = require('./../dataSource/ProjectDataManager');
 const addProject = require('./../useCases/AddNewProject');
+const getProject = require('./../useCases/GetProject');
 
 exports.middlewareControllerProject = (request, response, next) => {
     let projectId = request.params.project_id;
@@ -24,17 +25,28 @@ exports.allProjects = (request, response) => {
     });
 };
 
-exports.projectRoot = (request, response) => {
-    let project = response.locals.project;
-    response.status(200).json({data: project});
-};
-
 exports.addNewProject = (request, response) => {
 
-    addProject(request.body.project_name, (error) => {
-        if (error) response.status(400).json({error: error});
-        response.json({data: "added"});
+    addProject({
+        name: request.body.project_name,
+        dataSource: ProjectDataManager,
+        callback: (project, error) => {
+            if (error) response.status(400).json({error: error});
+            response.json({data: "added"});
+        }
     });
+};
+
+exports.getProject = (request, response) => {
+    let project = response.locals.project;
+    getProject({
+        projectId: project.id,
+        dataSource: ProjectDataManager,
+        callback: (project, error) => {
+            if (error) response.status(400).json({error: error});
+            response.status(200).json({data: project});
+        }
+    })
 };
 
 exports.updateProject = (request, response) => {
@@ -48,6 +60,10 @@ exports.updateProject = (request, response) => {
 };
 
 exports.deleteProject = (request, response) => {
+    let project = response.locals.project;
 
+    ProjectDataManager.deleteProject(project.id).then(() => {
+        response.status(200).json({data: "delete"});
+    });
 };
 

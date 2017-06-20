@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 class AddProjectForm extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             name:''
         }
@@ -16,15 +16,14 @@ class AddProjectForm extends Component {
 
     addProject = (event) => {
         if (event) event.preventDefault();
-
-        this.props.onSubmitForm(this.state.name)
+        this.props.onSubmitForm(this.state.name);
         this.setState({name: ''});
-    }
+    };
 
     onNameChange = (event) => {
         const name = event.target.value;
         this.setState({name: name});
-    }
+    };
 
     render() {
         return(
@@ -41,6 +40,6 @@ class AddProjectForm extends Component {
 
 AddProjectForm.propTypes = {
     onSubmitForm: PropTypes.func.isRequired
-}
+};
 
 export default AddProjectForm

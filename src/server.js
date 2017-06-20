@@ -8,8 +8,7 @@ let bodyParser = require('body-parser');
 let fs = require('fs');
 let nunjucks = require('nunjucks');
 let path = require('path');
-let detailProjectRouter = require('./api/v1/routes/project');
-let homeProjects = require('./api/v1/routes/home');
+const routerManager = require('./api/v1/routes');
 
 // configuration =================
 
@@ -19,8 +18,7 @@ app.use(express.static(path.join(__dirname, '..', '/views')));                //
 app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                     // parse application/json
 
-app.use('/api', detailProjectRouter);
-app.use('/api', homeProjects);
+routerManager.setup(app);
 
 nunjucks.configure('views', {
     autoescape: true,

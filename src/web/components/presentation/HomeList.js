@@ -13,23 +13,41 @@ export default class HomeList extends Component {
     }
 
     render() {
+
+
         let projects = this.props.projects.map((project, index) => {
+
+            const spinner = project.isRunning ? (<div className="loader float-right"/>) : (<div/>);
+
             return(
-                <li key={project.id}>
-                    <div >{project.name}</div>
-                </li>
+                <tr key={index}>
+                    <td className="td-spinner">
+                        {spinner}
+                    </td>
+                    <td>{project.name}</td>
+                    <td>{project.updatedOn}</td>
+                    <td><button onClick={e => this.props.onDeleteProject(project)}>DELETE</button></td>
+                    <td><button onClick={e => this.props.onBuildProject(project)}>BUILD</button></td>
+                </tr>
             )
-        })
+        });
 
         return(
-        <div>
             <div>
-                <ul>
-                    {projects}
-                </ul>
+                <div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>  </th>
+                            <th>Name</th>
+                            <th>Last updated</th>
+                        </tr>
+                        {projects}
+                        </tbody>
+                    </table>
+                </div>
+                <HomeListFooter addNewProject={this.props.addNewProject}/>
             </div>
-            <HomeListFooter addNewProject={this.props.addNewProject}/>
-        </div>
 
         )
     }

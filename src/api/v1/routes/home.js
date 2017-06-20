@@ -5,8 +5,9 @@
 const express = require('express');
 const { allProjects } = require('./../controllers/project');
 
-let router = express.Router();
-router.route('/projects')
-    .get(allProjects);
-
-module.exports = router;
+module.exports = function(app) {
+    let router = express.Router();
+    router.route('/projects')
+        .get(allProjects);
+    app.use('/api', router);
+};

@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/9</span>
+        <span class='fraction'>11/11</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/2</span>
+        <span class='fraction'>2/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/9</span>
+        <span class='fraction'>11/11</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -60,39 +60,51 @@
 15
 16
 17
-18</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+18
+19
+20
+21
+22</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Created by dannyyassine on 2017-06-11.
  */
 &nbsp;
-var ProjectDataManager = <span class="cstat-no" title="statement not covered" >require('./../dataSource/ProjectDataManager');</span>
-var Project = <span class="cstat-no" title="statement not covered" >require('./../../../core/models/project');</span>
+var ProjectDataManager = require('./../dataSource/ProjectDataManager');
+var Project = require('./../../../core/models/project');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >module.exports = function <span class="fstat-no" title="function not covered" >addProject </span>(name, callback) {</span>
-<span class="cstat-no" title="statement not covered" >    if (name === undefined || name === '') {</span>
-<span class="cstat-no" title="statement not covered" >        callback({error: 'missing name'});</span>
+module.exports = function addProject ({name, dataSource, callback}) {
+    if (name === undefined || name === '') {
+        callback({error: 'missing name'});
     } else {
-        let project = <span class="cstat-no" title="statement not covered" >new Project();</span>
-<span class="cstat-no" title="statement not covered" >        project.name = name;</span>
-<span class="cstat-no" title="statement not covered" >        ProjectDataManager.saveNewProject(project, <span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            callback(error);</span>
-        });
+        let project = new Project();
+        project.name = name;
+        if (dataSource) {
+            dataSource.saveNewProject(project, (error) =&gt; {
+                callback(project, error);
+            });
+        } else {
+            callback(project, null);
+        }
     }
 };</pre></td></tr>
 </table></pre>
@@ -100,7 +112,7 @@ var Project = <span class="cstat-no" title="statement not covered" >require('./.
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jun 17 2017 23:33:10 GMT-0400 (EDT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jun 19 2017 00:57:35 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../../../prettify.js"></script>

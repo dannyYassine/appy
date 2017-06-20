@@ -9,29 +9,38 @@ import {
     Redirect,
     Link
 } from 'react-router-dom'
-import { PrivateRoute } from './PrivateRoute'
-import HomeContainer from './../components/containers/HomeContainer'
-import SettingsContainer from './../components/containers/SettingsContainer'
-import AddProjectContainer from './../components/containers/AddProjectContainer'
+import { PrivateRoute } from './PrivateRoute';
+import HomeContainer from './../components/containers/HomeContainer';
+import SettingsContainer from './../components/containers/SettingsContainer';
+import AddProjectContainer from './../components/containers/AddProjectContainer';
+import ProjectDetailsContainer from './../components/containers/ProjectDetailsContainer';
 
 const Component404 = () => (
     <h1>404</h1>
-)
+);
 
 export const RouterRoot = () => (
     <Router>
         <div>
-            <ul>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/settings">Settings</Link></li>
-            </ul>
-
-            <Switch>
-                <Route exact path="/" component={HomeContainer}/>
-                <Route exact path="/settings" component={SettingsContainer}/>
-                <Route exact patch="/projects/add" component={AddProjectContainer}/>
-                <Route component={Component404}/>
-            </Switch>
+            <div>
+                <ul className="nav-bar">
+                    <li>
+                        <div className="nav-a"><Link to="/">Home</Link></div>
+                    </li>
+                    <li>
+                        <div className="nav-a"><Link to="/settings">Settings</Link></div>
+                    </li>
+                </ul>
+            </div>
+            <div className="content">
+                <Switch>
+                    <Route exact path="/" component={HomeContainer}/>
+                    <Route exact path="/settings" component={SettingsContainer}/>
+                    <Route path="/projects/add" component={AddProjectContainer}/>
+                    <Route path="/project/:project_id" component={ProjectDetailsContainer}/>
+                    <Route component={Component404}/>
+                </Switch>
+            </div>
         </div>
     </Router>
-)
+);

@@ -15,7 +15,6 @@ export default class AddProjectContainer extends Component {
     }
 
     // ACTIONS
-
     onSubmitForm(projectName) {
         const projectWebService = new ProjectWebService();
         projectWebService.POST().addNewProject(projectName);

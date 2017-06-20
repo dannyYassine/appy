@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 export default class OutputLog extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             log: ''
@@ -32,11 +32,11 @@ export default class OutputLog extends Component {
             console.log(json);
             this.setState({
                 'log': json.log
-            })
+            });
             window.scrollTo(0,document.body.scrollHeight);
             this.getLogOutput();
         });
-    }
+    };
 
     getLogOutput = () => {
         fetch('http://localhost:3002/run-progressive-log', {

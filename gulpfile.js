@@ -8,10 +8,23 @@ var shell           = require('gulp-shell');
 var sourcemaps      = require('gulp-sourcemaps');
 var path            = require('path');
 var nodemon         = require('gulp-nodemon');
+var sass            = require('gulp-sass');
 
 gulp.task('moveFiles', function () {
     return gulp.src('src/**/*.*')
         .pipe(gulp.dest('dist'));
+});
+
+gulp.task('sass', function () {
+   return gulp.src('./src/web/scss/**/*.scss')
+       .pipe(sourcemaps.init())
+       .pipe(sass().on('error', sass.logError))
+       .pipe(sourcemaps.write('.', { sourceRoot: path.join(__dirname, 'public/css') }))
+       .pipe(gulp.dest('./public/css'));
+});
+
+gulp.task('sass:watch', function () {
+    gulp.watch('./src/web/scss/**/*.scss', ['sass']);
 });
 
 gulp.task('compile', ['moveFiles'], function () {

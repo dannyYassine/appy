@@ -11,10 +11,10 @@ const HomeListFooter = (props) => {
             <button onClick={props.addNewProject}>ADD PROJECT</button>
         </div>
     )
-}
+};
 
 HomeListFooter.propTypes = {
     addNewProject: PropTypes.func.isRequired
-}
+};
 
 export default HomeListFooter
