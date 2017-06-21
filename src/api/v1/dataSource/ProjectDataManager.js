@@ -6,7 +6,16 @@ const fs = require('fs');
 
 const ProjectDataManager = (function () {
 
-    const dataPath = './src/data.json';
+    let dataPath = null;
+
+    const getDataPath = function() {
+        return dataPath;
+    };
+
+    const setup = function(options) {
+        if (dataPath !== null) {return}
+        dataPath = options.dataPath;
+    };
 
     const loadData = function () {
         return new Promise(function (resolve, reject) {
@@ -21,37 +30,23 @@ const ProjectDataManager = (function () {
         return new Promise(function (resolve, reject) {
             fs.writeFile(dataPath, JSON.stringify(data), (error) => {
                 if (error) reject(Error());
-                resolve();
-            });
-        });
-    };
-
-    const loadProject = (projectId) => {
-        return new Promise(function (resolve, reject) {
-            loadData().then((data) => {
-                let project = data.projects.filter((enumeratedProject) => {
-                    return enumeratedProject.id === projectId;
-                });
-                if (project) resolve(project);
-                reject(Error());
-            }).catch(() => {
-                reject(Error("no project"));
+                resolve(data);
             });
         });
     };
 
     const loadAllProjects = function(callback) {
-        fs.readFile("./src/data.json", (error, data) => {
+        fs.readFile(dataPath, (error, data) => {
             let dataObject = JSON.parse(data);
             callback(dataObject);
         });
     };
 
     const loadProjectData = function(projectId, callback) {
-        fs.readFile("./src/data.json", (error, data) => {
+        fs.readFile(dataPath, (error, data) => {
             let dataObject = JSON.parse(data);
             const project = dataObject.projects.filter((project) => {
-                return project.id == projectId;
+                return project.id === projectId;
             })[0];
             callback(project);
         });
@@ -60,7 +55,12 @@ const ProjectDataManager = (function () {
     const saveNewProject = function(project, callback) {
         loadData().then((data) => {
             data.projects.push(project);
-            saveData(data, callback);
+            saveData(data)
+                .then((data) => {
+                callback(data, null);
+                }).catch((error) => {
+                callback(null, error);
+            });
         }).catch((error) => {
             callback(null, error);
         });
@@ -76,9 +76,9 @@ const ProjectDataManager = (function () {
                         break;
                     }
                 }
-                saveData(data).then(() => {
+                saveData(data).then((data) => {
                     resolve(updateProject);
-                });
+                }).catch(reject);
             }).catch(reject);
         });
     };
@@ -86,7 +86,6 @@ const ProjectDataManager = (function () {
     const deleteProject = (projectId) => {
         return new Promise(function (resolve, reject) {
             loadData().then((data) => {
-                console.log(data.projects.length);
                 for (let i = 0; i < data.projects.length; i++) {
                     let project = data.projects[i];
                     if (project.id == projectId) {
@@ -96,20 +95,21 @@ const ProjectDataManager = (function () {
                         break;
                     }
                 }
-                saveData(data).then(() => {
-                    resolve();
-                });
+                saveData(data).then((data) => {
+                    resolve(data);
+                }).catch(reject);
             }).catch(reject);
         });
     };
 
     return {
+        getDataPath,
+        setup,
         loadAllProjects,
         loadProjectData,
         saveNewProject,
         updateProject,
-        deleteProject,
-        loadProject
+        deleteProject
     };
 
 }());

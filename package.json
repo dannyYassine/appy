@@ -59,9 +59,11 @@
     "include": [
       "src/**/*.js"
     ],
+    "exclude": [
+      "src/web/components/**/*.js"
+    ],
     "reporter": [
-      "html",
-      "text"
+      "html"
     ],
     "extension": [
       ".js"

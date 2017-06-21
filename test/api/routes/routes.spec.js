@@ -8,7 +8,6 @@ const homeRouter = require('../../../src/api/v1/routes/home');
 
 describe('Routes', () => {
     it('should contain home routes to all Projects', () => {
-
-
+        assert(true);
     });
 });

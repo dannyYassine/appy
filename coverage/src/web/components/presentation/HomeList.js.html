@@ -22,22 +22,22 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/5</span>
+        <span class='fraction'>0/7</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/0</span>
+        <span class='fraction'>0/2</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>0/5</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/5</span>
+        <span class='fraction'>0/7</span>
       </div>
     </div>
   </div>
@@ -79,7 +79,25 @@
 34
 35
 36
-37</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -94,15 +112,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,23 +166,41 @@ export default class HomeList extends Component {
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    re</span>nder() {
+&nbsp;
+&nbsp;
         let projects = <span class="cstat-no" title="statement not covered" >this.props.projects.map(<span class="fstat-no" title="function not covered" >(p</span>roject, index) =&gt; {</span>
+&nbsp;
+            const spinner = <span class="cstat-no" title="statement not covered" >project.isRunning ? (&lt;div className="loader float-right"/&gt;) : (&lt;div/&gt;);</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >            return(</span>
-                &lt;li key={project.id} onClick={<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >this.props.onProjectClicked(project)}</span>&gt;
-                    &lt;div &gt;{project.name}&lt;/div&gt;
-                &lt;/li&gt;
+                &lt;tr key={index}&gt;
+                    &lt;td className="td-spinner"&gt;
+                        {spinner}
+                    &lt;/td&gt;
+                    &lt;td&gt;{project.name}&lt;/td&gt;
+                    &lt;td&gt;{project.updatedOn}&lt;/td&gt;
+                    &lt;td&gt;&lt;button onClick={<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >this.props.onDeleteProject(project)}</span>&gt;DELETE&lt;/button&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;button onClick={<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >this.props.onBuildProject(project)}</span>&gt;BUILD&lt;/button&gt;&lt;/td&gt;
+                &lt;/tr&gt;
             )
         });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        return(</span>
-        &lt;div&gt;
             &lt;div&gt;
-                &lt;ul&gt;
-                    {projects}
-                &lt;/ul&gt;
+                &lt;div&gt;
+                    &lt;table&gt;
+                        &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;  &lt;/th&gt;
+                            &lt;th&gt;Name&lt;/th&gt;
+                            &lt;th&gt;Last updated&lt;/th&gt;
+                        &lt;/tr&gt;
+                        {projects}
+                        &lt;/tbody&gt;
+                    &lt;/table&gt;
+                &lt;/div&gt;
+                &lt;HomeListFooter addNewProject={this.props.addNewProject}/&gt;
             &lt;/div&gt;
-            &lt;HomeListFooter addNewProject={this.props.addNewProject}/&gt;
-        &lt;/div&gt;
 &nbsp;
         )
     }
@@ -157,7 +211,7 @@ export default class HomeList extends Component {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jun 19 2017 00:57:35 GMT-0400 (EDT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Jun 20 2017 20:23:32 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../../../prettify.js"></script>
