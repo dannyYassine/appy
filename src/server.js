@@ -9,6 +9,7 @@ let fs = require('fs');
 let nunjucks = require('nunjucks');
 let path = require('path');
 const routerManager = require('./api/v1/routes');
+const projectDataManager = require('./api/v1/dataSource/ProjectDataManager');
 
 // configuration =================
 
@@ -19,15 +20,15 @@ app.use(bodyParser.urlencoded({'extended':'true'}));            // parse applica
 app.use(bodyParser.json());                                     // parse application/json
 
 routerManager.setup(app);
+const options = {};
+options.dataPath = process.env.NODE_ENV === 'test' ? {dataPath: path.join(__dirname, '..', '/test/data.json')} : {dataPath: __dirname+'/data.json'};
+
+projectDataManager.setup(options);
 
 nunjucks.configure('views', {
     autoescape: true,
     express: app
 });
-
-function getRandomArbitrary(min=0, max=1000000) {
-    return Math.floor(Math.random() * (max - min)) + min
-}
 
 function resetLogFile() {
     fs.writeFile('./src/log.txt', '', function(){
@@ -56,7 +57,7 @@ app.get('/run', function(req, res) {
 
     const spawn = require('child_process').spawn;
     const child = spawn('sh', ['./xcode_build_fabric.sh'], {
-          cwd: '../'
+        cwd: '../'
     });
 
     child.stdout.on('data', function (data) {
@@ -68,7 +69,7 @@ app.get('/run', function(req, res) {
     });
 
     child.stderr.on('data', function (data) {
-    // console.log(data.toString());
+        // console.log(data.toString());
     });
 
     child.on('exit', function (code) {
@@ -78,13 +79,13 @@ app.get('/run', function(req, res) {
     console.log(child);
     res.sendFile('index.html', { root: __dirname });
 
-    });
+});
 
 app.get('/run/log', (request, response) => {
     fs.readFile('./src/log.txt', (error, data) => {
         if (data)
             resetProgressiveLogFile();
-            response.send(data.toString(), { 'Content-Type': 'text/plain' }, 200);
+        response.send(data.toString(), { 'Content-Type': 'text/plain' }, 200);
     });
 });
 
@@ -105,7 +106,7 @@ app.get('/progressive-log', (request, response) => {
             fs.writeFile('./src/progressive-log.txt', '', function(){
                 return 1;
             });
-            response.send(data.toString(), { 'Content-Type': 'text/plain' }, 200);
+        response.send(data.toString(), { 'Content-Type': 'text/plain' }, 200);
     });
 });
 
@@ -214,12 +215,22 @@ app.get('*', (request, response) => {
     response.sendFile('index.html', { root: path.join(__dirname, '..', 'views') });
 });
 
-// listen (start app with node server.js) ======================================
 app.set('port', process.env.PORT || 3002);
-var server = app.listen(app.get('port'), '0.0.0.0', function () {
-    console.log("*\n*");
-    console.log("/****************************************/");
-    console.log('server listening on port ' + server.address().port);
-    console.log("/****************************************/");
-    console.log("*\n*");
-});
+function startServer() {
+    // listen (start app with node server.js) ======================================
+    var server = app.listen(app.get('port'), '0.0.0.0', function () {
+        console.log("*\n*");
+        console.log("/****************************************/");
+        console.log('server listening on port ' + server.address().port);
+        console.log("/****************************************/");
+        console.log("*\n*");
+    });
+    return app;
+}
+
+if (require.main === module) {
+    // app.js runs directly
+    startServer();
+} else {
+    module.exports = app;
+}

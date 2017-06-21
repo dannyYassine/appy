@@ -32,7 +32,7 @@ export default class HomeContainer extends Component {
         }).then((json) => {
             console.log(json);
             this.setState({
-                'projects': json.data.projects
+                'projects': json.data
             })
         });
     };

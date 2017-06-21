@@ -12,11 +12,6 @@ module.exports = getProject = ({projectId, dataSource, callback}) => {
         callback(null, Error("dataSource needed"));
     }
 
-    dataSource.loadProject(projectId)
-        .then((project) => {
-            callback(project, null);
-        }).catch((error) => {
-            callback(null, error);
-        });
+    dataSource.loadProjectData(projectId, callback);
 
 };

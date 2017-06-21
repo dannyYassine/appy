@@ -13,7 +13,6 @@ const ProjectDataManager = (function () {
     };
 
     const setup = function(options) {
-        if (dataPath !== null) {return}
         dataPath = options.dataPath;
     };
 
@@ -46,7 +45,7 @@ const ProjectDataManager = (function () {
         fs.readFile(dataPath, (error, data) => {
             let dataObject = JSON.parse(data);
             const project = dataObject.projects.filter((project) => {
-                return project.id === projectId;
+                return project.id == projectId;
             })[0];
             callback(project);
         });

@@ -20,8 +20,8 @@ exports.middlewareControllerProject = (request, response, next) => {
 };
 
 exports.allProjects = (request, response) => {
-    ProjectDataManager.loadAllProjects((projects) => {
-        response.status(200).json({data: projects});
+    ProjectDataManager.loadAllProjects((data) => {
+        response.status(200).json({data: data.projects});
     });
 };
 

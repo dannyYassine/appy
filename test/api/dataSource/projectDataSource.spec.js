@@ -13,10 +13,11 @@ const rmDir = require('./../../../src/core/helpers/directory');
 
 describe('ProjectDataManager', () => {
     const dataPath = './test/cache/data.json';
+    const project = new Project();
 
     before(() => {
         data = {
-          projects: []
+            projects: [project]
         };
         ProjectDataManager.setup({dataPath: dataPath});
         fs.writeFile(dataPath, JSON.stringify(data));
@@ -40,14 +41,6 @@ describe('ProjectDataManager', () => {
         });
     }
 
-    it('should not setup twice', () => {
-        const dataPath1 = ProjectDataManager.getDataPath();
-        ProjectDataManager.setup({dataPath: './'});
-        const dataPath2 = ProjectDataManager.getDataPath();
-        
-        assert(dataPath1 === dataPath2);
-    });
-
     it('should be able to load all projects', (done) => {
         setData().then(() => {
             fs.writeFile(dataPath, JSON.stringify(data), (error) => {
@@ -60,17 +53,18 @@ describe('ProjectDataManager', () => {
     });
 
     it('should be able to load a project with a projectId', (done) => {
+
         const project = new Project();
-        data = {
-            projects: [project]
-        };
-        fs.writeFile(dataPath, JSON.stringify(data), () => {
-            ProjectDataManager.loadProjectData(project.id, (loadedProject) => {
-                assert(project.id === loadedProject.id);
-                done();
+        project.name = "Hello";
+
+        setData().then((data) => {
+            ProjectDataManager.saveNewProject(project, (newData) => {
+                ProjectDataManager.loadProjectData(project.id, (loadedProject) => {
+                    assert(project.id === loadedProject.id);
+                    done();
+                });
             });
         });
-
     });
 
     it('should be able to save a project', function(done) {
