@@ -20,7 +20,7 @@ const ProjectDataManager = (function () {
         return new Promise(function (resolve, reject) {
             fs.readFile(dataPath, (error, data) => {
                 if (error) reject(Error('no data'));
-                resolve(JSON.parse(data.toString()));
+                else resolve(JSON.parse(data.toString()));
             });
         });
     };
@@ -35,10 +35,11 @@ const ProjectDataManager = (function () {
     };
 
     const loadAllProjects = function(callback) {
-        fs.readFile(dataPath, (error, data) => {
-            let dataObject = JSON.parse(data);
-            callback(dataObject);
-        });
+        loadData().then((data) => {
+            callback(data);
+        }).catch((error) => {
+            callback(null);
+        })
     };
 
     const loadProjectData = function(projectId, callback) {
@@ -54,8 +55,7 @@ const ProjectDataManager = (function () {
     const saveNewProject = function(project, callback) {
         loadData().then((data) => {
             data.projects.push(project);
-            saveData(data)
-                .then((data) => {
+            saveData(data).then((data) => {
                 callback(data, null);
                 }).catch((error) => {
                 callback(null, error);

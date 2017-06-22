@@ -2,12 +2,12 @@
  * Created by dannyyassine on 2017-06-11.
  */
 
-var uuid = require('./../helpers/uuid');
-var Repository = require('./repository');
-var BaseModel = require('./BaseModel');
+const Repository = require('./repository');
+const BaseModel = require('./BaseModel');
 
-var Project = function() {
-    this.id = uuid();
+const Project = function() {
+    BaseModel.call(this);
+
     this.name = '';
     this.pid = -1;
     this.repo = new Repository();
@@ -16,7 +16,7 @@ var Project = function() {
     this.updatedOn = new Date();
 };
 
-Project.prototype = BaseModel.prototype;
+Project.prototype = Object.create(BaseModel.prototype);
 
 Project.prototype.stopped = function() {
     this.isRunning = false;

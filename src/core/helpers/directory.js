@@ -4,8 +4,16 @@
 
 const fs = require('fs');
 
+/**
+ * Helper to remove directory or remove contents of director
+ * @type {{removeContentsOfDirectory, removeDirectory}}
+ */
 const rmDir = (function() {
 
+    /**
+     * Remove entire directory at dirPath
+     * @param dirPath
+     */
     const removeDirectory = function(dirPath) {
         try { var files = fs.readdirSync(dirPath); }
         catch(e) { return; }
@@ -20,6 +28,10 @@ const rmDir = (function() {
         fs.rmdirSync(dirPath);
     };
 
+    /**
+     * Removes only the contents of the directory at dirPath
+     * @param dirPath
+     */
     const removeContentsOfDirectory = function(dirPath) {
         try { var files = fs.readdirSync(dirPath); }
         catch(e) { return; }

@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">78.79% </span>
+        <span class="strong">88.89% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>26/33</span>
+        <span class='fraction'>32/36</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">50% </span>
@@ -30,18 +30,18 @@
         <span class='fraction'>3/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">76.92% </span>
+        <span class="strong">92.31% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>10/13</span>
+        <span class='fraction'>12/13</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">83.87% </span>
+        <span class="strong">94.12% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>26/31</span>
+        <span class='fraction'>32/34</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -112,21 +112,29 @@
 67
 68
 69
-70</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+70
+71
+72
+73
+74
+75
+76
+77</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,7 +148,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,10 +171,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -188,6 +202,7 @@
 const ProjectDataManager = require('./../dataSource/ProjectDataManager');
 const addProject = require('./../useCases/AddNewProject');
 const getProject = require('./../useCases/GetProject');
+const updateProject = require('./../useCases/UpdateProject');
 &nbsp;
 exports.middlewareControllerProject = (request, response, next) =&gt; {
     let projectId = request.params.project_id;
@@ -209,13 +224,12 @@ exports.allProjects = (request, response) =&gt; {
 };
 &nbsp;
 exports.addNewProject = (request, response) =&gt; {
-&nbsp;
     addProject({
         name: request.body.project_name,
         dataSource: ProjectDataManager,
         callback: (project, error) =&gt; {
             <span class="missing-if-branch" title="if path not taken" >I</span>if (error) <span class="cstat-no" title="statement not covered" >response.status(400).json({error: error});</span>
-            response.json({data: "added"});
+            else response.json({data: "added"});
         }
     });
 };
@@ -227,18 +241,25 @@ exports.getProject = (request, response) =&gt; {
         dataSource: ProjectDataManager,
         callback: (project, error) =&gt; {
             <span class="missing-if-branch" title="if path not taken" >I</span>if (error) <span class="cstat-no" title="statement not covered" >response.status(400).json({error: error});</span>
-            response.status(200).json({data: project});
+            else response.status(200).json({data: project});
         }
     })
 };
 &nbsp;
-exports.updateProject = <span class="fstat-no" title="function not covered" >(r</span>equest, response) =&gt; {
-    let project = <span class="cstat-no" title="statement not covered" >response.locals.project;</span>
+exports.updateProject = (request, response) =&gt; {
+    let project = response.locals.project;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    ProjectDataManager.updateProject(project).then(<span class="fstat-no" title="function not covered" >(p</span>roject) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        response.status(200).json({data: project});</span>
-    }).catch(<span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
-<span class="cstat-no" title="statement not covered" >        response.status(400).json(error);</span>
+    let options = {};
+    options.name = request.body.name;
+&nbsp;
+    updateProject({
+        project: project,
+        options: options,
+        dataSource: ProjectDataManager
+    }).then((updatedProject) =&gt; {
+        response.json({data: updatedProject});
+    }).catch(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >        response.json({'error': Error('could not update project')})</span>
     });
 };
 &nbsp;
@@ -256,7 +277,7 @@ exports.deleteProject = (request, response) =&gt; {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Jun 21 2017 00:06:03 GMT-0400 (EDT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Jun 22 2017 09:07:07 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../../../prettify.js"></script>

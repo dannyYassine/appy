@@ -17,6 +17,13 @@ describe('Project', () => {
         assert.typeOf(project.createdOn, 'Date');
         assert.typeOf(project.updatedOn, 'Date');
     });
+    it('should inherit from BaseModel', () => {
+       let project = new Project();
+       assert.typeOf(project.toJSONString, 'function');
+       let json = project.toJSONString();
+       assert(json !== '');
+       assert(project.id != '');
+    });
     it('should be able to stopped', () => {
         let project = new Project();
         project.isRunning = true;

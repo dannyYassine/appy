@@ -10,10 +10,10 @@ import {
     Link
 } from 'react-router-dom'
 import { PrivateRoute } from './PrivateRoute';
-import HomeContainer from './../components/containers/HomeContainer';
-import SettingsContainer from './../components/containers/SettingsContainer';
-import AddProjectContainer from './../components/containers/AddProjectContainer';
-import ProjectDetailsContainer from './../components/containers/ProjectDetailsContainer';
+import HomeContainer from './../containers/HomeContainer';
+import SettingsContainer from './../containers/SettingsContainer';
+import AddProjectContainer from './../containers/AddProjectContainer';
+import ProjectDetailsContainer from './../containers/ProjectDetailsContainer';
 
 const Component404 = () => (
     <h1>404</h1>

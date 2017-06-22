@@ -3,19 +3,32 @@
  */
 
 var Project = require('./../../../core/models/project');
+const projectNameValidator = require('./../../../core/validators/projectValidator');
+const validateAll = require('./../../../core/validators/validator');
 
+/**
+ * Business rules for adding a project
+ * @param name
+ * @param dataSource
+ * @param callback
+ */
 module.exports = function addProject ({name, dataSource, callback}) {
-    if (name === undefined || name === '') {
-        callback({error: 'missing name'});
+
+    let newProject = new Project();
+    newProject.name = name;
+
+    let validated = validateAll(newProject, [projectNameValidator()]);
+
+    if (validated === false) {
+        callback(null, Error('wrong updated arguments'));
+        return;
+    }
+
+    if (dataSource) {
+        dataSource.saveNewProject(newProject, (project, error) => {
+            callback(project, error);
+        });
     } else {
-        let project = new Project();
-        project.name = name;
-        if (dataSource) {
-            dataSource.saveNewProject(project, (error) => {
-                callback(project, error);
-            });
-        } else {
-            callback(project, null);
-        }
+        callback(newProject, null);
     }
 };

@@ -5,6 +5,7 @@
 const ProjectDataManager = require('./../dataSource/ProjectDataManager');
 const addProject = require('./../useCases/AddNewProject');
 const getProject = require('./../useCases/GetProject');
+const updateProject = require('./../useCases/UpdateProject');
 
 exports.middlewareControllerProject = (request, response, next) => {
     let projectId = request.params.project_id;
@@ -26,13 +27,12 @@ exports.allProjects = (request, response) => {
 };
 
 exports.addNewProject = (request, response) => {
-
     addProject({
         name: request.body.project_name,
         dataSource: ProjectDataManager,
         callback: (project, error) => {
             if (error) response.status(400).json({error: error});
-            response.json({data: "added"});
+            else response.json({data: "added"});
         }
     });
 };
@@ -44,7 +44,7 @@ exports.getProject = (request, response) => {
         dataSource: ProjectDataManager,
         callback: (project, error) => {
             if (error) response.status(400).json({error: error});
-            response.status(200).json({data: project});
+            else response.status(200).json({data: project});
         }
     })
 };
@@ -52,10 +52,17 @@ exports.getProject = (request, response) => {
 exports.updateProject = (request, response) => {
     let project = response.locals.project;
 
-    ProjectDataManager.updateProject(project).then((project) => {
-        response.status(200).json({data: project});
-    }).catch((error) => {
-        response.status(400).json(error);
+    let options = {};
+    options.name = request.body.name;
+
+    updateProject({
+        project: project,
+        options: options,
+        dataSource: ProjectDataManager
+    }).then((updatedProject) => {
+        response.json({data: updatedProject});
+    }).catch(() => {
+        response.json({'error': Error('could not update project')})
     });
 };
 

@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for src/api/v1/useCases/AddNewProject.js</title>
+    <title>Code coverage report for src/core/validators/projectValidator.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../../prettify.css" />
-    <link rel="stylesheet" href="../../../../base.css" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../../sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -16,28 +16,28 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../../../index.html">All files</a> / <a href="index.html">src/api/v1/useCases</a> AddNewProject.js
+      <a href="../../../index.html">All files</a> / <a href="index.html">src/core/validators</a> projectValidator.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>14/14</span>
+        <span class='fraction'>7/7</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>4/4</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
-        <span class="quiet">Functions</span>
         <span class='fraction'>2/2</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>14/14</span>
+        <span class='fraction'>7/7</span>
       </div>
     </div>
   </div>
@@ -75,14 +75,7 @@
 30
 31
 32
-33
-34</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+33</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -92,57 +85,61 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * Created by dannyyassine on 2017-06-11.
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * Created by dannyyassine on 2017-06-21.
  */
-&nbsp;
-var Project = require('./../../../core/models/project');
-const projectNameValidator = require('./../../../core/validators/projectValidator');
-const validateAll = require('./../../../core/validators/validator');
 &nbsp;
 /**
- * Business rules for adding a project
- * @param name
- * @param dataSource
- * @param callback
+ * implements Validator Protocol
+ * @returns {{nameValidator: nameValidator, validate: validate}}
  */
-module.exports = function addProject ({name, dataSource, callback}) {
+const nameValidator = function() {
 &nbsp;
-    let newProject = new Project();
-    newProject.name = name;
+    /**
+     * Validates object name propertie
+     * @param name
+     * @returns {boolean}
+     */
+    const nameValidator = function(name) {
+        return name !== '' &amp;&amp; name !== null;
+    };
 &nbsp;
-    let validated = validateAll(newProject, [projectNameValidator()]);
+    /**
+     * PROTOCOL of Validator class
+     * @param object
+     */
+    const validate = function(object) {
+        return nameValidator(object.name);
+    };
 &nbsp;
-    if (validated === false) {
-        callback(null, Error('wrong updated arguments'));
-        return;
-    }
+    return {
+        validate
+    };
+};
 &nbsp;
-    if (dataSource) {
-        dataSource.saveNewProject(newProject, (project, error) =&gt; {
-            callback(project, error);
-        });
-    } else {
-        callback(newProject, null);
-    }
-};</pre></td></tr>
+module.exports = nameValidator;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
@@ -151,7 +148,7 @@ module.exports = function addProject ({name, dataSource, callback}) {
   generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Jun 22 2017 09:07:07 GMT-0400 (EDT)
 </div>
 </div>
-<script src="../../../../prettify.js"></script>
+<script src="../../../prettify.js"></script>
 <script>
 window.onload = function () {
         if (typeof prettyPrint === 'function') {
@@ -159,6 +156,6 @@ window.onload = function () {
         }
 };
 </script>
-<script src="../../../../sorter.js"></script>
+<script src="../../../sorter.js"></script>
 </body>
 </html>

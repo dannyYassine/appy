@@ -8,14 +8,15 @@ const assert = require('chai').assert;
 const addProject = require('../../../src/api/v1/useCases/AddNewProject');
 
 describe('AddProject', () => {
-    it('should add a new project', () => {
 
-        const dataSource = {
-            saveNewProject(project, cb) {
-                assert(project.name != '');
-                cb(null);
-            }
-        };
+    const dataSource = {
+        saveNewProject(project, cb) {
+            assert(project.name != '');
+            cb(project, null);
+        }
+    };
+
+    it('should add a new project', () => {
 
         addProject({
             name: "new",
