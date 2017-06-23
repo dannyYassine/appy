@@ -3,6 +3,7 @@
  */
 
 const fs = require('fs');
+const projectFileSystem = require('./../services/projectFileSystem');
 
 const ProjectDataManager = (function () {
 
@@ -54,12 +55,18 @@ const ProjectDataManager = (function () {
 
     const saveNewProject = function(project, callback) {
         loadData().then((data) => {
-            data.projects.push(project);
-            saveData(data).then((data) => {
-                callback(data, null);
-                }).catch((error) => {
-                callback(null, error);
-            });
+            projectFileSystem.createProjectDirectory(project)
+                .then(() => {
+                    data.projects.push(project);
+                    saveData(data).then((data) => {
+                        callback(data, null);
+                    }).catch((error) => {
+                        callback(null, error);
+                    });
+                })
+                .catch((error) => {
+                    callback(null, error);
+                });
         }).catch((error) => {
             callback(null, error);
         });
@@ -85,18 +92,28 @@ const ProjectDataManager = (function () {
     const deleteProject = (projectId) => {
         return new Promise(function (resolve, reject) {
             loadData().then((data) => {
+                let foundProject;
                 for (let i = 0; i < data.projects.length; i++) {
                     let project = data.projects[i];
                     if (project.id == projectId) {
-                        data.projects = data.projects.filter((aProject) => {
-                            return aProject.id !== projectId;
-                        });
+                        foundProject = project;
                         break;
                     }
                 }
-                saveData(data).then((data) => {
-                    resolve(data);
-                }).catch(reject);
+                if (foundProject) {
+                    projectFileSystem.deleteProjectDirectory(foundProject)
+                        .then(() => {
+                            data.projects = data.projects.filter((aProject) => {
+                                return aProject.id !== foundProject.id;
+                            });
+                            saveData(data).then((data) => {
+                                return resolve(data);
+                            }).catch((error) => {
+                                return reject(error);
+                            });
+                        })
+                        .catch(reject)
+                }
             }).catch(reject);
         });
     };

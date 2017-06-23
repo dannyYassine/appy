@@ -16,15 +16,14 @@ const updateProject = function ({project, options, dataSource}) {
     return new Promise((resolve, reject) => {
 
         const name = options.name;
+        project.name = name;
+        project.shellTask.script = options.script;
 
         let validated = validateAll(project, [projectNameValidator()]);
 
         if (validated === false) {
             reject(Error('wrong updated arguments'));
         }
-
-        //Validate name
-        project.name = name;
 
         dataSource.updateProject(project)
             .then((updatedProject) => {

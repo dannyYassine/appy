@@ -38,9 +38,9 @@ exports.addNewProject = (request, response) => {
 };
 
 exports.getProject = (request, response) => {
-    let project = response.locals.project;
+    let projectId = request.params.project_id;
     getProject({
-        projectId: project.id,
+        projectId: projectId,
         dataSource: ProjectDataManager,
         callback: (project, error) => {
             if (error) response.status(400).json({error: error});
@@ -54,6 +54,7 @@ exports.updateProject = (request, response) => {
 
     let options = {};
     options.name = request.body.name;
+    options.script = request.body.script;
 
     updateProject({
         project: project,

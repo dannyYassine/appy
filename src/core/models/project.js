@@ -4,6 +4,7 @@
 
 const Repository = require('./repository');
 const BaseModel = require('./BaseModel');
+const ShellTask = require('./shellTask');
 
 const Project = function() {
     BaseModel.call(this);
@@ -14,6 +15,7 @@ const Project = function() {
     this.isRunning = false;
     this.createdOn = new Date();
     this.updatedOn = new Date();
+    this.shellTask = new ShellTask();
 };
 
 Project.prototype = Object.create(BaseModel.prototype);

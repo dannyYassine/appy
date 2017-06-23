@@ -22,7 +22,7 @@ export default class AddProjectContainer extends Component {
             console.log('success');
             this.props.history.push('/');
         }, (error) => {
-            alert("there was an error, try again");
+            alert(error.code);
         })
     }
 

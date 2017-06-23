@@ -5,11 +5,11 @@
 module.exports = getProject = ({projectId, dataSource, callback}) => {
 
     if (projectId === undefined || projectId === null) {
-        callback(null, Error("projectId required"));
+        return callback(null, Error("projectId required"));
     }
 
     if (dataSource === undefined || dataSource === null) {
-        callback(null, Error("dataSource needed"));
+        return callback(null, Error("dataSource needed"));
     }
 
     dataSource.loadProjectData(projectId, callback);

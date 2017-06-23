@@ -12,9 +12,11 @@ export default class HomeList extends Component {
         super(props)
     }
 
+    onRowClick(project) {
+        this.props.onProjectClicked(project);
+    }
+
     render() {
-
-
         let projects = this.props.projects.map((project, index) => {
 
             const spinner = project.isRunning ? (<div className="loader float-right"/>) : (<div/>);
@@ -24,7 +26,7 @@ export default class HomeList extends Component {
                     <td className="td-spinner">
                         {spinner}
                     </td>
-                    <td>{project.name}</td>
+                    <td onClick={e => this.onRowClick(project)}>{project.name}</td>
                     <td>{project.updatedOn}</td>
                     <td><button onClick={e => this.props.onDeleteProject(project)}>DELETE</button></td>
                     <td><button onClick={e => this.props.onBuildProject(project)}>BUILD</button></td>

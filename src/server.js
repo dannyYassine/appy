@@ -21,7 +21,7 @@ app.use(bodyParser.json());                                     // parse applica
 
 routerManager.setup(app);
 const options = {};
-options.dataPath = process.env.NODE_ENV === 'test' ? {dataPath: path.join(__dirname, '..', '/test/data.json')} : {dataPath: __dirname+'/data.json'};
+options.dataPath = process.env.NODE_ENV === 'test' ? path.join(__dirname, '..', '/test/data.json') : __dirname+'/data.json';
 
 projectDataManager.setup(options);
 
