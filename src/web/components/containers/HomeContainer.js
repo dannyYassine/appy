@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import HomeList from './../presentation/HomeList'
+import ConsoleOutputContainer from './../../components/containers/ConsoleOutputContainer'
 
 export default class HomeContainer extends Component {
 
@@ -12,8 +13,10 @@ export default class HomeContainer extends Component {
         super(props);
 
         this.state = {
-            projects: []
+            projects: [],
+            currentProject: null
         }
+        
     }
 
     // LIFE CYCLE
@@ -50,6 +53,12 @@ export default class HomeContainer extends Component {
      * @param project
      */
     onProjectClicked = (project) => {
+        this.setState({
+            currentProject: project
+        });
+    };
+
+    onEditProject = (project) => {
         this.props.history.replace(`/project/${project.id}`)
     };
 
@@ -104,14 +113,23 @@ export default class HomeContainer extends Component {
     };
 
     render() {
+        const currentProjectOutput = this.state.currentProject ?
+            (<ConsoleOutputContainer project={this.state.currentProject}/>)
+            :
+            (<div/>);
+
         return(
-            <HomeList
-                projects={this.state.projects}
-                addNewProject={this.addNewProject}
-                onProjectClicked={this.onProjectClicked}
-                onDeleteProject={this.onDeleteProject}
-                onBuildProject={this.onBuildProject}
-            />
+            <div>
+                <HomeList
+                    projects={this.state.projects}
+                    addNewProject={this.addNewProject}
+                    onProjectClicked={this.onProjectClicked}
+                    onDeleteProject={this.onDeleteProject}
+                    onBuildProject={this.onBuildProject}
+                    onEditProject={this.onEditProject}
+                />
+                {currentProjectOutput}
+            </div>
         )
     }
 }

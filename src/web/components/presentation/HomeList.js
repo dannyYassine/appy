@@ -30,6 +30,7 @@ export default class HomeList extends Component {
                     <td>{project.updatedOn}</td>
                     <td><button onClick={e => this.props.onDeleteProject(project)}>DELETE</button></td>
                     <td><button onClick={e => this.props.onBuildProject(project)}>BUILD</button></td>
+                    <td><button onClick={e => this.props.onEditProject(project)}>EDIT</button></td>
                 </tr>
             )
         });

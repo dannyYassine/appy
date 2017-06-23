@@ -21,7 +21,7 @@ export default class ProjectDetailsContainer extends Component {
     }
 
     onLoad = () => {
-        fetch(`http://localhost:3002/api/project/${this.props.match.params.project_id}`, {
+            fetch(`http://localhost:3002/api/project/${this.props.match.params.project_id}`, {
             headers : {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
