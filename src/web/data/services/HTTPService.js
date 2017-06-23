@@ -60,7 +60,12 @@ export class HTTPService {
         };
         let json = null;
         var index = 0;
-        if (this.method !== 'POST') {
+        if (this.method !== 'POST' || this.method !== 'PUT') {
+            json = {};
+            this.body.forEach((value, key) => {
+                json[key] = value;
+            });
+        } else {
             this.body.forEach((value, key) => {
                 if (index == 0) {
                     this.url += `?${key}=${value}`;
@@ -69,17 +74,13 @@ export class HTTPService {
                 }
                 index += 1;
             });
-        } else {
-            json = {};
-            this.body.forEach((value, key) => {
-                json[key] = value;
-            });
         }
         this.httpRequest.open(this.method, this.url, true);
         this.headers.forEach((value, key) => {
             this.httpRequest.setRequestHeader(key, value);
-        })
+        });
         if (json) {
+            console.log(json);
             this.httpRequest.send(JSON.stringify(json));
         } else {
             this.httpRequest.send();

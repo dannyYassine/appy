@@ -28,7 +28,7 @@ module.exports = function(app) {
 
     router.route('/project/:project_id/edit')
         .all(middlewareControllerProject)
-        .patch(updateProject);
+        .put(updateProject);
 
     app.use('/api', router);
 };

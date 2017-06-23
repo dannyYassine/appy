@@ -9,13 +9,19 @@ export default class ProjectWebService extends HTTPService {
     constructor() {
         super();
         this.url = "http://localhost:3002/api";
+        this.addHeader('Accept', 'application/json');
+        this.addHeader('Content-Type', 'application/json');
     }
 
     addNewProject(projectName) {
         this.url = this.url + "/projects/add";
-        this.addHeader('Accept', 'application/json');
-        this.addHeader('Content-Type', 'application/json');
         this.addParameter("project_name", projectName);
+    }
+
+    updateProject(project, options) {
+        this.url = this.url + `/project/${project.id}/edit`;
+        this.addParameter('script', options.script);
+        this.addParameter('name', options.name);
     }
 
 }

@@ -9,7 +9,9 @@ export default class ProjectDetails extends Component {
 
     constructor(props) {
         super(props);
-
+        this.state = {
+            project: props.project
+        }
     }
 
     componentDidMount() {
@@ -25,38 +27,49 @@ export default class ProjectDetails extends Component {
     }
 
     submitScript = (event) => {
-        console.log(this.editor.getValue());
-        fetch('http://localhost:3002/submit-script', {
-            method: 'POST',
-            headers : {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({'text': this.editor.getValue()})
-        }).then((response) => {
-            return response.json();
-        }).then((response) => {
-            console.log(response.redirect);
-        }).catch((response) => {
-            console.log(response);
-        });
+        event.preventDefault();
+        this.state.project.shellTask.script = this.editor.getValue();
+        this.props.onUpdateProject(this.state.project);
     };
+
+    onNameChange = (event) => {
+        const name = event.target.value;
+        let project = this.state.project;
+        project.name = name;
+        this.setState({
+            project: project
+        })
+    };
+
+    onScriptChange = (event) => {
+        const script = event.target.value;
+        let project = this.state.project;
+        project.shellTask.script = script;
+        this.setState({
+            project: project
+        });
+        console.log(script);
+    };
+
     runScript = (event) => {
-        window.location = "http://localhost:3002/run-script";
+
     };
 
     render() {
+        let script = JSON.parse(this.props.project.shellTask.script);
         return(
             <div className="content">
-                <h4>{this.props.project.name}</h4>
+                <form onSubmit={this.addProject}>
+                    <input type="text" placeholder="Project name" value={this.state.project.name} onChange={this.onNameChange}/>
+                </form>
                 <h4>{this.props.project.updatedOn}</h4>
                 <div className="bash">
     <textarea id="code" className="shell-script" name="code">
-        {this.props.project.name}
+        {script}
     </textarea>
                 </div>
                 <button onClick={this.submitScript}>SAVE</button>
-                <button onClick={this.runScript}>RUN</button>
+                <button onClick={this.runScript}>BUILD</button>
             </div>
         )
     }

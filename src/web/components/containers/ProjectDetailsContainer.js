@@ -5,13 +5,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ProjectDetails from '../presentation/ProjectDetails';
+import ProjectWebService from './../../data/services/ProjectWebService'
 
 export default class ProjectDetailsContainer extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            project: {}
+            project: null
         };
     }
 
@@ -28,17 +29,34 @@ export default class ProjectDetailsContainer extends Component {
         }).then((response) => {
             return response.json();
         }).then((json) => {
-            console.log(json);
             this.setState({
                 'project': json.data
             })
         });
     };
 
+    onUpdateProject = (project) => {
+        const body = {
+            name: project.name,
+            script: JSON.stringify(project.shellTask.script)
+        };
+        const projectWebService = new ProjectWebService();
+        projectWebService.PUT().updateProject(project, body);
+        projectWebService.execute((success) => {
+            console.log('success');
+            this.props.history.push('/');
+        }, (error) => {
+            alert(error.code);
+        });
+    };
+
     render() {
+
+        const playerDetail = this.state.project ? (<ProjectDetails project={this.state.project} onUpdateProject={this.onUpdateProject.bind(this)}/>) : "Loading";
+
         return(
             <div>
-                <ProjectDetails project={this.state.project}/>
+                {playerDetail}
             </div>
         )
     }
