@@ -30,7 +30,6 @@ export default class HomeContainer extends Component {
         }).then((response) => {
             return response.json();
         }).then((json) => {
-            console.log(json);
             this.setState({
                 'projects': json.data
             })
@@ -74,6 +73,8 @@ export default class HomeContainer extends Component {
             this.setState({
                 'projects': projects
             })
+        }).catch(() => {
+            alert('something went wrong');
         });
     };
 
@@ -82,15 +83,24 @@ export default class HomeContainer extends Component {
      * @param project
      */
     onBuildProject = (project) => {
-
-        this.state.projects.map((aProject, index) => {
-            if (project.id === aProject.id) {
-                aProject.isRunning = !aProject.isRunning;
+        console.log(project);
+        fetch(`http://localhost:3002/api/project/${project.id}/build`, {
+            method: "POST",
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
+        }).then((_) => {
+            this.state.projects.map((aProject, index) => {
+                if (project.id === aProject.id) {
+                    aProject.isRunning = !aProject.isRunning;
+                }
+            });
+            this.setState({
+                'projects': this.state.projects
+            })
         });
-        this.setState({
-            'projects': this.state.projects
-        })
+
     };
 
     render() {

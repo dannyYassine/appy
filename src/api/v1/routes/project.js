@@ -9,7 +9,8 @@ const {
     addNewProject,
     allProjects,
     deleteProject,
-    getProject
+    getProject,
+    performShellTask
 } = require('./../controllers/project');
 
 module.exports = function(app) {
@@ -29,6 +30,10 @@ module.exports = function(app) {
     router.route('/project/:project_id/edit')
         .all(middlewareControllerProject)
         .put(updateProject);
+
+    router.route('/project/:project_id/build')
+        .all(middlewareControllerProject)
+        .post(performShellTask);
 
     app.use('/api', router);
 };

@@ -6,3 +6,4 @@ dist/
 exportplist.plist
 coverage
 .nyc_output
+workspace

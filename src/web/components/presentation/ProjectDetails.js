@@ -41,16 +41,6 @@ export default class ProjectDetails extends Component {
         })
     };
 
-    onScriptChange = (event) => {
-        const script = event.target.value;
-        let project = this.state.project;
-        project.shellTask.script = script;
-        this.setState({
-            project: project
-        });
-        console.log(script);
-    };
-
     runScript = (event) => {
 
     };
@@ -64,9 +54,9 @@ export default class ProjectDetails extends Component {
                 </form>
                 <h4>{this.props.project.updatedOn}</h4>
                 <div className="bash">
-    <textarea id="code" className="shell-script" name="code">
-        {script}
-    </textarea>
+                    <textarea id="code" className="shell-script" name="code">
+                        {script}
+                    </textarea>
                 </div>
                 <button onClick={this.submitScript}>SAVE</button>
                 <button onClick={this.runScript}>BUILD</button>

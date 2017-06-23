@@ -20,6 +20,11 @@ const Project = function() {
 
 Project.prototype = Object.create(BaseModel.prototype);
 
+Project.prototype.started = function(pid) {
+    this.isRunning = true;
+    this.pid = pid;
+};
+
 Project.prototype.stopped = function() {
     this.isRunning = false;
     this.pid = -1;

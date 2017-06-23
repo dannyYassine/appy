@@ -100,6 +100,7 @@ const projectFileSystem = (function() {
      *
      */
     return {
+        projectPath,
         createProjectDirectory,
         deleteProjectDirectory
     }

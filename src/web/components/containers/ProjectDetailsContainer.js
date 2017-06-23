@@ -51,9 +51,15 @@ export default class ProjectDetailsContainer extends Component {
     };
 
     render() {
-
-        const playerDetail = this.state.project ? (<ProjectDetails project={this.state.project} onUpdateProject={this.onUpdateProject.bind(this)}/>) : "Loading";
-
+        const playerDetail = this.state.project ?
+            (<ProjectDetails
+                project={this.state.project}
+                onUpdateProject={this.onUpdateProject.bind(this)}
+                />)
+            :
+            (<div>
+                <p>Loading</p>
+            </div>);
         return(
             <div>
                 {playerDetail}

@@ -3,16 +3,19 @@
  */
 
 const ProjectDataManager = require('./../dataSource/ProjectDataManager');
+const scriptManager = require('./../dataSource/performScript');
 const addProject = require('./../useCases/AddNewProject');
 const getProject = require('./../useCases/GetProject');
 const updateProject = require('./../useCases/UpdateProject');
+const runShellScript = require('./../useCases/RunShellScript');
+const Project = require('./../../../core/models/project');
 
 exports.middlewareControllerProject = (request, response, next) => {
     let projectId = request.params.project_id;
 
     ProjectDataManager.loadProjectData(projectId, (project) => {
         if (project) {
-            response.locals.project = project;
+            response.locals.project = Object.assign(new Project, project);
             next();
         } else {
             response.status(400).json({error: "No project"});
@@ -73,5 +76,18 @@ exports.deleteProject = (request, response) => {
     ProjectDataManager.deleteProject(project.id).then(() => {
         response.status(200).json({data: "delete"});
     });
+};
+
+exports.performShellTask = (request, response) => {
+    let project = response.locals.project;
+    runShellScript({
+        project: project,
+        dataSource: scriptManager
+    }).then(() => {
+        response.status(200).json({data: "building"});
+    })
+        .catch((error) => {
+            response.status(400).json({error: error});
+        });
 };
 
