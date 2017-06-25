@@ -13,7 +13,7 @@ const should    = chai.should();
 const chaiHttp  = require('chai-http');
 chai.use(chaiHttp);
 const path = require('path');
-const app       = require('./../../../src/server');
+const app       = require('./../../../src/app');
 const project   = require('../../../src/api/v1/controllers/project');
 const projectDataManager = require('./../../../src/api/v1/dataSource/ProjectDataManager');
 const dataPath  = path.join(__dirname, '../../..', 'data.json');

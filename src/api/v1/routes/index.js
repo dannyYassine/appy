@@ -5,13 +5,15 @@
 let detailProjectRouter = require('./project');
 let homeProjectsRouter = require('./home');
 let settingsRouter = require('./settings');
+let jobsRouter = require('./job');
 
 const routerManager = (() => {
 
     function setup(app) {
         detailProjectRouter(app);
         homeProjectsRouter(app);
-        settingsRouter(app)
+        settingsRouter(app);
+        jobsRouter(app);
     }
 
     return {

@@ -64,7 +64,8 @@
     "exclude": [
       "src/web/components/**/*.js",
       "src/web/index.js",
-      "src/index.js"
+      "src/index.js",
+      "src/server.js"
     ],
     "reporter": [
       "html"

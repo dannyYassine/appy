@@ -55,3 +55,7 @@ gulp.task('nodemon', function (cb) {
 
         });
 });
+
+gulp.task('cluster', shell.task([
+    'CLUSTER=TRUE nodemon src/server.js'
+]));
