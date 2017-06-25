@@ -5,6 +5,7 @@
 const fs = require('fs');
 const config = require('./../../../../config/config');
 const path = require('path');
+const { exec } = require('child_process');
 
 const projectFileSystem = (function() {
 
@@ -16,6 +17,18 @@ const projectFileSystem = (function() {
      */
     const projectPath = function (project) {
         return path.join(config.workspacePath, `/${project.name}`);
+    };
+
+    /**
+     * PRIVATE
+     * Helper method to remove directory and contents async
+     * @param path
+     * @param callback
+     */
+    const removeDirectoryAtPath = function (path, callback) {
+        exec(`rm -rf ${projectPath(project)}`, (error, stdout, stderr) => {
+            callback(error)
+        });
     };
 
     /**
@@ -61,12 +74,10 @@ const projectFileSystem = (function() {
         return new Promise(function (resolve, reject) {
             directoryExistsForCreation(project)
                 .then(() => {
-                    fs.mkdir(projectPath(project), (error) => {
-                        if (error) {
-                            return reject(error);
-                        }
-                        resolve();
-                    });
+                    removeDirectoryAtPath(projectPath(project), (error) => {
+                        if (error) return reject(error);
+                        return resolve();
+                    })
                 })
                 .catch((error) => {
                     return reject(error);
@@ -83,12 +94,10 @@ const projectFileSystem = (function() {
         return new Promise(function (resolve, reject) {
             directoryExistsForDeletion(project)
                 .then(() => {
-                    fs.rmdir(projectPath(project), (error) => {
-                        if (error) {
-                            return reject(error);
-                        }
-                        resolve();
-                    });
+                    removeDirectoryAtPath(projectPath(project), (error) => {
+                        if (error) return reject(error);
+                        return resolve();
+                    })
                 })
                 .catch((error) => {
                     return reject(error);

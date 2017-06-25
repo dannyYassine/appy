@@ -10,7 +10,9 @@ const {
     allProjects,
     deleteProject,
     getProject,
-    performShellTask
+    performShellTask,
+    getAllConsoleLog,
+    getProgressiveConsoleLog
 } = require('./../controllers/project');
 
 module.exports = function(app) {
@@ -34,6 +36,14 @@ module.exports = function(app) {
     router.route('/project/:project_id/build')
         .all(middlewareControllerProject)
         .post(performShellTask);
+
+    router.route('/project/:project_id/log')
+        .all(middlewareControllerProject)
+        .get(getAllConsoleLog);
+
+    router.route('/project/:project_id/progressive-log')
+        .all(middlewareControllerProject)
+        .get(getProgressiveConsoleLog);
 
     app.use('/api', router);
 };

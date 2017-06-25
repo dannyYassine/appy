@@ -12,7 +12,8 @@ export default class AddProjectContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            output: 'qwe'
+            output: 'qwe',
+            project: props.project
         }
     }
 
@@ -20,33 +21,48 @@ export default class AddProjectContainer extends Component {
         this.onLoad()
     }
 
-    onLoad() {
-        // fetch(`http://localhost:3002/project/${this.props.match}`, {
-        //
-        // }).then((response) => {
-        //     return response.json();
-        // }).then((json) => {
-        //     let loggedText = document.getElementById("logged-text");
-        //     loggedText.innerText += json.log;
-        //     window.scrollTo(0,document.body.scrollHeight);
-        //     this.getLogOutput();
-        // }).catch(() => {
-        //     this.getLogOutput();
-        // });
+    componentWillReceiveProps(nextProps) {
+        this.downloadProjectLog(nextProps.project);
     }
 
-    getLogOutput() {
-        fetch('http://localhost:3002/run-progressive-log', {
+    onLoad() {
+        this.downloadProjectLog(this.props.project);
+    }
 
+    downloadProjectLog(project) {
+        fetch(`http://localhost:3002/api/project/${project.id}/log`, {
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         }).then((response) => {
             return response.json();
         }).then((json) => {
-            let loggedText = document.getElementById("logged-text");
-            loggedText.innerText += json.log;
-            setTimeout(getLogOutput, 2000);
-            if (json.log !== "") {
-                window.scrollTo(0,document.body.scrollHeight);
+            console.log(json);
+            this.setState({
+                log: json.data
+            });
+            this.getLogOutput(project);
+        }).catch(() => {
+            this.getLogOutput(project);
+        });
+    }
+
+    getLogOutput(project) {
+        fetch(`http://localhost:3002/api/project/${project.id}/progressive-log`, {
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
+        }).then((response) => {
+            return response.json();
+        }).then((json) => {
+            this.setState({
+                log: this.state.log + "\n" + json.data
+            });
+            setTimeout(getLogOutput, 2000);
+        }).catch(() => {
+            setTimeout(getLogOutput, 2000);
         });
     };
 
@@ -65,7 +81,7 @@ export default class AddProjectContainer extends Component {
         return(
             <div>
                 <h1>{this.props.project.name}</h1>
-                <ConsoleOutput output={this.state.output}/>
+                <ConsoleOutput output={this.state.log}/>
             </div>
         )
     }

@@ -4,12 +4,14 @@
 
 let detailProjectRouter = require('./project');
 let homeProjectsRouter = require('./home');
+let settingsRouter = require('./settings');
 
 const routerManager = (() => {
 
     function setup(app) {
         detailProjectRouter(app);
         homeProjectsRouter(app);
+        settingsRouter(app)
     }
 
     return {

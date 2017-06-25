@@ -9,26 +9,51 @@ const getProject = require('./../useCases/GetProject');
 const updateProject = require('./../useCases/UpdateProject');
 const runShellScript = require('./../useCases/RunShellScript');
 const Project = require('./../../../core/models/project');
+const consoleLogger = require('./../dataSource/consoleLogger');
+const projectLog = require('./../useCases/GetProjectLog');
 
+/**
+ * Middleware to retrieve a Project with its projectId
+ * @param request
+ * @param response
+ * @param next
+ */
 exports.middlewareControllerProject = (request, response, next) => {
     let projectId = request.params.project_id;
 
-    ProjectDataManager.loadProjectData(projectId, (project) => {
+    const callback = (project, error) => {
         if (project) {
             response.locals.project = Object.assign(new Project, project);
             next();
         } else {
-            response.status(400).json({error: "No project"});
+            response.status(400).json({error: error});
         }
+    };
+
+    getProject({
+        projectId: projectId,
+        dataSource: ProjectDataManager,
+        callback: callback
     });
+
 };
 
+/**
+ * Response to - '/projects'
+ * @param request
+ * @param response
+ */
 exports.allProjects = (request, response) => {
     ProjectDataManager.loadAllProjects((data) => {
         response.status(200).json({data: data.projects});
     });
 };
 
+/**
+ * Response to - '/projects/add'
+ * @param request
+ * @param response
+ */
 exports.addNewProject = (request, response) => {
     addProject({
         name: request.body.project_name,
@@ -40,6 +65,11 @@ exports.addNewProject = (request, response) => {
     });
 };
 
+/**
+ * Response to - '/project/:project_id'
+ * @param request
+ * @param response
+ */
 exports.getProject = (request, response) => {
     let projectId = request.params.project_id;
     getProject({
@@ -52,6 +82,11 @@ exports.getProject = (request, response) => {
     })
 };
 
+/**
+ * Response to - '/project/:project_id/edit'
+ * @param request
+ * @param response
+ */
 exports.updateProject = (request, response) => {
     let project = response.locals.project;
 
@@ -70,6 +105,11 @@ exports.updateProject = (request, response) => {
     });
 };
 
+/**
+ * Responds to - '/project/:project_id'
+ * @param request
+ * @param response
+ */
 exports.deleteProject = (request, response) => {
     let project = response.locals.project;
 
@@ -78,6 +118,11 @@ exports.deleteProject = (request, response) => {
     });
 };
 
+/**
+ * Responds to - '/project/:project_id/build'
+ * @param request
+ * @param response
+ */
 exports.performShellTask = (request, response) => {
     let project = response.locals.project;
     runShellScript({
@@ -91,3 +136,38 @@ exports.performShellTask = (request, response) => {
         });
 };
 
+/**
+ * Responds to - '/project/:project_id/log'
+ * @param request
+ * @param response
+ */
+exports.getAllConsoleLog = (request, response) => {
+    let project = response.locals.project;
+    projectLog.getLog({
+        project: project,
+        logger: consoleLogger
+    }).then((log) => {
+        response.status(200).json({data: log});
+    })
+        .catch((error) => {
+            response.status(400).json({error: error});
+        });
+};
+
+/**
+ * Responds to - '/project/:project_id/progressive-log'
+ * @param request
+ * @param response
+ */
+exports.getProgressiveConsoleLog = (request, response) => {
+    let project = response.locals.project;
+    projectLog.getProgressiveLog({
+        project: project,
+        logger: consoleLogger
+    }).then((log) => {
+        response.status(200).json({data: log});
+    })
+        .catch((error) => {
+            response.status(400).json({error: error});
+        });
+};

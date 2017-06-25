@@ -142,62 +142,6 @@ app.post('/submit-script', (request, response) => {
     });
 });
 
-app.get('/run-script', (request, response) => {
-
-    fs.readFile("./src/data.json", (error, dataState) => {
-        let dataObject = JSON.parse(dataState);
-
-        if (dataObject.projects[0].isRunning === true) {
-            response.render('run-log.html', {job: dataObject.projects[0]});
-            return;
-        }
-
-        fs.writeFile('./src/run-log.txt', '', function(){
-            return 1;
-        });
-        fs.writeFile('./src/run-progressive-log.txt', '', function(){
-            return 1;
-        });
-
-        fs.readFile('./src/script.sh', (error, data) => {
-            const spawn = require('child_process').spawn;
-            const ls = spawn('sh', ['./src/script.sh'], {
-            });
-            ls.stdout.on('data', function (data) {
-                fs.appendFile('./src/run-log.txt', data.toString(), (err) => {
-                });
-                fs.appendFile('./src/run-progressive-log.txt', data.toString(), (err) => {
-                });
-            });
-
-            ls.stderr.on('data', function (data) {
-                fs.appendFile('./src/run-log.txt', data.toString(), (err) => {
-                });
-                fs.appendFile('./src/run-progressive-log.txt', data.toString(), (err) => {
-                });
-            });
-
-            ls.on('exit', function (code) {
-                fs.appendFile('./src/run-log.txt', data.toString(), (err) => {
-                });
-                fs.appendFile('./src/run-progressive-log.txt', data.toString(), (err) => {
-                });
-                fs.readFile("./src/data.json", (error, data) => {
-                    let dataObject = JSON.parse(data);
-                    dataObject.projects[0].isRunning = false;
-                    fs.writeFile('./data.json', JSON.stringify(dataObject));
-                });
-            });
-
-            dataObject.projects[0].pid = ls.pid;
-            dataObject.projects[0].isRunning = true;
-            fs.writeFile('./src/data.json', JSON.stringify(dataObject));
-
-            response.render('run-log.html', {job: dataObject.projects[0]});
-        });
-    });
-});
-
 app.post('/:pid/cancel', (request, response) => {
     const exec = require('child_process').exec;
     exec('ps -9 ' + request.params.pid, (error, stdout, stderr) => {

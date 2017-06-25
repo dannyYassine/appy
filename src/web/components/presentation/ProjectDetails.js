@@ -46,7 +46,7 @@ export default class ProjectDetails extends Component {
     };
 
     render() {
-        let script = JSON.parse(this.props.project.shellTask.script);
+        let script = this.props.project.shellTask.script.length > 0 ? JSON.parse(this.props.project.shellTask.script): "";
         return(
             <div className="content">
                 <form onSubmit={this.addProject}>
@@ -64,4 +64,8 @@ export default class ProjectDetails extends Component {
         )
     }
 
+};
+
+ProjectDetails.propTypes = {
+    project: PropTypes.object.isRequired
 };

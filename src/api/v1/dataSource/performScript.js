@@ -8,22 +8,52 @@ const spawn = require('child_process').spawn;
 
 const scriptManager = (function () {
 
+    /**
+     *
+     * @param runLog
+     * @param progressiveLog
+     * @param data
+     */
+    const appendDataToFileLogs = (runLog, progressiveLog, data) => {
+        fs.appendFile(runLog, data.toString());
+        fs.appendFile(progressiveLog, data.toString());
+    };
+
+    /**
+     *
+     * @param project
+     */
     const performScript = function(project) {
 
+        // Set up all local variables
+        //FIXME: these variables could be injectable
         let projectPath = projectFileSystem.projectPath(project);
         let scriptText = JSON.parse(project.shellTask.script);
         let scriptFile = `${projectPath}/script.sh`;
         let runLog = `${projectPath}/run-log.txt`;
         let progressiveLog = `${projectPath}/progressive-log.txt`;
 
-        fs.writeFile(runLog, '', function () {
-            return 1;
-        });
-        fs.writeFile(progressiveLog, '', function () {
-            return 1;
+        // Promises
+        const resetFileLog = new Promise((resolve, reject) => {
+            fs.writeFile(runLog, '', function (error) {
+                return resolve()
+            });
         });
 
-        fs.writeFile(scriptFile, scriptText, () => {
+        const resetProgressiveFileLog = new Promise((resolve, reject) => {
+            fs.writeFile(progressiveLog, '', function (error) {
+                return resolve()
+            });
+        });
+
+        const writeScriptFile = new Promise((resolve, reject) => {
+            fs.writeFile(scriptFile, scriptText, () => {
+                return resolve();
+            });
+        });
+
+        // Execute Promises before running script
+        Promise.all([resetFileLog, resetProgressiveFileLog, writeScriptFile]).then(() => {
 
             const child = spawn('sh', [scriptFile], {
                 cwd: projectPath
@@ -33,34 +63,20 @@ const scriptManager = (function () {
             projectDataManager.updateProject(project);
 
             child.stdout.on('data', function (data) {
-                fs.appendFile(runLog, data.toString(), (err) => {
-                });
-                fs.appendFile(progressiveLog, data.toString(), (err) => {
-                });
+                appendDataToFileLogs(runLog, progressiveLog, data);
             });
 
             child.stderr.on('data', function (data) {
-                fs.appendFile(runLog, data.toString(), (err) => {
-                });
-                fs.appendFile(progressiveLog, data.toString(), (err) => {
-                });
+                appendDataToFileLogs(runLog, progressiveLog, data);
             });
 
             child.on('exit', function (data) {
-                fs.appendFile(runLog, data.toString(), (err) => {
-                });
-                fs.appendFile(progressiveLog, data.toString(), (err) => {
-                });
+                appendDataToFileLogs(runLog, progressiveLog, data);
                 project.stopped();
                 projectDataManager.updateProject(project)
-                    .then(() => {
-
-                    })
-                    .catch(() => {
-
-                    });
             });
         });
+
     };
     return {
         performScript

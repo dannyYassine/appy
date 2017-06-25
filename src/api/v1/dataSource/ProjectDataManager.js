@@ -9,14 +9,26 @@ const ProjectDataManager = (function () {
 
     let dataPath = null;
 
+    /**
+     *
+     * @returns {string}
+     */
     const getDataPath = function() {
         return dataPath;
     };
 
+    /**
+     *
+     * @param options
+     */
     const setup = function(options) {
         dataPath = options.dataPath;
     };
 
+    /**
+     *
+     * @returns {Promise}
+     */
     const loadData = function () {
         return new Promise(function (resolve, reject) {
             fs.readFile(dataPath, (error, data) => {
@@ -26,6 +38,11 @@ const ProjectDataManager = (function () {
         });
     };
 
+    /**
+     *
+     * @param data
+     * @returns {Promise}
+     */
     const saveData = function (data) {
         return new Promise(function (resolve, reject) {
             fs.writeFile(dataPath, JSON.stringify(data), (error) => {
@@ -35,6 +52,10 @@ const ProjectDataManager = (function () {
         });
     };
 
+    /**
+     *
+     * @param callback
+     */
     const loadAllProjects = function(callback) {
         loadData().then((data) => {
             callback(data);
@@ -43,6 +64,11 @@ const ProjectDataManager = (function () {
         })
     };
 
+    /**
+     *
+     * @param projectId
+     * @param callback
+     */
     const loadProjectData = function(projectId, callback) {
         fs.readFile(dataPath, (error, data) => {
             let dataObject = JSON.parse(data);
@@ -53,6 +79,11 @@ const ProjectDataManager = (function () {
         });
     };
 
+    /**
+     *
+     * @param project
+     * @param callback
+     */
     const saveNewProject = function(project, callback) {
         loadData().then((data) => {
             projectFileSystem.createProjectDirectory(project)
@@ -72,6 +103,11 @@ const ProjectDataManager = (function () {
         });
     };
 
+    /**
+     *
+     * @param updateProject
+     * @returns {Promise}
+     */
     const updateProject = (updateProject) => {
         return new Promise(function (resolve, reject) {
             loadData().then((data) => {
@@ -89,6 +125,11 @@ const ProjectDataManager = (function () {
         });
     };
 
+    /**
+     *
+     * @param projectId
+     * @returns {Promise}
+     */
     const deleteProject = (projectId) => {
         return new Promise(function (resolve, reject) {
             loadData().then((data) => {
