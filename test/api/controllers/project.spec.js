@@ -12,18 +12,18 @@ const assert    = chai.assert;
 const should    = chai.should();
 const chaiHttp  = require('chai-http');
 chai.use(chaiHttp);
-
+const path = require('path');
 const app       = require('./../../../src/server');
 const project   = require('../../../src/api/v1/controllers/project');
 const projectDataManager = require('./../../../src/api/v1/dataSource/ProjectDataManager');
-const dataPath  = './test/cache/data.json';
+const dataPath  = path.join(__dirname, '../../..', 'data.json');
 const Project   = require('./../../../src/core/models/project');
+const config = require('./../../../config/config');
 
 describe('Server/Controllers/Project', () => {
 
     // Set up mock data persistance
     projectDataManager.setup({dataPath: dataPath});
-
 
     const project = new Project();
     const gettableProject = new Project();
@@ -34,6 +34,10 @@ describe('Server/Controllers/Project', () => {
             projects: [project, gettableProject]
         };
         fs.writeFileSync(dataPath, JSON.stringify(data));
+
+        if (!fs.existsSync(config.workspacePath)) {
+            fs.mkdirSync(config.workspacePath);
+        }
     });
 
     it('should respond with all projects', (done) => {
@@ -77,9 +81,10 @@ describe('Server/Controllers/Project', () => {
 
     it('should respond to update a project', (done) => {
         chai.request(app)
-            .patch(`/api/project/${gettableProject.id}/edit`)
+            .put(`/api/project/${gettableProject.id}/edit`)
             .send({
-                name: "new_name"
+                name: "new_name",
+                script: "hello world"
             })
             .end((err, res) => {
 

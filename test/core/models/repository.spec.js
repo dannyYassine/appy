@@ -1,6 +1,7 @@
 /**
  * Created by dannyyassine on 2017-06-17.
  */
+process.env.NODE_ENV = 'test';
 
 const expect = require('chai').expect;
 const Repository = require('../../../src/core/models/repository');

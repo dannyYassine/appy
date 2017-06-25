@@ -13,32 +13,6 @@ const consoleLogger = require('./../dataSource/consoleLogger');
 const projectLog = require('./../useCases/GetProjectLog');
 
 /**
- * Middleware to retrieve a Project with its projectId
- * @param request
- * @param response
- * @param next
- */
-exports.middlewareControllerProject = (request, response, next) => {
-    let projectId = request.params.project_id;
-
-    const callback = (project, error) => {
-        if (project) {
-            response.locals.project = Object.assign(new Project, project);
-            next();
-        } else {
-            response.status(400).json({error: error});
-        }
-    };
-
-    getProject({
-        projectId: projectId,
-        dataSource: ProjectDataManager,
-        callback: callback
-    });
-
-};
-
-/**
  * Response to - '/projects'
  * @param request
  * @param response

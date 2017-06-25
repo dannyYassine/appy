@@ -2,6 +2,8 @@
  * Created by dannyyassine on 2017-06-20.
  */
 
+process.env.NODE_ENV = 'test';
+
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
@@ -10,33 +12,36 @@ const Project = require('./../../../src/core/models/project');
 const fs = require('fs');
 const uuid = require('./../../../src/core/helpers/uuid');
 const rmDir = require('./../../../src/core/helpers/directory');
+const { exec } = require('child_process');
+const path = require('path');
+const config = require('./../../../config/config');
 
 describe('ProjectDataManager', () => {
-    const dataPath = './test/cache/data.json';
+    const dataPath = path.join(__dirname, '../../', '/data.json');
     const project = new Project();
 
     before(() => {
-        data = {
-            projects: [project]
-        };
         ProjectDataManager.setup({dataPath: dataPath});
-        fs.writeFile(dataPath, JSON.stringify(data));
+        if (!fs.existsSync(config.workspacePath)) {
+            fs.mkdirSync(config.workspacePath);
+        }
     });
 
-    after(() => {
-        rmDir.removeContentsOfDirectory('./test/cache');
+    after((done) => {
+        let workspacePath = path.join(__dirname, '../../', '/workspace');
+        exec(`rm -rf ${workspacePath}`, (error, stdout, stderr) => {
+            done();
+        });
     });
 
     function setData() {
         return new Promise((resolve, reject) => {
-            const dataPath = './test/cache/'+uuid()+'.json';
             data = {
-                projects: [new Project(), new Project()]
+                projects: [project]
             };
-            ProjectDataManager.setup({dataPath: dataPath});
             fs.writeFile(dataPath, JSON.stringify(data), (err) => {
-                if (err) reject();
-                resolve(data);
+                if (err) reject(err);
+                else resolve(data);
             });
         });
     }
@@ -52,21 +57,6 @@ describe('ProjectDataManager', () => {
         });
     });
 
-    it('should be able to load a project with a projectId', (done) => {
-
-        const project = new Project();
-        project.name = "Hello";
-
-        setData().then((data) => {
-            ProjectDataManager.saveNewProject(project, (newData) => {
-                ProjectDataManager.loadProjectData(project.id, (loadedProject) => {
-                    assert(project.id === loadedProject.id);
-                    done();
-                });
-            });
-        });
-    });
-
     it('should be able to save a project', function(done) {
         this.timeout(5000);
         const project = new Project();
@@ -78,40 +68,70 @@ describe('ProjectDataManager', () => {
                 assert(newData.projects.length >= data.projects.length);
                 done();
             });
+        }).catch((error) => {
+            assert(error === null);
+            done();
+        });
+    });
+
+    it('should be able to load a project with a projectId', (done) => {
+
+        setData().then((data) => {
+            ProjectDataManager.loadProjectData(project.id, (loadedProject) => {
+                assert(project.id === loadedProject.id);
+                done();
+            });
+        }).catch((error) => {
+
         });
     });
 
     it('should delete a project', function(done) {
         this.timeout(5000);
-        const project = new Project();
-        project.name = "Hello";
+        const newProject = new Project();
+        newProject.name = "Hello1";
 
         setData().then((data) => {
-            ProjectDataManager.saveNewProject(project, (newData) => {
-                ProjectDataManager.deleteProject(project.id).then((finalData) => {
+            ProjectDataManager.saveNewProject(newProject, (newData, err) => {
+                assert(err === null);
+                assert(newData);
+                ProjectDataManager.deleteProject(newProject.id).then((finalData) => {
                     assert(finalData);
                     assert(finalData.projects.length <= newData.projects.length);
                     done();
+                }).catch((error) => {
+                    assert(error === null);
+                    done();
                 });
-            });
+            })
+        }).catch((error) => {
+            assert(error === null);
+            done();
         });
     });
 
     it('should be able to update a project', function(done) {
         this.timeout(5000);
         const project = new Project();
-        project.name = "Hello";
+        project.name = "Hello2";
 
         setData().then((data) => {
             ProjectDataManager.saveNewProject(project, (newData) => {
                 let updateProject = Object.assign({}, project);
                 updateProject.name = "world";
-                ProjectDataManager.updateProject(updateProject).then((updatedProject) => {
-                    assert(updatedProject);
-                    assert(updatedProject.name !== project.name);
+                ProjectDataManager.updateProject(updateProject)
+                    .then((updatedProject) => {
+                        assert(updatedProject);
+                        assert(updatedProject.name !== project.name);
+                        done();
+                    }).catch((error) => {
+                    assert(error === null);
                     done();
                 });
             });
+        }).catch((error) => {
+            assert(error === null);
+            done()
         });
     });
 

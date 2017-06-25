@@ -3,8 +3,8 @@
  */
 
 const express = require('express');
+const { middlewareControllerProject } = require('./../middlewares/getProject');
 const {
-    middlewareControllerProject,
     updateProject,
     addNewProject,
     allProjects,

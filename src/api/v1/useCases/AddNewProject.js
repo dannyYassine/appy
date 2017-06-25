@@ -3,7 +3,7 @@
  */
 
 var Project = require('./../../../core/models/project');
-const projectNameValidator = require('./../../../core/validators/projectValidator');
+const nameValidator = require('./../../../core/validators/projectValidator').nameValidator;
 const validateAll = require('./../../../core/validators/validator');
 
 /**
@@ -17,7 +17,7 @@ module.exports = function addProject ({name, dataSource, callback}) {
     let newProject = new Project();
     newProject.name = name;
 
-    let validated = validateAll(newProject, [projectNameValidator()]);
+    let validated = validateAll(newProject, [nameValidator()]);
 
     if (validated === false) {
         callback(null, Error('wrong updated arguments'));

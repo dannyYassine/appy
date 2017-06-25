@@ -30,4 +30,6 @@ const nameValidator = function() {
     };
 };
 
-module.exports = nameValidator;
+module.exports = {
+    nameValidator
+};

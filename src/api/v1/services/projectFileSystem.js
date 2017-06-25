@@ -26,7 +26,7 @@ const projectFileSystem = (function() {
      * @param callback
      */
     const removeDirectoryAtPath = function (path, callback) {
-        exec(`rm -rf ${projectPath(project)}`, (error, stdout, stderr) => {
+        exec(`rm -rf ${path}`, (error, stdout, stderr) => {
             callback(error)
         });
     };
@@ -40,10 +40,10 @@ const projectFileSystem = (function() {
     const directoryExistsForCreation = (project) => {
         return new Promise(function (resolve, reject) {
             fs.access(projectPath(project), (error, stats) => {
-                if (error.errno !== -2) {
-                    return reject(Error('project with the same name already exists'));
-                }
-                return resolve(projectPath);
+                if (error && error.errno !== -2)
+                    reject(Error('project with the same name already exists'));
+                else
+                    resolve();
             })
         });
     };
@@ -57,8 +57,8 @@ const projectFileSystem = (function() {
     const directoryExistsForDeletion = (project) => {
         return new Promise(function (resolve, reject) {
             fs.access(projectPath(project), (error, stats) => {
-                if (error) {
-                    return reject(Error('project with the same name already exists'));
+                if (error && error.errno === -2) {
+                    return reject(Error('project does not exist'));
                 }
                 resolve();
             })
@@ -74,7 +74,7 @@ const projectFileSystem = (function() {
         return new Promise(function (resolve, reject) {
             directoryExistsForCreation(project)
                 .then(() => {
-                    removeDirectoryAtPath(projectPath(project), (error) => {
+                    fs.mkdir(projectPath(project), (error) => {
                         if (error) return reject(error);
                         return resolve();
                     })

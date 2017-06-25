@@ -1,11 +1,12 @@
 /**
  * Created by dannyyassine on 2017-06-22.
  */
+process.env.NODE_ENV = 'test';
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
 const Project = require('../../../src/core/models/project');
-const projectNameValidator = require('../../../src/core/validators/projectValidator');
+const nameValidator = require('../../../src/core/validators/projectValidator').nameValidator;
 const validateAll = require('../../../src/core/validators/validator');
 
 describe('Project Validator', () => {
@@ -14,7 +15,7 @@ describe('Project Validator', () => {
         let project = new Project();
         project.name = "Hello world";
 
-        let result = validateAll(project, [projectNameValidator()]);
+        let result = validateAll(project, [nameValidator()]);
         assert(result === true);
     });
 
@@ -23,12 +24,12 @@ describe('Project Validator', () => {
         let project = new Project();
         project.name = "";
 
-        let result = validateAll(project, [projectNameValidator()]);
+        let result = validateAll(project, [nameValidator()]);
         assert(result === false);
 
         project.name = null;
 
-        result = validateAll(project, [projectNameValidator()]);
+        result = validateAll(project, [nameValidator()]);
         assert(result === false);
     });
 });

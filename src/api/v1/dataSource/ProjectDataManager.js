@@ -10,7 +10,7 @@ const ProjectDataManager = (function () {
     let dataPath = null;
 
     /**
-     *
+     * Getter for global module dataPath variable
      * @returns {string}
      */
     const getDataPath = function() {
@@ -18,7 +18,7 @@ const ProjectDataManager = (function () {
     };
 
     /**
-     *
+     * Injectable options
      * @param options
      */
     const setup = function(options) {
@@ -85,19 +85,15 @@ const ProjectDataManager = (function () {
      * @param callback
      */
     const saveNewProject = function(project, callback) {
+        let allData;
         loadData().then((data) => {
-            projectFileSystem.createProjectDirectory(project)
-                .then(() => {
-                    data.projects.push(project);
-                    saveData(data).then((data) => {
-                        callback(data, null);
-                    }).catch((error) => {
-                        callback(null, error);
-                    });
-                })
-                .catch((error) => {
-                    callback(null, error);
-                });
+            allData = data;
+            return projectFileSystem.createProjectDirectory(project)
+        }).then(() => {
+            allData.projects.push(project);
+            return saveData(allData);
+        }).then((data) => {
+            callback(data, null);
         }).catch((error) => {
             callback(null, error);
         });
@@ -110,17 +106,18 @@ const ProjectDataManager = (function () {
      */
     const updateProject = (updateProject) => {
         return new Promise(function (resolve, reject) {
-            loadData().then((data) => {
-                for (let i = 0; i <= data.projects.length; i++) {
-                    let project = data.projects[i];
-                    if (project.id === updateProject.id) {
-                        data.projects[i] = updateProject;
-                        break;
+            loadData()
+                .then((data) => {
+                    for (let i = 0; i <= data.projects.length; i++) {
+                        let project = data.projects[i];
+                        if (project.id === updateProject.id) {
+                            data.projects[i] = updateProject;
+                            break;
+                        }
                     }
-                }
-                saveData(data).then((data) => {
-                    resolve(updateProject);
-                }).catch(reject);
+                    return saveData(data);
+                }).then((data) => {
+                resolve(updateProject);
             }).catch(reject);
         });
     };
