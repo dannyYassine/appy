@@ -19,6 +19,11 @@ const projectDataManager = require('./../../../src/api/v1/dataSource/ProjectData
 const dataPath  = path.join(__dirname, '../../..', 'data.json');
 const Project   = require('./../../../src/core/models/project');
 const config = require('./../../../config/config');
+const rmDir = require('./../../../src/core/helpers/macDeleteFolder');
+
+const {
+    performShellTask
+} = require('./../../../src/api/v1/controllers/project');
 
 describe('Server/Controllers/Project', () => {
 
@@ -28,6 +33,7 @@ describe('Server/Controllers/Project', () => {
     const project = new Project();
     const gettableProject = new Project();
     gettableProject.name = "yo";
+
     before(() => {
         
         data = {
@@ -39,6 +45,28 @@ describe('Server/Controllers/Project', () => {
             fs.mkdirSync(config.workspacePath);
         }
     });
+
+    after((done) => {
+        rmDir(`${config.workspacePath}/yo`, () => {
+            done();
+        });
+    });
+
+    const createLogFoldersAndFiles = function () {
+        if (!fs.existsSync(config.workspacePath)) {
+            fs.mkdirSync(config.workspacePath);
+        }
+
+        try {
+            fs.mkdirSync(`${config.workspacePath}/${gettableProject.name}`);
+            fs.writeFileSync(`${config.workspacePath}/${gettableProject.name}/run-log.txt`, '');
+            fs.writeFileSync(`${config.workspacePath}/${gettableProject.name}/progressive-log.txt`, '');
+            fs.writeFileSync(`${config.workspacePath}/${gettableProject.name}/script.sh`, '');
+        } catch (err) {
+
+        }
+
+    };
 
     it('should respond with all projects', (done) => {
         chai.request(app)
@@ -83,11 +111,40 @@ describe('Server/Controllers/Project', () => {
         chai.request(app)
             .put(`/api/project/${gettableProject.id}/edit`)
             .send({
-                name: "new_name",
+                name: "yo",
                 script: "hello world"
             })
             .end((err, res) => {
 
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+
+    it('should perform shell task', (done) => {
+        chai.request(app)
+            .get(`/api/project/${gettableProject.id}/build`)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+
+    it('should respond to getting project script log', (done) => {
+        createLogFoldersAndFiles();
+        chai.request(app)
+            .get(`/api/project/${gettableProject.id}/log`)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+
+    it('should respond to getting project progressive script log', (done) => {
+        createLogFoldersAndFiles();
+        chai.request(app)
+            .get(`/api/project/${gettableProject.id}/progressive-log`)
+            .end((err, res) => {
                 expect(res).to.have.status(200);
                 done();
             });

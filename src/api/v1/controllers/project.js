@@ -120,8 +120,9 @@ exports.getAllConsoleLog = (request, response) => {
     projectLog.getLog({
         project: project,
         logger: consoleLogger
-    }).then((log) => {
-        response.status(200).json({data: log});
+    })
+        .then((log) => {
+        response.status(200).type('text').send(log);
     })
         .catch((error) => {
             response.status(400).json({error: error});
@@ -139,7 +140,7 @@ exports.getProgressiveConsoleLog = (request, response) => {
         project: project,
         logger: consoleLogger
     }).then((log) => {
-        response.status(200).json({data: log});
+        response.status(200).type('text').send(log);
     })
         .catch((error) => {
             response.status(400).json({error: error});

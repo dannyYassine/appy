@@ -10,11 +10,14 @@
  */
 const getLog = function ({project, logger}) {
     return new Promise((resolve, reject) => {
-        logger.getFullLog(project).then((log) => {
-            logger.resetProgressiveLog(project).then(() => {
-                resolve(log);
-            });
-        }).catch(reject)
+        let projectLog;
+        logger.getFullLog(project)
+            .then((log) => {
+                projectLog = log;
+                return logger.resetProgressiveLog(project)
+            }).then(() => {
+            resolve(projectLog);
+        }).catch(reject);
     });
 };
 
@@ -26,11 +29,14 @@ const getLog = function ({project, logger}) {
  */
 const getProgressiveLog = function ({project, logger}) {
     return new Promise((resolve, reject) => {
-        logger.getProgressiveLog(project).then((log) => {
-            logger.resetProgressiveLog(project).then(() => {
-                resolve(log);
-            });
-        }).catch(reject)
+        let projectLog;
+        logger.getProgressiveLog(project)
+            .then((log) => {
+                projectLog = log;
+                return logger.resetProgressiveLog(project)
+            }).then(() => {
+            resolve(projectLog);
+        }).catch(reject);
     });
 };
 

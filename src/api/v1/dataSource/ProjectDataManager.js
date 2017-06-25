@@ -165,7 +165,6 @@ const ProjectDataManager = (function () {
         updateProject,
         deleteProject
     };
-
 }());
 
 module.exports = ProjectDataManager;

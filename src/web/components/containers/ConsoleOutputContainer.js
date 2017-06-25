@@ -60,9 +60,9 @@ export default class AddProjectContainer extends Component {
             this.setState({
                 log: this.state.log + "\n" + json.data
             });
-            setTimeout(getLogOutput, 2000);
+            setTimeout(this.getLogOutput, 2000);
         }).catch(() => {
-            setTimeout(getLogOutput, 2000);
+            setTimeout(this.getLogOutput, 2000);
         });
     };
 
