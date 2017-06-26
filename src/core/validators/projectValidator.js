@@ -42,7 +42,7 @@ const scriptValidator = function() {
      * @returns {boolean}
      */
     const scriptValidator = function(script) {
-        return name !== '' && name !== null;
+        return script !== '' && script !== null;
     };
 
     /**
@@ -50,7 +50,7 @@ const scriptValidator = function() {
      * @param object
      */
     const validate = function(object) {
-        return scriptValidator(object.script);
+        return scriptValidator(object.shellTask.script);
     };
 
     return {

@@ -6,7 +6,7 @@ process.env.NODE_ENV = 'test';
 const expect = require('chai').expect;
 const assert = require('chai').assert;
 const Project = require('../../../src/core/models/project');
-const nameValidator = require('../../../src/core/validators/projectValidator').nameValidator;
+const {nameValidator, scriptValidator} = require('../../../src/core/validators/projectValidator');
 const validateAll = require('../../../src/core/validators/validator');
 
 describe('Project Validator', () => {
@@ -32,4 +32,28 @@ describe('Project Validator', () => {
         result = validateAll(project, [nameValidator()]);
         assert(result === false);
     });
+
+    it('should validate a project\'s script to TRUE', () => {
+
+        let project = new Project();
+        project.shellTask.script = "Hello world";
+
+        let result = validateAll(project, [scriptValidator()]);
+        assert(result === true);
+    });
+
+    it('should validate a project\'s script to FALSE', () => {
+
+        let project = new Project();
+        project.shellTask.script = "";
+
+        let result = validateAll(project, [scriptValidator()]);
+        assert(result === false);
+
+        project.name = null;
+
+        result = validateAll(project, [scriptValidator()]);
+        assert(result === false);
+    });
+
 });
