@@ -30,6 +30,35 @@ const nameValidator = function() {
     };
 };
 
+/**
+ * implements Validator Protocol
+ * @returns {{validate: validate}}
+ */
+const scriptValidator = function() {
+
+    /**
+     * Validates object script property
+     * @param script
+     * @returns {boolean}
+     */
+    const scriptValidator = function(script) {
+        return name !== '' && name !== null;
+    };
+
+    /**
+     * PROTOCOL of Validator class
+     * @param object
+     */
+    const validate = function(object) {
+        return scriptValidator(object.script);
+    };
+
+    return {
+        validate
+    };
+};
+
 module.exports = {
-    nameValidator
+    nameValidator,
+    scriptValidator
 };

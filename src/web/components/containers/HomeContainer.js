@@ -92,7 +92,6 @@ export default class HomeContainer extends Component {
      * @param project
      */
     onBuildProject = (project) => {
-        console.log(project);
         fetch(`http://localhost:3002/api/project/${project.id}/build`, {
             method: "POST",
             headers : {
@@ -109,7 +108,14 @@ export default class HomeContainer extends Component {
                 'projects': this.state.projects
             })
         });
+    };
 
+    /**
+     *
+     * @param project
+     */
+    onCancelProject = (project) => {
+        //TODO: cancel project
     };
 
     render() {
@@ -127,6 +133,7 @@ export default class HomeContainer extends Component {
                     onDeleteProject={this.onDeleteProject}
                     onBuildProject={this.onBuildProject}
                     onEditProject={this.onEditProject}
+                    onCancelProject={this.onCancelProject}
                 />
                 {currentProjectOutput}
             </div>

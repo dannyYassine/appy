@@ -11,7 +11,7 @@ const runShellScript = require('./../useCases/RunShellScript');
 const Project = require('./../../../core/models/project');
 const consoleLogger = require('./../dataSource/consoleLogger');
 const projectLog = require('./../useCases/GetProjectLog');
-
+const workspaceManager = require('./../dataSource/workspace');
 /**
  * Response to - '/projects'
  * @param request
@@ -101,7 +101,8 @@ exports.performShellTask = (request, response) => {
     let project = response.locals.project;
     runShellScript({
         project: project,
-        dataSource: scriptManager
+        dataSource: scriptManager,
+        workspace: workspaceManager
     }).then(() => {
         response.status(200).json({data: "building"});
     })
@@ -122,7 +123,7 @@ exports.getAllConsoleLog = (request, response) => {
         logger: consoleLogger
     })
         .then((log) => {
-        response.status(200).type('text').send(log);
+            response.send(log, { 'Content-Type': 'text/plain' }, 200);
     })
         .catch((error) => {
             response.status(400).json({error: error});
@@ -140,7 +141,7 @@ exports.getProgressiveConsoleLog = (request, response) => {
         project: project,
         logger: consoleLogger
     }).then((log) => {
-        response.status(200).type('text').send(log);
+        response.send(log, { 'Content-Type': 'text/plain' }, 200);
     })
         .catch((error) => {
             response.status(400).json({error: error});

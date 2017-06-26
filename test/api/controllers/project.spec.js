@@ -19,7 +19,7 @@ const projectDataManager = require('./../../../src/api/v1/dataSource/ProjectData
 const dataPath  = path.join(__dirname, '../../..', 'data.json');
 const Project   = require('./../../../src/core/models/project');
 const config = require('./../../../config/config');
-const rmDir = require('./../../../src/core/helpers/macDeleteFolder');
+const { removeDirectory } = require('./../../../src/core/helpers/macDeleteFolder');
 
 const {
     performShellTask
@@ -47,7 +47,7 @@ describe('Server/Controllers/Project', () => {
     });
 
     after((done) => {
-        rmDir(`${config.workspacePath}/yo`, () => {
+        removeDirectory(`${config.workspacePath}/yo`, () => {
             done();
         });
     });

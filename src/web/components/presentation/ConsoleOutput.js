@@ -17,7 +17,7 @@ export default class ConsoleOutput extends Component {
     render() {
         return(
             <div className="console">
-                <p>{this.props.output}</p>
+                <pre id="logged-text">{this.props.output}</pre>
             </div>
         )
     }

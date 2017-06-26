@@ -1,6 +1,7 @@
 /**
  * Created by dannyyassine on 2017-06-11.
  */
+import swal from 'sweetalert2'
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -8,6 +9,7 @@ import PropTypes from 'prop-types'
 class AddProjectForm extends Component {
 
     constructor(props) {
+
         super(props);
         this.state = {
             name:''
@@ -16,8 +18,19 @@ class AddProjectForm extends Component {
 
     addProject = (event) => {
         if (event) event.preventDefault();
-        this.props.onSubmitForm(this.state.name);
-        this.setState({name: ''});
+        const name = this.state.name;
+        swal({
+            title: `Create a new job with name \"${name}\"`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then(() => {
+            this.props.onSubmitForm(name);
+            this.setState({name: ''});
+        });
+
     };
 
     onNameChange = (event) => {

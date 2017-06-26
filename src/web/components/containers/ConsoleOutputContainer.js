@@ -32,16 +32,17 @@ export default class AddProjectContainer extends Component {
     downloadProjectLog(project) {
         fetch(`http://localhost:3002/api/project/${project.id}/log`, {
             headers : {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Accept': '"text/plain"',
+                'Content-Type': '"text/plain"'
             }
         }).then((response) => {
-            return response.json();
-        }).then((json) => {
-            console.log(json);
-            this.setState({
-                log: json.data
-            });
+            return response.text();
+        }).then((text) => {
+            if (text !== '') {
+                this.setState({
+                    log: text
+                });
+            }
             this.getLogOutput(project);
         }).catch(() => {
             this.getLogOutput(project);
@@ -49,22 +50,33 @@ export default class AddProjectContainer extends Component {
     }
 
     getLogOutput(project) {
+        if (!project.isRunning) {
+            return;
+        }
+
         fetch(`http://localhost:3002/api/project/${project.id}/progressive-log`, {
             headers : {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Accept': '"text/plain"',
+                'Content-Type': '"text/plain"'
             }
         }).then((response) => {
-            return response.json();
-        }).then((json) => {
-            this.setState({
-                log: this.state.log + "\n" + json.data
-            });
-            setTimeout(this.getLogOutput, 2000);
-        }).catch(() => {
-            setTimeout(this.getLogOutput, 2000);
+            return response.text();
+        }).then((text) => {
+            if (text !== '') {
+                this.setState({
+                    log: text + "\n" + this.state.log
+                });
+            }
+            setTimeout(this.logOutput.bind(this), 2000);
+        }).catch((err) => {
+            console.log(err);
+            setTimeout(this.logOutput.bind(this), 2000);
         });
     };
+
+    logOutput() {
+        this.getLogOutput(this.props.project);
+    }
 
     cancelProcess() {
 
