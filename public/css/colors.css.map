@@ -1,0 +1,1 @@
+{"version":3,"file":"colors.css","sources":["colors.scss"],"sourcesContent":["\n\n$color-primary: #red;\n$background-color: darkgrey;\n"],"names":[],"mappings":"","sourceRoot":"/Users/dannyyassine/Documents/dev/node_shell/public/css"}

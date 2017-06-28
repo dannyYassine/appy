@@ -1,0 +1,1 @@
+{"version":3,"file":"reset.css","sources":["reset.scss"],"sourcesContent":["body, html {\n  margin: 0;\n  padding: 0;\n}"],"names":[],"mappings":"AAAA,AAAA,IAAI,EAAE,AAAA,IAAI,CAAC;EACT,MAAM,EAAE,CAAC;EACT,OAAO,EAAE,CAAC,GACX","sourceRoot":"/Users/dannyyassine/Documents/dev/node_shell/public/css"}

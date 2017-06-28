@@ -1,0 +1,14 @@
+.shell-script {
+    margin: 0 auto;
+    width: 90%
+}
+
+default {
+    background-color: darkcyan;
+    border-radius: 5px;
+}
+
+.CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
+}
