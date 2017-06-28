@@ -30,10 +30,10 @@ describe('Server/Controllers/Project', () => {
 
         settingsController.environmentSettings(mocker.request, mocker.response);
 
-        setTimeout(() => {
+        mocker.response.on('json', () => {
             assert(mocker.response.getJson().data === "1");
             done();
-        }, 1000);
+        });
 
     });
 

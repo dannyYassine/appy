@@ -5,7 +5,7 @@
 const getSettings = require('./../useCases/GetSettings');
 
 /**
- *
+ * Settings Controller factory function
  * @param dataSource
  */
 const settings = function (dataSource) {
