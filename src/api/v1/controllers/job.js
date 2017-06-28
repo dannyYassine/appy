@@ -2,37 +2,37 @@
  * Created by dannyyassine on 2017-06-25.
  */
 const exec = require('child_process').exec;
-const cancelJob = require('./../useCases/CancelJob');
+const cancelJobInteractor = require('./../useCases/CancelJob');
 
 /**
- * Cancel a job
- * @param request
- * @param response
+ *
+ * @returns {{cancel: (function(*, *))}}
  */
-exports.cancel = (request, response) => {
+const jobController = function ({dataSource}) {
 
-    const dataSource =  {
-        cancelJob(jobId) {
-            return new Promise((resolve, reject) => {
-                exec('ps -9 ' + jobId, (err, stdout, stderr) => {
-                    if (err) return reject(err);
-                    //TODO: - Update project
-                    resolve();
-                });
-            });
-        }
+    /**
+     * Cancel a job
+     * @param request
+     * @param response
+     */
+    const cancel = (request, response) => {
+
+        let project = request.body;
+
+        cancelJobInteractor({
+            project: project,
+            jobId: request.params.pid,
+            dataSource:dataSource
+        }).then(() => {
+            response.json({'data': 'job cancelled'});
+        }).catch((err) => {
+            response.status(400).json({'error': err});
+        });
     };
 
-    let project = request.body;
-
-    cancelJob({
-        project: project,
-        jobId: request.params.pid,
-        dataSource:dataSource
-    }).then(() => {
-        response.json({'data': 'job cancelled'});
-    }).catch((err) => {
-        response.status(400).json({'error': err});
-    });
-
+    return {
+        cancel
+    }
 };
+
+module.exports = jobController;

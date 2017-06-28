@@ -2,6 +2,27 @@
  * Created by dannyyassine on 2017-06-21.
  */
 
+const baseValidator = function () {
+
+    let error = null;
+    /**
+     * PROTOCOL of Validator class
+     * @param object
+     */
+    const validate = function(object) {
+        throw new Error("should override method");
+    };
+
+    /**
+     *
+     * @returns {error}
+     */
+    const getError = function () {
+        return error;
+    };
+
+};
+
 /**
  * implements Validator Protocol
  * @returns {{nameValidator: nameValidator, validate: validate}}

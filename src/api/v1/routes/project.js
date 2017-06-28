@@ -4,46 +4,43 @@
 
 const express = require('express');
 const { middlewareControllerProject } = require('./../middlewares/getProject');
-const {
-    updateProject,
-    addNewProject,
-    allProjects,
-    deleteProject,
-    getProject,
-    performShellTask,
-    getAllConsoleLog,
-    getProgressiveConsoleLog
-} = require('./../controllers/project');
+const projectFactory = require('./../controllers/project');
+const ProjectDataManager = require('./../dataSource/ProjectDataManager');
 
 module.exports = function(app) {
+
+    let projectController = projectFactory({
+        projectDataSource: ProjectDataManager
+    });
+
     let router = express.Router();
 
-    router.route('/projects/add')
-        .post(addNewProject);
-
     router.route('/projects')
-        .get(allProjects);
+        .get(projectController.allProjects);
+
+    router.route('/projects/add')
+        .post(projectController.addNewProject);
 
     router.route('/project/:project_id')
         .all(middlewareControllerProject)
-        .get(getProject)
-        .delete(deleteProject);
+        .get(projectController.getProject)
+        .delete(projectController.deleteProject);
 
     router.route('/project/:project_id/edit')
         .all(middlewareControllerProject)
-        .put(updateProject);
+        .put(projectController.updateProject);
 
     router.route('/project/:project_id/build')
         .all(middlewareControllerProject)
-        .post(performShellTask);
+        .post(projectController.performShellTask);
 
     router.route('/project/:project_id/log')
         .all(middlewareControllerProject)
-        .get(getAllConsoleLog);
+        .get(projectController.getAllConsoleLog);
 
     router.route('/project/:project_id/progressive-log')
         .all(middlewareControllerProject)
-        .get(getProgressiveConsoleLog);
+        .get(projectController.getProgressiveConsoleLog);
 
     app.use('/api', router);
 };

@@ -81,6 +81,27 @@ const ProjectDataManager = (function () {
 
     /**
      *
+     * @param projectId
+     * @returns {Promise}
+     */
+    const loadProject = function(projectId) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(dataPath, (error, data) => {
+                let dataObject = JSON.parse(data);
+                const project = dataObject.projects.filter((project) => {
+                    return project.id == projectId;
+                })[0];
+                if (project) {
+                    resolve(project);
+                } else {
+                    reject();
+                }
+            });
+        });
+    };
+
+    /**
+     *
      * @param project
      * @param callback
      */
@@ -128,9 +149,10 @@ const ProjectDataManager = (function () {
      * @returns {Promise}
      */
     const deleteProject = (projectId) => {
-        let allData;
-        let foundProject;
         return new Promise(function (resolve, reject) {
+            let allData;
+            let foundProject;
+
             loadData()
                 .then((data) => {
                 allData = data;
@@ -164,6 +186,7 @@ const ProjectDataManager = (function () {
         setup,
         loadAllProjects,
         loadProjectData,
+        loadProject,
         saveNewProject,
         updateProject,
         deleteProject

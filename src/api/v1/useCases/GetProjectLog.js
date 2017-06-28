@@ -2,6 +2,8 @@
  * Created by dannyyassine on 2017-06-24.
  */
 
+const projectDataManager = require('./../dataSource/ProjectDataManager');
+
 /**
  *
  * @param project
@@ -28,7 +30,7 @@ const getLog = function ({project, logger}) {
  * @returns {Promise}
  */
 const getProgressiveLog = function ({project, logger}) {
-    return new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
         let projectLog;
         logger.getProgressiveLog(project)
             .then((log) => {
@@ -37,6 +39,16 @@ const getProgressiveLog = function ({project, logger}) {
             }).then(() => {
             resolve(projectLog);
         }).catch(reject);
+    });
+
+    return new Promise((resolve, reject) => {
+        Promise.all([projectDataManager.loadProject(project.id), promise])
+            .then((results) => {
+                resolve(results);
+            })
+            .catch((err) => {
+                reject(err);
+            });
     });
 };
 

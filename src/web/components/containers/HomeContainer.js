@@ -105,7 +105,8 @@ export default class HomeContainer extends Component {
                 }
             });
             this.setState({
-                'projects': this.state.projects
+                projects: this.state.projects,
+                currentProject: project
             })
         });
     };

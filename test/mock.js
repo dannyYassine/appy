@@ -46,9 +46,13 @@ const mock = (function () {
         };
         const status = function (code) {
             statusCode = code;
+            return this;
         };
         const getJson = function () {
             return jsonResponse;
+        };
+        const getStatus = function () {
+            return statusCode;
         };
         const send = function () {
             this.emit('send')
@@ -60,6 +64,7 @@ const mock = (function () {
         response.status = status;
         response.getJson = getJson;
         response.send = send;
+        response.getStatus = getStatus;
 
         return response;
     };

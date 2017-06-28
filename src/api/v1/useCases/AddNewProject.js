@@ -8,27 +8,27 @@ const validateAll = require('./../../../core/validators/validator');
 
 /**
  * Business rules for adding a project
- * @param name
- * @param dataSource
- * @param callback
+ * @param request
+ * @param data
+ * @param response
  */
-module.exports = function addProject ({name, dataSource, callback}) {
+module.exports = function addProject ({request, data, response}) {
 
     let newProject = new Project();
-    newProject.name = name;
+    newProject.name = request.name;
 
     let validated = validateAll(newProject, [nameValidator()]);
 
     if (validated === false) {
-        callback(null, Error('wrong updated arguments'));
+        response.callback(null, Error('wrong updated arguments'));
         return;
     }
 
-    if (dataSource) {
-        dataSource.saveNewProject(newProject, (project, error) => {
-            callback(project, error);
+    if (data) {
+        data.saveNewProject(newProject, (project, error) => {
+            response.callback(project, error);
         });
     } else {
-        callback(newProject, null);
+        response.callback(newProject, null);
     }
 };

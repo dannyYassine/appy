@@ -9,7 +9,7 @@
 module.exports = runShellScript = function ({project, dataSource, workspace}) {
     return new Promise((resolve, reject) => {
         if (project.shellTask.script.length === 0 || project.isRunning) {
-            reject()
+            return reject()
         }
 
         workspace.clearWorkspace(project)

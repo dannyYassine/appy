@@ -19,10 +19,14 @@ describe('AddProject', () => {
     it('should add a new project', () => {
 
         addProject({
-            name: "new",
-            dataSource: dataSource,
-            callback: (project, error) => {
-                assert(error === null);
+            request: {
+                name: "new",
+            },
+            data: dataSource,
+            response: {
+                callback: (project, error) => {
+                    assert(error === null);
+                }
             }
         })
 
@@ -31,10 +35,14 @@ describe('AddProject', () => {
     it('should not add a project with no name', () => {
 
         addProject({
-            name: "",
-            dataSource: null,
-            callback: (project, error) => {
-                assert(error !== null);
+            request: {
+                name: "",
+            },
+            data: null,
+            response: {
+                callback: (project, error) => {
+                    assert(error !== null);
+                }
             }
         })
 
@@ -43,10 +51,13 @@ describe('AddProject', () => {
     it('should validate business rule to add a project only', () => {
 
         addProject({
-            name: "new",
-            callback: (project, error) => {
-                assert(project);
-                assert(error === null);
+            request: {
+                name: "new",
+            },
+            response: {
+                callback: (project, error) => {
+                    assert(error === null);
+                }
             }
         })
 

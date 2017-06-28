@@ -60,16 +60,15 @@ export default class AddProjectContainer extends Component {
                 'Content-Type': '"text/plain"'
             }
         }).then((response) => {
-            return response.text();
-        }).then((text) => {
-            if (text !== '') {
+            return response.json();
+        }).then((json) => {
+            if (json.log.length !== 2) {
                 this.setState({
-                    log: prevState.log + "\n" +text
+                    log: this.state.log + "\n" + JSON.parse(json.log)
                 });
             }
             setTimeout(this.logOutput.bind(this), 2000);
         }).catch((err) => {
-            console.log(err);
             setTimeout(this.logOutput.bind(this), 2000);
         });
     };

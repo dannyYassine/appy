@@ -19,7 +19,10 @@ const updateProject = function ({project, options, dataSource}) {
         project.name = name;
         project.shellTask.script = options.script;
 
-        let validated = validateAll(project, [nameValidator(), scriptValidator()]);
+        let validated = validateAll(project, [
+            nameValidator(),
+            scriptValidator()
+        ]);
 
         if (validated === false) {
             return reject(Error('wrong updated arguments'));

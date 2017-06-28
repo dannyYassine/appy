@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
 
 const options = {};
-options.dataPath = process.env.NODE_ENV === 'test' ? path.join(__dirname, '..', '/test/data.json') : __dirname+'/data.json';
+options.dataPath = process.env.NODE_ENV === 'test' ? path.join(__dirname, '..', '/test/data.json') : path.join(__dirname,'/data/data.json');
 
 routerManager.setup(app);
 projectDataManager.setup(options);
