@@ -3,15 +3,15 @@
  */
 
 const ProjectDataManager = require('./../dataSource/ProjectDataManager');
-const scriptManager = require('./../dataSource/performScript');
+const scriptManager = require('../services/performScript');
 const addProject = require('./../useCases/AddNewProject');
 const getProject = require('./../useCases/GetProject');
 const updateProject = require('./../useCases/UpdateProject');
 const runShellScript = require('./../useCases/RunShellScript');
 const Project = require('./../../../core/models/project');
-const consoleLogger = require('./../dataSource/consoleLogger');
+const consoleLogger = require('../services/consoleLogger');
 const projectLog = require('./../useCases/GetProjectLog');
-const workspaceManager = require('./../dataSource/workspace');
+const workspaceManager = require('../services/workspace');
 /**
  * Response to - '/projects'
  * @param request
@@ -34,7 +34,7 @@ exports.addNewProject = (request, response) => {
         dataSource: ProjectDataManager,
         callback: (project, error) => {
             if (error) response.status(400).json({error: error});
-            else response.json({data: "added"});
+            else response.json({data: project});
         }
     });
 };
@@ -75,7 +75,7 @@ exports.updateProject = (request, response) => {
     }).then((updatedProject) => {
         response.json({data: updatedProject});
     }).catch(() => {
-        response.json({'error': Error('could not update project')})
+        response.status(400).json({'error': Error('could not update project')})
     });
 };
 

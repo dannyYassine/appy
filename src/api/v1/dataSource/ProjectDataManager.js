@@ -93,7 +93,7 @@ const ProjectDataManager = (function () {
             allData.projects.push(project);
             return saveData(allData);
         }).then((data) => {
-            callback(data, null);
+            callback(project, null);
         }).catch((error) => {
             callback(null, error);
         });
@@ -128,9 +128,12 @@ const ProjectDataManager = (function () {
      * @returns {Promise}
      */
     const deleteProject = (projectId) => {
+        let allData;
+        let foundProject;
         return new Promise(function (resolve, reject) {
-            loadData().then((data) => {
-                let foundProject;
+            loadData()
+                .then((data) => {
+                allData = data;
                 for (let i = 0; i < data.projects.length; i++) {
                     let project = data.projects[i];
                     if (project.id == projectId) {
@@ -139,20 +142,20 @@ const ProjectDataManager = (function () {
                     }
                 }
                 if (foundProject) {
-                    projectFileSystem.deleteProjectDirectory(foundProject)
-                        .then(() => {
-                            data.projects = data.projects.filter((aProject) => {
-                                return aProject.id !== foundProject.id;
-                            });
-                            saveData(data).then((data) => {
-                                return resolve(data);
-                            }).catch((error) => {
-                                return reject(error);
-                            });
-                        })
-                        .catch(reject)
+                    return projectFileSystem.deleteProjectDirectory(foundProject)
+                } else {
+                    reject();
                 }
-            }).catch(reject);
+            }).then(() => {
+                allData.projects = allData.projects.filter((aProject) => {
+                    return aProject.id !== foundProject.id;
+                });
+                return saveData(allData)
+            }).then((data) => {
+                resolve(data);
+            }).catch((error) => {
+                reject(error);
+            });
         });
     };
 

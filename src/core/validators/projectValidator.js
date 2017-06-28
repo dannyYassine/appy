@@ -8,13 +8,14 @@
  */
 const nameValidator = function() {
 
+    let error = null;
     /**
      * Validates object name propertie
      * @param name
      * @returns {boolean}
      */
     const nameValidator = function(name) {
-        return name !== '' && name !== null;
+        return name !== '' && name !== null && name !== undefined;
     };
 
     /**
@@ -25,8 +26,17 @@ const nameValidator = function() {
         return nameValidator(object.name);
     };
 
+    /**
+     *
+     * @returns {error}
+     */
+    const getError = function () {
+        return error;
+    };
+
     return {
-        validate
+        validate,
+        getError
     };
 };
 
@@ -36,13 +46,14 @@ const nameValidator = function() {
  */
 const scriptValidator = function() {
 
+    let error = null;
     /**
      * Validates object script property
      * @param script
      * @returns {boolean}
      */
     const scriptValidator = function(script) {
-        return script !== '' && script !== null;
+        return script !== '' && script !== null && script !== undefined;
     };
 
     /**
@@ -53,8 +64,17 @@ const scriptValidator = function() {
         return scriptValidator(object.shellTask.script);
     };
 
+    /**
+     *
+     * @returns {error}
+     */
+    const getError = function () {
+        return error;
+    };
+
     return {
-        validate
+        validate,
+        getError
     };
 };
 

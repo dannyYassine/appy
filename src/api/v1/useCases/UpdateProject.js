@@ -2,7 +2,7 @@
  * Created by dannyyassine on 2017-06-12.
  */
 
-const nameValidator = require('./../../../core/validators/projectValidator').nameValidator;
+const { nameValidator, scriptValidator } = require('./../../../core/validators/projectValidator');
 const validateAll = require('./../../../core/validators/validator');
 
 /**
@@ -19,10 +19,10 @@ const updateProject = function ({project, options, dataSource}) {
         project.name = name;
         project.shellTask.script = options.script;
 
-        let validated = validateAll(project, [nameValidator()]);
+        let validated = validateAll(project, [nameValidator(), scriptValidator()]);
 
         if (validated === false) {
-            reject(Error('wrong updated arguments'));
+            return reject(Error('wrong updated arguments'));
         }
 
         dataSource.updateProject(project)

@@ -1,0 +1,29 @@
+config:
+  target: "https://localhost:3002/api"
+  phases:
+    -
+      duration: 10
+      arrivalRate: 5
+scenarios:
+  -
+    name: "Create/Retrieve/Update/Delete project"
+    flow:
+      -
+        post:
+          url: "/projects/add"
+          json:
+            project_name: "Test-Artillery"
+          capture:
+            json: "$.data.id"
+            as: "id"
+      -
+        get:
+          url: "/project/{{ id }}"
+      -
+        patch:
+          url: "/project/{{ id }}edit"
+          json:
+            script: "New-Script"
+      -
+        delete:
+          url: "/project/{{ id }}"

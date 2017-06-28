@@ -3,11 +3,21 @@
  */
 
 const express = require('express');
-const { allProjects } = require('./../controllers/project');
+const settingsFactory = require('./../controllers/settings');
 
 module.exports = function(app) {
+
+    const dataSource = {
+        retrieveSettings() {
+            return 1;
+        }
+    };
+
+    const settings = settingsFactory(dataSource);
+
     let router = express.Router();
-    router.route('/settings');
+    router.route('/settings')
+        .get(settings.environmentSettings);
 
     app.use('/api', router);
 };

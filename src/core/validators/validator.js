@@ -11,10 +11,12 @@
 const validateAll = function(object, arrayOfValidators) {
 
     let validated = true;
+    let error;
     for (const index in arrayOfValidators) {
         const validator = arrayOfValidators[index];
         validated = validator.validate(object);
         if (validated === false) {
+            // return validator.getError();
             return validated;
         }
     }

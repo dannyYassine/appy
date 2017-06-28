@@ -35,7 +35,7 @@ describe('Server/Controllers/Project', () => {
     gettableProject.name = "yo";
 
     before(() => {
-        
+
         data = {
             projects: [project, gettableProject]
         };
@@ -150,4 +150,34 @@ describe('Server/Controllers/Project', () => {
             });
     });
 
+    it('should fail if sent wrong json to POST for add project', (done) => {
+        chai.request(app)
+            .post('/api/projects/add')
+            .send({name: 'test_name_1'})
+            .end((err, res) => {
+                expect(res).to.have.status(400);
+                done();
+            });
+    });
+
+    it('should fail if tries to delete a project that does not exist', (done) => {
+        chai.request(app)
+            .delete(`/api/project/123456`)
+            .end((err, res) => {
+                expect(res).to.have.status(400);
+                done();
+            });
+    });
+
+    it('should fail when trying to update project', (done) => {
+        chai.request(app)
+            .put(`/api/project/${gettableProject.id}/edit`)
+            .send({mock_name: 'test_name_1'})
+            .end((err, res) => {
+                expect(res).to.have.status(400);
+                done();
+            });
+    });
+
 });
+

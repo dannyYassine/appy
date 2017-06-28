@@ -2,8 +2,8 @@
  * Created by dannyyassine on 2017-06-25.
  */
 
-const { removeContentsOfDirectory} = require('./../../../core/helpers/macDeleteFolder');
-const projectFileSystem = require('./../services/projectFileSystem');
+const { removeContentsOfDirectory} = require('../../../core/helpers/macDeleteFolder');
+const projectFileSystem = require('./projectFileSystem');
 
 /**
  * Object to reset project workspace directory

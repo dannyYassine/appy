@@ -2,8 +2,8 @@
  * Created by dannyyassine on 2017-06-23.
  */
 const fs = require('fs');
-const projectFileSystem = require('./../services/projectFileSystem');
-const projectDataManager = require('./../dataSource/ProjectDataManager');
+const projectFileSystem = require('./projectFileSystem');
+const projectDataManager = require('../dataSource/ProjectDataManager');
 const spawn = require('child_process').spawn;
 
 const scriptManager = (function () {

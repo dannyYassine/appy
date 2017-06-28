@@ -115,7 +115,18 @@ export default class HomeContainer extends Component {
      * @param project
      */
     onCancelProject = (project) => {
-        //TODO: cancel project
+        fetch(`http://localhost:3002/api/job/${project.pid}/cancel`, {
+            method: "POST",
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(project)
+        }).then((response) => {
+            return response.json()
+        }).then((json) => {
+
+        });
     };
 
     render() {

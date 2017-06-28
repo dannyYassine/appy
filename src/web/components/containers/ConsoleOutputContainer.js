@@ -64,7 +64,7 @@ export default class AddProjectContainer extends Component {
         }).then((text) => {
             if (text !== '') {
                 this.setState({
-                    log: text + "\n" + this.state.log
+                    log: prevState.log + "\n" +text
                 });
             }
             setTimeout(this.logOutput.bind(this), 2000);

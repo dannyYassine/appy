@@ -63,9 +63,13 @@ describe('ProjectDataManager', () => {
         project.name = "Hello";
 
         setData().then((data) => {
-            ProjectDataManager.saveNewProject(project, (newData) => {
-                assert(newData);
-                assert(newData.projects.length >= data.projects.length);
+            ProjectDataManager.saveNewProject(project, (savedProject, err) => {
+                assert(err === null);
+                assert(savedProject);
+                ProjectDataManager.loadAllProjects((newData) => {
+                    assert(newData);
+                    assert(newData.projects.length >= data.projects.length);
+                });
                 done();
             });
         }).catch((error) => {
@@ -92,12 +96,14 @@ describe('ProjectDataManager', () => {
         newProject.name = "Hello1";
 
         setData().then((data) => {
-            ProjectDataManager.saveNewProject(newProject, (newData, err) => {
+            ProjectDataManager.saveNewProject(newProject, (savedProject, err) => {
                 assert(err === null);
-                assert(newData);
+                assert(savedProject);
                 ProjectDataManager.deleteProject(newProject.id).then((finalData) => {
                     assert(finalData);
-                    assert(finalData.projects.length <= newData.projects.length);
+                    ProjectDataManager.loadAllProjects((allData) => {
+                        assert(finalData.projects.length <= allData.projects.length);
+                    });
                     done();
                 }).catch((error) => {
                     assert(error === null);
