@@ -21,10 +21,6 @@ const Project   = require('./../../../src/core/models/project');
 const config = require('./../../../config/config');
 const { removeDirectory } = require('./../../../src/core/helpers/macDeleteFolder');
 
-const {
-    performShellTask
-} = require('./../../../src/api/v1/controllers/project');
-
 describe('Server/Controllers/Project', () => {
 
     // Set up mock data persistance

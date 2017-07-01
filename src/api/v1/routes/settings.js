@@ -9,7 +9,7 @@ module.exports = function(app) {
 
     const dataSource = {
         retrieveSettings() {
-            return 1;
+            return {};
         }
     };
 

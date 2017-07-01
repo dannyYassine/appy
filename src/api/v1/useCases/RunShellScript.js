@@ -17,6 +17,6 @@ module.exports = runShellScript = function ({project, dataSource, workspace}) {
             return dataSource.performScript(project);
         }).then(() => {
             resolve();
-        });
+        }).catch(reject);
     });
 };

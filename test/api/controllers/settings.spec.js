@@ -31,7 +31,7 @@ describe('Server/Controllers/Settings', () => {
         settingsController.environmentSettings(mocker.request, mocker.response);
 
         mocker.response.on('json', () => {
-            assert(mocker.response.getJson().data === "1");
+            assert(mocker.response.getJson().data !== null);
             done();
         });
 

@@ -11,7 +11,7 @@ const getSettings = require('./../useCases/GetSettings');
 const settings = function (dataSource) {
 
     /**
-     *
+     * Retrieve configuration settings for CI
      * @param request
      * @param response
      */
@@ -19,8 +19,8 @@ const settings = function (dataSource) {
         getSettings({
             dataSource: dataSource
         })
-            .then(() => {
-                response.json({data: "1"});
+            .then((settingsConfig) => {
+                response.json({data: settingsConfig});
             })
             .catch(() => {
                 response.status(400).json({error: Error()});
