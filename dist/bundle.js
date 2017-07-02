@@ -27723,13 +27723,25 @@ var HomeList = function (_Component) {
             });
         }
     }, {
+        key: 'projectStatus',
+        value: function projectStatus(project) {
+            console.log(project);
+            if (project.lastSuccesful === null) {
+                return _react2.default.createElement('div', null);
+            }
+            if (project.lastSuccesful) {
+                return _react2.default.createElement('div', { className: 'build-success float-right' });
+            }
+            return _react2.default.createElement('div', { className: 'build-fail float-right' });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this4 = this;
 
             var projects = this.props.projects.map(function (project, index) {
 
-                var spinner = project.isRunning ? _react2.default.createElement('div', { className: 'loader float-right' }) : _react2.default.createElement('div', null);
+                var spinner = project.isRunning ? _react2.default.createElement('div', { className: 'loader float-right' }) : _this4.projectStatus(project);
 
                 return _react2.default.createElement(
                     'tr',
@@ -28211,7 +28223,7 @@ var ConsoleOutput = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'console' },
+                null,
                 _react2.default.createElement(
                     'pre',
                     { id: 'logged-text' },

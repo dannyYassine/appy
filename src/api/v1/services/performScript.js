@@ -70,8 +70,9 @@ const scriptManager = (function () {
                 appendDataToFileLogs(runLog, progressiveLog, data);
             });
 
-            child.on('exit', function (data) {
-                appendDataToFileLogs(runLog, progressiveLog, data);
+            child.on('exit', function (code, signal) {
+                console.log(code, signal);
+                project.lastSucessful = code === 0;
                 project.stopped();
                 projectDataManager.updateProject(project)
             });

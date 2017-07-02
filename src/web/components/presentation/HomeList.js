@@ -45,10 +45,21 @@ export default class HomeList extends Component {
         });
     }
 
+    projectStatus(project) {
+        console.log(project);
+        if (project.lastSuccesful === null) {
+            return (<div/>);
+        }
+        if (project.lastSuccesful) {
+            return ( <div className="build-success float-right"/>)
+        }
+        return ( <div className="build-fail float-right"/>)
+    }
+
     render() {
         let projects = this.props.projects.map((project, index) => {
 
-            const spinner = project.isRunning ? (<div className="loader float-right"/>) : (<div/>);
+            const spinner = project.isRunning ? (<div className="loader float-right"/>) : (this.projectStatus(project));
 
             return(
                 <tr key={index}>

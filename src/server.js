@@ -1,6 +1,10 @@
 
 const cluster = require('cluster');
+const config = require('./../config/config');
 
+/**
+ * Fork a new worker process
+ */
 function startNewWorker() {
     var newWorker = cluster.fork();
     console.log('CLUSTER: Worker %d started', newWorker.id);
@@ -9,10 +13,13 @@ function startNewWorker() {
 
 }
 
+/**
+ * Run application with config
+ */
 function startServer() {
     // listen (start app with node server.js) ======================================
     const app = require('./app.js');
-    app.set('port', process.env.PORT || 3002);
+    app.set('port', config.port || 3002);
     var server = app.listen(app.get('port'), '0.0.0.0', function () {
         console.log("*\n*");
         console.log("/****************************************/");

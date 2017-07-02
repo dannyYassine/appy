@@ -1,0 +1,22 @@
+
+@import "colors";
+
+.build-fail {
+  border: 4px solid red; /* Light grey */
+  border-top: 4px solid red; /* Blue */
+  border-bottom: 4px solid red; /* Blue */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+}
+
+.build-success {
+  border: 4px solid green; /* Light grey */
+  border-top: 4px solid green; /* Blue */
+  border-bottom: 4px solid green; /* Blue */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: green;
+}

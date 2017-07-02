@@ -1,18 +1,19 @@
 /**
  * Created by dannyyassine on 2017-04-23.
  */
-// set up ========================
-let express     = require('express');
-let app         = express();                               // create our app w/ express
-let bodyParser = require('body-parser');
-let fs = require('fs');
-let nunjucks = require('nunjucks');
-let path = require('path');
+const express       = require('express');
+let app             = express();
+let bodyParser      = require('body-parser');
+let fs              = require('fs');
+let nunjucks        = require('nunjucks');
+let path            = require('path');
 const routerManager = require('./api/v1/routes');
 const projectDataManager = require('./api/v1/dataSource/ProjectDataManager');
+const config        = require('./../config/config');
 
-// configuration =================
-
+/**
+ * App Configuration
+ */
 app.use(express.static(path.join(__dirname, '..', '/public')));
 app.use(express.static(path.join(__dirname, '..', '/dist')));
 app.use(express.static(path.join(__dirname, '..', '/views')));
@@ -32,17 +33,23 @@ app.all('/*', function(req, res, next) {
     }
 });
 
-const options = {};
-options.dataPath = process.env.NODE_ENV === 'test' ? path.join(__dirname, '..', '/test/data.json') : path.join(__dirname,'/data/data.json');
-
+/**
+ * Setup application routes / persistance
+ */
 routerManager.setup(app);
-projectDataManager.setup(options);
+projectDataManager.setup(config);
 
+/**
+ * Nunjucks for serving html pages
+ */
 nunjucks.configure(path.join(__dirname, 'web', '/views'), {
     autoescape: true,
     express: app
 });
 
+/**
+ * Front-end application
+ */
 app.get('*', (request, response) => {
     response.render('index.html');
     // response.sendFile('index.html', { root: path.join(__dirname, 'web', '/views') });
