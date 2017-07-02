@@ -27726,10 +27726,10 @@ var HomeList = function (_Component) {
         key: 'projectStatus',
         value: function projectStatus(project) {
             console.log(project);
-            if (project.lastSuccesful === null) {
+            if (project.lastSuccessful === null) {
                 return _react2.default.createElement('div', null);
             }
-            if (project.lastSuccesful) {
+            if (project.lastSuccessful) {
                 return _react2.default.createElement('div', { className: 'build-success float-right' });
             }
             return _react2.default.createElement('div', { className: 'build-fail float-right' });

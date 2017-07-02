@@ -72,7 +72,7 @@ const scriptManager = (function () {
 
             child.on('exit', function (code, signal) {
                 console.log(code, signal);
-                project.lastSucessful = code === 0;
+                project.lastSuccessful = code == 0;
                 project.stopped();
                 projectDataManager.updateProject(project)
             });

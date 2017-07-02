@@ -47,10 +47,10 @@ export default class HomeList extends Component {
 
     projectStatus(project) {
         console.log(project);
-        if (project.lastSuccesful === null) {
+        if (project.lastSuccessful === null) {
             return (<div/>);
         }
-        if (project.lastSuccesful) {
+        if (project.lastSuccessful) {
             return ( <div className="build-success float-right"/>)
         }
         return ( <div className="build-fail float-right"/>)

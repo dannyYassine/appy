@@ -10,7 +10,7 @@ const Project = function() {
     BaseModel.call(this);
 
     this.name = '';
-    this.lastSuccesful = null;
+    this.lastSuccessful = false;
     this.pid = -1;
     this.repo = new Repository();
     this.isRunning = false;
