@@ -2,101 +2,82 @@
  * Created by dannyyassine on 2017-06-21.
  */
 
-const baseValidator = function () {
-
-    let error = null;
-    /**
-     * PROTOCOL of Validator class
-     * @param object
-     */
-    const validate = function(object) {
-        throw new Error("should override method");
-    };
-
-    /**
-     *
-     * @returns {error}
-     */
-    const getError = function () {
-        return error;
-    };
-
-};
+const BaseValidator = require('./baseValidator');
 
 /**
- * implements Validator Protocol
+ * inherits BaseValidator class
  * @returns {{nameValidator: nameValidator, validate: validate}}
  */
 const nameValidator = function() {
 
+    let nameValidator = {};
     let error = null;
+
+    /**
+     * inherit from baseValidator
+     */
+    nameValidator.__proto__ = BaseValidator();
+
     /**
      * Validates object name propertie
      * @param name
      * @returns {boolean}
      */
-    const nameValidator = function(name) {
-        return name !== '' && name !== null && name !== undefined;
+    const nameVal = function(name) {
+        if (name !== '' && name !== null && name !== undefined) {
+            return true;
+        }
+        error = Error("name is invalid");
+        return false;
     };
 
     /**
      * PROTOCOL of Validator class
      * @param object
      */
-    const validate = function(object) {
-        return nameValidator(object.name);
+    nameValidator.validate = (object) => {
+        return nameVal(object.name);
     };
 
-    /**
-     *
-     * @returns {error}
-     */
-    const getError = function () {
-        return error;
-    };
-
-    return {
-        validate,
-        getError
-    };
+    return nameValidator;
 };
 
 /**
- * implements Validator Protocol
+ * inherits BaseValidator class
  * @returns {{validate: validate}}
  */
 const scriptValidator = function() {
 
+    let scriptValidator = {};
     let error = null;
+
+    /**
+     * inherit from baseValidator
+     */
+    scriptValidator.__proto__ = BaseValidator();
+
     /**
      * Validates object script property
      * @param script
      * @returns {boolean}
      */
-    const scriptValidator = function(script) {
-        return script !== '' && script !== null && script !== undefined;
+    const script = function(script) {
+        if (script !== '' && script !== null && script !== undefined) {
+            return true;
+        }
+        error = Error("script is invalid");
+        return false;
     };
 
     /**
      * PROTOCOL of Validator class
      * @param object
      */
-    const validate = function(object) {
-        return scriptValidator(object.shellTask.script);
+    scriptValidator.validate = function(object) {
+        return script(object.shellTask.script);
     };
 
-    /**
-     *
-     * @returns {error}
-     */
-    const getError = function () {
-        return error;
-    };
-
-    return {
-        validate,
-        getError
-    };
+    return scriptValidator;
 };
 
 module.exports = {
