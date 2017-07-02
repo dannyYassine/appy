@@ -12,7 +12,7 @@ export default class AddProjectContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            output: 'qwe',
+            log: '',
             project: props.project
         }
     }
@@ -22,6 +22,9 @@ export default class AddProjectContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        this.setState({
+            log: ''
+        });
         this.downloadProjectLog(nextProps.project);
     }
 
@@ -66,6 +69,11 @@ export default class AddProjectContainer extends Component {
                 this.setState({
                     log: this.state.log + "\n" + JSON.parse(json.log)
                 });
+            }
+            if (json.data.isRunning === false) {
+                this.props.onScriptFinished(json.data);
+                clearTimeout(this.logOutput);
+                return;
             }
             setTimeout(this.logOutput.bind(this), 2000);
         }).catch((err) => {

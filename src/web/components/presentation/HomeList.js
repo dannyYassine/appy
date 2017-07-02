@@ -46,7 +46,6 @@ export default class HomeList extends Component {
     }
 
     projectStatus(project) {
-        console.log(project);
         if (project.lastSuccessful === null) {
             return (<div/>);
         }

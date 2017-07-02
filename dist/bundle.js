@@ -27562,6 +27562,19 @@ var HomeContainer = function (_Component) {
             }).then(function (json) {});
         };
 
+        _this.onScriptFinished = function (project) {
+            var projects = _this.state.projects.slice();
+            var newProjects = projects.map(function (item) {
+                if (item.id === project.id) {
+                    item.isRunning = false;
+                }
+                return item;
+            });
+            _this.setState({
+                projects: newProjects
+            });
+        };
+
         _this.state = {
             projects: [],
             currentProject: null
@@ -27611,7 +27624,7 @@ var HomeContainer = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var currentProjectOutput = this.state.currentProject ? _react2.default.createElement(_ConsoleOutputContainer2.default, { project: this.state.currentProject }) : _react2.default.createElement('div', null);
+            var currentProjectOutput = this.state.currentProject ? _react2.default.createElement(_ConsoleOutputContainer2.default, { project: this.state.currentProject, onScriptFinished: this.onScriptFinished }) : _react2.default.createElement('div', null);
 
             return _react2.default.createElement(
                 'div',
@@ -27725,7 +27738,6 @@ var HomeList = function (_Component) {
     }, {
         key: 'projectStatus',
         value: function projectStatus(project) {
-            console.log(project);
             if (project.lastSuccessful === null) {
                 return _react2.default.createElement('div', null);
             }
@@ -27946,7 +27958,7 @@ var AddProjectContainer = function (_Component) {
         var _this = _possibleConstructorReturn(this, (AddProjectContainer.__proto__ || Object.getPrototypeOf(AddProjectContainer)).call(this, props));
 
         _this.state = {
-            output: 'qwe',
+            log: '',
             project: props.project
         };
         return _this;
@@ -27960,6 +27972,9 @@ var AddProjectContainer = function (_Component) {
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
+            this.setState({
+                log: ''
+            });
             this.downloadProjectLog(nextProps.project);
         }
     }, {
@@ -28011,6 +28026,11 @@ var AddProjectContainer = function (_Component) {
                     _this3.setState({
                         log: _this3.state.log + "\n" + JSON.parse(json.log)
                     });
+                }
+                if (json.data.isRunning === false) {
+                    _this3.props.onScriptFinished(json.data);
+                    clearTimeout(_this3.logOutput);
+                    return;
                 }
                 setTimeout(_this3.logOutput.bind(_this3), 2000);
             }).catch(function (err) {

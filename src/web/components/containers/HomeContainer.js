@@ -130,9 +130,22 @@ export default class HomeContainer extends Component {
         });
     };
 
+    onScriptFinished = (project) => {
+        let projects = this.state.projects.slice();
+        let newProjects = projects.map((item) => {
+            if (item.id === project.id) {
+                item.isRunning = false;
+            }
+            return item;
+        });
+        this.setState({
+            projects: newProjects
+        });
+    };
+
     render() {
         const currentProjectOutput = this.state.currentProject ?
-            (<ConsoleOutputContainer project={this.state.currentProject}/>)
+            (<ConsoleOutputContainer project={this.state.currentProject} onScriptFinished={this.onScriptFinished}/>)
             :
             (<div/>);
 
