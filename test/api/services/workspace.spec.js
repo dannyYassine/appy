@@ -7,12 +7,12 @@ const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 const workspace = require('../../../src/api/v1/services/workspace');
-const ProjectDataManager = require('./../../../src/api/v1/dataSource/ProjectDataManager');
-const Project = require('./../../../src/core/models/project');
+const ProjectDataManager = require('../../../src/api/v1/dataSource/ProjectDataManager');
+const Project = require('../../../src/core/models/project');
 const path = require('path');
 const fs = require('fs');
-const uuid = require('./../../../src/core/helpers/uuid');
-const config = require('./../../../config/config');
+const uuid = require('../../../src/core/helpers/uuid');
+const config = require('../../../config/config');
 
 describe('workspace', () => {
     const project = new Project();

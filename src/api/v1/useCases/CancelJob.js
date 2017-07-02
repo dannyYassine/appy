@@ -4,9 +4,9 @@
 
 module.exports = function({jobId = -1, getJob, cancelJob}) {
     return new Promise((resolve, reject) => {
-        if (jobId === -1) return reject(Error('jobId require'));
+        if (jobId === -1 || jobId == null) return reject(Error('jobId require'));
 
-        getJob().then((job) => {
+        getJob(jobId).then((job) => {
             if (!job.isRunning) { reject(Error("job is not running")) }
             return cancelJob(jobId)
         }).then((() => {

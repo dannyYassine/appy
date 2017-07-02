@@ -38,13 +38,14 @@ options.dataPath = process.env.NODE_ENV === 'test' ? path.join(__dirname, '..', 
 routerManager.setup(app);
 projectDataManager.setup(options);
 
-nunjucks.configure('views', {
+nunjucks.configure(path.join(__dirname, 'web', '/views'), {
     autoescape: true,
     express: app
 });
 
 app.get('*', (request, response) => {
-    response.sendFile('index.html', { root: path.join(__dirname, '..', 'views') });
+    response.render('index.html');
+    // response.sendFile('index.html', { root: path.join(__dirname, 'web', '/views') });
 });
 
 module.exports = app;

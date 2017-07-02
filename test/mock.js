@@ -20,11 +20,13 @@ const mock = (function () {
     let Request = function() {
         let locals = {};
         let body = {};
+        let params = {};
 
         let request = {};
         request.__proto__ = new events.EventEmitter();
         request.locals = locals;
         request.body = body;
+        request.params = params;
 
         return request;
     };
@@ -39,10 +41,15 @@ const mock = (function () {
 
         let statusCode = -1;
         let jsonResponse = null;
+        let fileObject = null;
 
         const json = function (jsonObject) {
             jsonResponse = jsonObject;
             this.emit('json');
+        };
+        const send = function (file) {
+            fileObject = file;
+            this.emit('send');
         };
         const status = function (code) {
             statusCode = code;
@@ -54,17 +61,18 @@ const mock = (function () {
         const getStatus = function () {
             return statusCode;
         };
-        const send = function () {
-            this.emit('send')
+        const getFileObject = function () {
+            return fileObject;
         };
 
         let response = {};
         response.__proto__ = new events.EventEmitter();
         response.json = json;
         response.status = status;
+        response.getStatus = getStatus;
         response.getJson = getJson;
         response.send = send;
-        response.getStatus = getStatus;
+        response.getFileObject = getFileObject;
 
         return response;
     };

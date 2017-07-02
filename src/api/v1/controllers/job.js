@@ -8,7 +8,7 @@ const cancelJobInteractor = require('./../useCases/CancelJob');
  *
  * @returns {{cancel: (function(*, *))}}
  */
-const jobController = function ({dataSource}) {
+const jobController = function ({getJob, cancelJob}) {
 
     /**
      * Cancel a job
@@ -17,14 +17,12 @@ const jobController = function ({dataSource}) {
      */
     const cancel = (request, response) => {
 
-        let project = request.body;
-
         cancelJobInteractor({
-            project: project,
             jobId: request.params.pid,
-            dataSource:dataSource
+            getJob: getJob,
+            cancelJob: cancelJob
         }).then(() => {
-            response.json({'data': 'job cancelled'});
+            response.status(200).json({'data': 'job cancelled'});
         }).catch((err) => {
             response.status(400).json({'error': err});
         });
