@@ -10,7 +10,7 @@ const cancelJobInteractor = require('./../useCases/CancelJob');
  */
 const jobController = function (options) {
 
-    const { interactor } = options;
+    const { interactor: cancelJobInteractor  } = options;
 
     /**
      * Cancel a job
@@ -19,7 +19,7 @@ const jobController = function (options) {
      */
     const cancel = (request, response) => {
 
-        interactor.cancelJob({
+        cancelJobInteractor.cancelJob({
             jobId: request.params.pid
         }).then(() => {
             response.status(200).json({'data': 'job cancelled'});

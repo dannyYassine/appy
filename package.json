@@ -6,6 +6,7 @@
     "test": "NODE_ENV=test nyc mocha test/**/*",
     "report": "nyc mocha test/**/*",
     "start": "node server.js",
+    "deploy_dev": "pm2 start deploy/dev.json",
     "serve": "nodemon -L --watch views --watch src/server.js --watch public --watch data.json src/server.js",
     "pack": "webpack --progress --config webpack.config.js",
     "watch": "webpack --watch --config webpack.config.js",
