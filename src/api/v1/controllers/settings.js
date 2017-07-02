@@ -16,6 +16,7 @@ const settings = function (dataSource) {
      * @param response
      */
     const environmentSettings = (request, response) => {
+
         getSettings({
             dataSource: dataSource
         })

@@ -7,6 +7,7 @@ const expect    = chai.expect;
 const assert    = chai.assert;
 const jobControllerFactory = require('./../../../src/api/v1/controllers/job');
 const mock = require('./../../mock');
+const cancelJobInteractor = require('./../../../src/api/v1/useCases/CancelJob');
 
 describe('Job Controller', () => {
 
@@ -31,16 +32,21 @@ describe('Job Controller', () => {
 
         let service = jobService(true);
 
+        let interactor = cancelJobInteractor({
+            getJob: service.getJob,
+            cancel: service.cancelJob
+        });
+
+        let jobController = jobControllerFactory({
+            interactor: interactor
+        });
+
         let mocker = {};
         mocker.request = mock.Request();
         mocker.response = mock.Response();
 
         mocker.request.params.pid = 100;
 
-        let jobController = jobControllerFactory({
-            getJob: service.getJob,
-            cancelJob: service.cancelJob
-        });
 
         jobController.cancel(mocker.request, mocker.response);
 
@@ -56,16 +62,20 @@ describe('Job Controller', () => {
 
         let service = jobService(true);
 
+        let interactor = cancelJobInteractor({
+            getJob: service.getJob,
+            cancel: service.cancelJob
+        });
+
+        let jobController = jobControllerFactory({
+            interactor: interactor
+        });
+
         let mocker = {};
         mocker.request = mock.Request();
         mocker.response = mock.Response();
 
         mocker.request.params.pid = null;
-
-        let jobController = jobControllerFactory({
-            getJob: service.getJob,
-            cancelJob: service.cancelJob
-        });
 
         jobController.cancel(mocker.request, mocker.response);
 

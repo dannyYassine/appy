@@ -4,7 +4,7 @@
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
-const cancelJob = require('../../../src/api/v1/useCases/CancelJob');
+const cancelJobInteractor = require('../../../src/api/v1/useCases/CancelJob');
 const Project = require('./../../../src/core/models/project');
 
 describe('Cancel Job Interactor',() => {
@@ -28,25 +28,33 @@ describe('Cancel Job Interactor',() => {
 
         let service = jobService(true);
 
-        cancelJob({
-            jobId: project.pid,
+        let interactor = cancelJobInteractor({
             getJob: service.getJob,
-            cancelJob: service.cancelJob
+            cancel: service.cancelJob
+        });
+
+        interactor.cancelJob({
+            jobId: project.pid
         }).then(() => {
             done();
         }).catch(() => {
             assert.fail();
             done();
         });
+
     });
     it('should not be able to cancel a non-running job', (done) => {
         let project = new Project();
         project.pid = 12;
         let service = jobService(false);
-        cancelJob({
-            jobId: project.pid,
+
+        let interactor = cancelJobInteractor({
             getJob: service.getJob,
-            cancelJob: service.cancelJob
+            cancel: service.cancelJob
+        });
+
+        interactor.cancelJob({
+            jobId: project.pid
         }).then(() => {
             assert.fail();
             done();
@@ -59,10 +67,14 @@ describe('Cancel Job Interactor',() => {
     it('should fail with wrong jobId', (done) => {
         let project = new Project();
         let service = jobService(false);
-        cancelJob({
-            jobId: project.pid,
+
+        let interactor = cancelJobInteractor({
             getJob: service.getJob,
-            cancelJob: service.cancelJob
+            cancel: service.cancelJob
+        });
+
+        interactor.cancelJob({
+            jobId: project.pid
         }).then(() => {
             assert.fail();
             done();
@@ -89,10 +101,14 @@ describe('Cancel Job Interactor',() => {
         };
 
         let service = jobService(false);
-        cancelJob({
-            jobId: project.pid,
+
+        let interactor = cancelJobInteractor({
             getJob: service.getJob,
-            cancelJob: service.cancelJob
+            cancel: service.cancelJob
+        });
+
+        interactor.cancelJob({
+            jobId: project.pid
         }).then(() => {
             assert.fail();
             done();

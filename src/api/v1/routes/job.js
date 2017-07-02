@@ -4,8 +4,12 @@
 
 const express = require('express');
 const jobFactory = require('./../controllers/job');
+const cancelJob = require('./../useCases/CancelJob');
 
-const dataSource =  {
+const repository =  {
+    getJob() {
+
+    },
     cancelJob(jobId) {
         return new Promise((resolve, reject) => {
             exec('ps -9 ' + jobId, (err, stdout, stderr) => {
@@ -17,8 +21,13 @@ const dataSource =  {
     }
 };
 
+let interactor = cancelJob({
+    getJob: repository.getJob,
+    cancel: repository.cancelJob
+});
+
 let jobController = jobFactory({
-    dataSource: dataSource
+    interactor: interactor
 });
 
 module.exports = function(app) {
