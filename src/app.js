@@ -10,6 +10,9 @@ let path            = require('path');
 const routerManager = require('./api/v1/routes');
 const projectDataManager = require('./api/v1/dataSource/ProjectDataManager');
 const config        = require('./../config/config');
+const jobScheduler = require('./api/v1/services/jobSheduler');
+const projectDataSource = require('./api/v1/dataSource/ProjectDataManager');
+const Project = require('./core/models/project');
 
 /**
  * App Configuration
@@ -38,6 +41,13 @@ app.all('/*', function(req, res, next) {
  */
 routerManager.setup(app);
 projectDataManager.setup(config);
+
+projectDataSource.loadAllProjects((data) => {
+    const trueProjects = data.projects.map((project) => {
+        return Object.assign(new Project, project);
+    });
+    jobScheduler.initJobs(trueProjects);
+});
 
 /**
  * Nunjucks for serving html pages

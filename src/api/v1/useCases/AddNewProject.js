@@ -12,7 +12,7 @@ const validateAll = require('./../../../core/validators/validator');
  * @param data
  * @param response
  */
-module.exports = function addProject ({request, data, response}) {
+module.exports = function addProject ({request, data, service, response}) {
 
     let newProject = new Project();
     newProject.name = request.name;
@@ -26,6 +26,7 @@ module.exports = function addProject ({request, data, response}) {
 
     if (data) {
         data.saveNewProject(newProject, (project, error) => {
+                service.addSchedule(project);
             response.callback(project, error);
         });
     } else {

@@ -14,6 +14,7 @@ const Project = require('./../../../core/models/project');
 const addProjectInteractor = require('./../useCases/AddNewProject');
 const getProjectInteractor = require('./../useCases/GetProject');
 const updateProjectInteractor = require('./../useCases/UpdateProject');
+const jobScheduler = require('./../services/jobSheduler');
 
 const projectController = function ({projectDataSource}) {
 
@@ -37,6 +38,9 @@ const projectController = function ({projectDataSource}) {
         addProjectInteractor({
             request: {
                 name: request.body.project_name,
+            },
+            service: {
+                addSchedule: jobScheduler.addSchedule
             },
             data: projectDataSource,
             response: {
