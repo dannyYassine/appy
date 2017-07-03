@@ -28582,6 +28582,24 @@ var ProjectDetailsContainer = function (_Component) {
             });
         };
 
+        _this.onApplyProject = function (project) {
+            var body = {
+                name: project.name,
+                shellTask: JSON.stringify(project.shellTask)
+            };
+            var projectWebService = new _ProjectWebService2.default();
+            projectWebService.PUT().updateProject(project, body);
+            projectWebService.execute(function (success) {
+                swal({
+                    title: 'Changes applied',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                }).then(function () {});
+            }, function (error) {
+                alert(error.code);
+            });
+        };
+
         _this.state = {
             project: null
         };
@@ -28598,7 +28616,8 @@ var ProjectDetailsContainer = function (_Component) {
         value: function render() {
             var playerDetail = this.state.project ? _react2.default.createElement(_ProjectDetails2.default, {
                 project: this.state.project,
-                onUpdateProject: this.onUpdateProject.bind(this)
+                onUpdateProject: this.onUpdateProject.bind(this),
+                onApplyProject: this.onApplyProject.bind(this)
             }) : _react2.default.createElement(
                 'div',
                 null,
@@ -28662,11 +28681,7 @@ var ProjectDetails = function (_Component) {
 
         _this.submitScript = function (event) {
             event.preventDefault();
-            var project = Object.assign({}, _this.state.project);
-            project.shellTask.script = _this.editor.getValue();
-            project.shellTask.enabled = _this.state.repoEnabled;
-
-            _this.props.onUpdateProject(project);
+            _this.props.onUpdateProject(_this._applyChangesToProject());
         };
 
         _this.onNameChange = function (event) {
@@ -28678,7 +28693,10 @@ var ProjectDetails = function (_Component) {
             });
         };
 
-        _this.runScript = function (event) {};
+        _this.applyChanges = function (event) {
+            event.preventDefault();
+            _this.props.onApplyProject(_this._applyChangesToProject());
+        };
 
         _this.cancelEvent = function (event) {
             event.preventDefault();
@@ -28706,6 +28724,13 @@ var ProjectDetails = function (_Component) {
             _this.setState({
                 project: project
             });
+        };
+
+        _this._applyChangesToProject = function () {
+            var project = Object.assign({}, _this.state.project);
+            project.shellTask.script = _this.editor.getValue();
+            project.shellTask.enabled = _this.state.repoEnabled;
+            return project;
         };
 
         _this._repoForm = function (project) {
@@ -28773,7 +28798,7 @@ var ProjectDetails = function (_Component) {
                     { onSubmit: this.cancelEvent },
                     _react2.default.createElement('input', { type: 'text', placeholder: 'Project name', value: this.state.project.name, onChange: this.onNameChange })
                 ),
-                _react2.default.createElement('input', { type: 'checkbox', onChange: this.onRepoFormCheckboxChange }),
+                _react2.default.createElement('input', { type: 'checkbox', defaultChecked: this.state.repoEnabled, onChange: this.onRepoFormCheckboxChange }),
                 repoField,
                 _react2.default.createElement(
                     'h4',
@@ -28796,8 +28821,8 @@ var ProjectDetails = function (_Component) {
                 ),
                 _react2.default.createElement(
                     'button',
-                    { onClick: this.runScript },
-                    'BUILD'
+                    { onClick: this.applyChanges },
+                    'APPLY'
                 )
             );
         }

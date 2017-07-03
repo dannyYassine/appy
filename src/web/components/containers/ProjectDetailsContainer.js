@@ -49,11 +49,31 @@ export default class ProjectDetailsContainer extends Component {
         });
     };
 
+    onApplyProject = (project) => {
+        const body = {
+            name: project.name,
+            shellTask: JSON.stringify(project.shellTask)
+        };
+        const projectWebService = new ProjectWebService();
+        projectWebService.PUT().updateProject(project, body);
+        projectWebService.execute((success) => {
+            swal({
+                title: `Changes applied`,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            }).then(() => {
+            });
+        }, (error) => {
+            alert(error.code);
+        });
+    };
+
     render() {
         const playerDetail = this.state.project ?
             (<ProjectDetails
                 project={this.state.project}
                 onUpdateProject={this.onUpdateProject.bind(this)}
+                onApplyProject={this.onApplyProject.bind(this)}
                 />)
             :
             (<div>

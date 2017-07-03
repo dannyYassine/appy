@@ -30,11 +30,7 @@ export default class ProjectDetails extends Component {
 
     submitScript = (event) => {
         event.preventDefault();
-        let project = Object.assign({}, this.state.project);
-        project.shellTask.script = this.editor.getValue();
-        project.shellTask.enabled = this.state.repoEnabled;
-
-        this.props.onUpdateProject(project);
+        this.props.onUpdateProject(this._applyChangesToProject());
     };
 
     onNameChange = (event) => {
@@ -46,8 +42,9 @@ export default class ProjectDetails extends Component {
         })
     };
 
-    runScript = (event) => {
-
+    applyChanges = (event) => {
+        event.preventDefault();
+        this.props.onApplyProject(this._applyChangesToProject());
     };
 
     cancelEvent = (event) => {
@@ -78,6 +75,13 @@ export default class ProjectDetails extends Component {
         })
     };
 
+    _applyChangesToProject = () => {
+        let project = Object.assign({}, this.state.project);
+        project.shellTask.script = this.editor.getValue();
+        project.shellTask.enabled = this.state.repoEnabled;
+        return project;
+    };
+
     _repoForm = (project) => {
         return(
             <div>
@@ -104,7 +108,7 @@ export default class ProjectDetails extends Component {
                 <form onSubmit={this.cancelEvent}>
                     <input type="text" placeholder="Project name" value={this.state.project.name} onChange={this.onNameChange}/>
                 </form>
-                <input type="checkbox" onChange={this.onRepoFormCheckboxChange}/>
+                <input type="checkbox" defaultChecked={this.state.repoEnabled} onChange={this.onRepoFormCheckboxChange} />
                 {repoField}
                 <h4>{this.props.project.updatedOn}</h4>
                 <div className="bash">
@@ -113,7 +117,7 @@ export default class ProjectDetails extends Component {
                     </textarea>
                 </div>
                 <button onClick={this.submitScript}>SAVE</button>
-                <button onClick={this.runScript}>BUILD</button>
+                <button onClick={this.applyChanges}>APPLY</button>
             </div>
         )
     }
