@@ -12,7 +12,7 @@ export default class ProjectDetails extends Component {
 
         this.state = {
             project: props.project,
-            repoEnabled: props.project.shellTask.enabled,
+            repoEnabled: props.project.repo.enabled,
         }
     }
 
@@ -60,7 +60,7 @@ export default class ProjectDetails extends Component {
     onGitSourceChange = (event) => {
         const text = event.target.value;
         let project = Object.assign({}, this.state.project);
-        project.shellTask.source = text;
+        project.repo.source = text;
         this.setState({
             project: project
         })
@@ -69,7 +69,7 @@ export default class ProjectDetails extends Component {
     onGitBranchChange = (event) => {
         const text = event.target.value;
         let project = Object.assign({}, this.state.project);
-        project.shellTask.branch = text;
+        project.repo.branch = text;
         this.setState({
             project: project
         })
@@ -78,7 +78,7 @@ export default class ProjectDetails extends Component {
     _applyChangesToProject = () => {
         let project = Object.assign({}, this.state.project);
         project.shellTask.script = this.editor.getValue();
-        project.shellTask.enabled = this.state.repoEnabled;
+        project.repo.enabled = this.state.repoEnabled;
         return project;
     };
 
@@ -88,11 +88,11 @@ export default class ProjectDetails extends Component {
                 <form onSubmit={this.cancelEvent}>
                     <div>
                         <label>Git Source</label>
-                        <input type="text" width="200" placeholder="git url" value={project.shellTask.source} onChange={this.onGitSourceChange}/>
+                        <input type="text" width="200" placeholder="git url" value={project.repo.source} onChange={this.onGitSourceChange}/>
                     </div>
                     <div>
                         <label>Git branch</label>
-                        <input type="text" placeholder="git branch" value={project.shellTask.branch} onChange={this.onGitBranchChange}/>
+                        <input type="text" placeholder="git branch" value={project.repo.branch} onChange={this.onGitBranchChange}/>
                     </div>
                 </form>
             </div>

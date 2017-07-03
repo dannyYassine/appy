@@ -38,6 +38,7 @@ export default class ProjectDetailsContainer extends Component {
     onUpdateProject = (project) => {
         const body = {
             name: project.name,
+            repo: JSON.stringify(project.repo),
             shellTask: JSON.stringify(project.shellTask)
         };
         const projectWebService = new ProjectWebService();
@@ -52,8 +53,10 @@ export default class ProjectDetailsContainer extends Component {
     onApplyProject = (project) => {
         const body = {
             name: project.name,
+            repo: JSON.stringify(project.repo),
             shellTask: JSON.stringify(project.shellTask)
         };
+        console.log(body);
         const projectWebService = new ProjectWebService();
         projectWebService.PUT().updateProject(project, body);
         projectWebService.execute((success) => {

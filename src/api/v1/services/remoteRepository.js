@@ -4,7 +4,6 @@
 
 const { exec } = require('child_process');
 const path = require('path');
-
 const projectFileSystem = require('./projectFileSystem');
 
 const remoteRepository = () => {

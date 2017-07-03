@@ -15,6 +15,8 @@ const addProjectInteractor = require('./../useCases/AddNewProject');
 const getProjectInteractor = require('./../useCases/GetProject');
 const updateProjectInteractor = require('./../useCases/UpdateProject');
 const jobScheduler = require('./../services/jobSheduler');
+const gitService = require('./../services/gitCloneService');
+const jobLogger = require('./../services/jobLogger');
 
 const projectController = function ({projectDataSource}) {
 
@@ -79,6 +81,7 @@ const projectController = function ({projectDataSource}) {
 
         let options = {};
         options.name = request.body.name;
+        options.repo = JSON.parse(request.body.repo);
         options.shellTask = JSON.parse(request.body.shell_task);
 
         updateProjectInteractor({
@@ -113,9 +116,15 @@ const projectController = function ({projectDataSource}) {
     const performShellTask = (request, response) => {
         let project = response.locals.project;
         runShellScript({
-            project: project,
-            dataSource: scriptManager,
-            workspace: workspaceManager
+            request: {
+                project: project
+            },
+            data: {
+                updateProject: ProjectDataManager.updateProject,
+                clone: gitService({ response: jobLogger(project) }).clone,
+                clearWorkspace: workspaceManager.clearWorkspace,
+                performScript: scriptManager({ response: jobLogger(project) }).performScript
+            }
         }).then(() => {
             response.status(200).json({data: "building"});
         })

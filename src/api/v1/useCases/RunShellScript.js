@@ -6,17 +6,29 @@
  *
  * @type {runShellScript}
  */
-module.exports = runShellScript = function ({project, dataSource, workspace}) {
+module.exports = runShellScript = function ({request, data}) {
     return new Promise((resolve, reject) => {
+        let project = request.project;
         if (project.shellTask.script.length === 0 && project.isRunning) {
             return reject()
         }
 
-        workspace.clearWorkspace(project)
-            .then(() => {
-            return dataSource.performScript(project);
+        project.started();
+        data.updateProject(project).then(() => {
+            return data.clearWorkspace(project);
+        }).then(() => {
+            return data.clone(project);
+        }).then(() => {
+            return data.performScript(project);
         }).then(() => {
             resolve();
-        }).catch(reject);
+        }).catch((err) => {
+            project.stopped();
+            data.updateProject(project).then(() => {
+                reject(err);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
     });
 };

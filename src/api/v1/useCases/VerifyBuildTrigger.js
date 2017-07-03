@@ -3,9 +3,11 @@
  */
 
 const runShellScript = require('./RunShellScript');
-const exec = require('child_process').exec;
 const workspaceManager = require('../services/workspace');
 const scriptManager = require('../services/performScript');
+const gitService = require('./../services/gitCloneService');
+const projectDataManager = require('./../dataSource/ProjectDataManager');
+const jobLogger = require('./../services/jobLogger');
 
 module.exports = verifyBuildTrigger = ({data}) => {
 
@@ -19,9 +21,15 @@ module.exports = verifyBuildTrigger = ({data}) => {
             data.verifyTrigger(project).then((mustTrigger) => {
                 if (mustTrigger) {
                     return runShellScript({
-                        project: project,
-                        dataSource: scriptManager,
-                        workspace: workspaceManager
+                        request: {
+                            project: project
+                        },
+                        data: {
+                            updateProject: projectDataManager.updateProject,
+                            clone: gitService({ response: jobLogger(project) }).clone,
+                            clearWorkspace: workspaceManager.clearWorkspace,
+                            performScript: scriptManager({ response: jobLogger(project) }).performScript
+                        }
                     })
                 }
             }).then(() => {

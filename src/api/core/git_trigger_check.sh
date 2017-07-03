@@ -3,6 +3,7 @@ branch=$1
 MUST_TRIGGER=""
 
 verifyTrigger () {
+    pwd
     git fetch
     MUST_TRIGGER=$(git diff --name-status $branch `origin/$branch`)
     if [ "$MUST_TRIGGER" = "" ]

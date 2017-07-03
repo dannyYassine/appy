@@ -21,6 +21,7 @@ export default class ProjectWebService extends HTTPService {
     updateProject(project, options) {
         this.url = this.url + `/project/${project.id}/edit`;
         this.addParameter('name', options.name);
+        this.addParameter('repo', options.repo);
         this.addParameter('shell_task', options.shellTask);
     }
 

@@ -5,19 +5,9 @@ const fs = require('fs');
 const projectFileSystem = require('./projectFileSystem');
 const projectDataManager = require('../dataSource/ProjectDataManager');
 const spawn = require('child_process').spawn;
+const path = require('path');
 
-const scriptManager = (function () {
-
-    /**
-     *
-     * @param runLog
-     * @param progressiveLog
-     * @param data
-     */
-    const appendDataToFileLogs = (runLog, progressiveLog, data) => {
-        fs.appendFile(runLog, data.toString());
-        fs.appendFile(progressiveLog, data.toString());
-    };
+const scriptManager = function ({response}) {
 
     /**
      *
@@ -28,24 +18,11 @@ const scriptManager = (function () {
         // Set up all local variables
         //FIXME: these variables could be injectable
         let projectPath = projectFileSystem.projectPath(project);
-        let scriptText = JSON.parse(project.shellTask.script);
+        let cwd = path.join(projectFileSystem.projectPath(project), '/job');
+        let scriptText = project.shellTask.script;
         let scriptFile = `${projectPath}/script.sh`;
-        let runLog = `${projectPath}/run-log.txt`;
-        let progressiveLog = `${projectPath}/progressive-log.txt`;
 
         // Promises
-        const resetFileLog = new Promise((resolve, reject) => {
-            fs.writeFile(runLog, '', function (error) {
-                return resolve()
-            });
-        });
-
-        const resetProgressiveFileLog = new Promise((resolve, reject) => {
-            fs.writeFile(progressiveLog, '', function (error) {
-                return resolve()
-            });
-        });
-
         const writeScriptFile = new Promise((resolve, reject) => {
             fs.writeFile(scriptFile, scriptText, () => {
                 return resolve();
@@ -53,21 +30,21 @@ const scriptManager = (function () {
         });
 
         // Execute Promises before running script
-        Promise.all([resetFileLog, resetProgressiveFileLog, writeScriptFile]).then(() => {
+        Promise.all([writeScriptFile]).then(() => {
 
             const child = spawn('sh', [scriptFile], {
-                cwd: projectPath
+                cwd: cwd
             });
 
             project.started(child.pid);
             projectDataManager.updateProject(project);
 
             child.stdout.on('data', function (data) {
-                appendDataToFileLogs(runLog, progressiveLog, data);
+                response.appendDataToFileLogs(data);
             });
 
             child.stderr.on('data', function (data) {
-                appendDataToFileLogs(runLog, progressiveLog, data);
+                response.appendDataToFileLogs(data);
             });
 
             child.on('exit', function (code, signal) {
@@ -82,6 +59,6 @@ const scriptManager = (function () {
     return {
         performScript
     }
-})();
+};
 
 module.exports = scriptManager;

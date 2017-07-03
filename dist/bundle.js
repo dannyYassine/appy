@@ -8785,6 +8785,7 @@ var ProjectWebService = function (_HTTPService) {
         value: function updateProject(project, options) {
             this.url = this.url + ('/project/' + project.id + '/edit');
             this.addParameter('name', options.name);
+            this.addParameter('repo', options.repo);
             this.addParameter('shell_task', options.shellTask);
         }
     }]);
@@ -28571,6 +28572,7 @@ var ProjectDetailsContainer = function (_Component) {
         _this.onUpdateProject = function (project) {
             var body = {
                 name: project.name,
+                repo: JSON.stringify(project.repo),
                 shellTask: JSON.stringify(project.shellTask)
             };
             var projectWebService = new _ProjectWebService2.default();
@@ -28585,8 +28587,10 @@ var ProjectDetailsContainer = function (_Component) {
         _this.onApplyProject = function (project) {
             var body = {
                 name: project.name,
+                repo: JSON.stringify(project.repo),
                 shellTask: JSON.stringify(project.shellTask)
             };
+            console.log(body);
             var projectWebService = new _ProjectWebService2.default();
             projectWebService.PUT().updateProject(project, body);
             projectWebService.execute(function (success) {
@@ -28711,7 +28715,7 @@ var ProjectDetails = function (_Component) {
         _this.onGitSourceChange = function (event) {
             var text = event.target.value;
             var project = Object.assign({}, _this.state.project);
-            project.shellTask.source = text;
+            project.repo.source = text;
             _this.setState({
                 project: project
             });
@@ -28720,7 +28724,7 @@ var ProjectDetails = function (_Component) {
         _this.onGitBranchChange = function (event) {
             var text = event.target.value;
             var project = Object.assign({}, _this.state.project);
-            project.shellTask.branch = text;
+            project.repo.branch = text;
             _this.setState({
                 project: project
             });
@@ -28729,7 +28733,7 @@ var ProjectDetails = function (_Component) {
         _this._applyChangesToProject = function () {
             var project = Object.assign({}, _this.state.project);
             project.shellTask.script = _this.editor.getValue();
-            project.shellTask.enabled = _this.state.repoEnabled;
+            project.repo.enabled = _this.state.repoEnabled;
             return project;
         };
 
@@ -28748,7 +28752,7 @@ var ProjectDetails = function (_Component) {
                             null,
                             'Git Source'
                         ),
-                        _react2.default.createElement('input', { type: 'text', width: '200', placeholder: 'git url', value: project.shellTask.source, onChange: _this.onGitSourceChange })
+                        _react2.default.createElement('input', { type: 'text', width: '200', placeholder: 'git url', value: project.repo.source, onChange: _this.onGitSourceChange })
                     ),
                     _react2.default.createElement(
                         'div',
@@ -28758,7 +28762,7 @@ var ProjectDetails = function (_Component) {
                             null,
                             'Git branch'
                         ),
-                        _react2.default.createElement('input', { type: 'text', placeholder: 'git branch', value: project.shellTask.branch, onChange: _this.onGitBranchChange })
+                        _react2.default.createElement('input', { type: 'text', placeholder: 'git branch', value: project.repo.branch, onChange: _this.onGitBranchChange })
                     )
                 )
             );
@@ -28766,7 +28770,7 @@ var ProjectDetails = function (_Component) {
 
         _this.state = {
             project: props.project,
-            repoEnabled: props.project.shellTask.enabled
+            repoEnabled: props.project.repo.enabled
         };
         return _this;
     }
