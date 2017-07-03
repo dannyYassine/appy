@@ -79,7 +79,7 @@ const projectController = function ({projectDataSource}) {
 
         let options = {};
         options.name = request.body.name;
-        options.script = request.body.script;
+        options.shellTask = JSON.parse(request.body.shell_task);
 
         updateProjectInteractor({
             project: project,

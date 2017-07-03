@@ -17,7 +17,7 @@ const updateProject = function ({project, options, dataSource}) {
 
         const name = options.name;
         project.name = name;
-        project.shellTask.script = options.script;
+        project.shellTask = options.shellTask;
 
         let validated = validateAll(project, [
             nameValidator(),

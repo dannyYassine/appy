@@ -2,23 +2,19 @@
  * Created by dannyyassine on 2017-07-03.
  */
 
-var schedule = require('node-schedule');
-var verifyBuild = require('./../useCases/VerifyBuildTrigger');
+const schedule = require('node-schedule');
+let verifyBuild = require('./../useCases/VerifyBuildTrigger');
+let remoteRepository = require('./../services/remoteRepository');
 
-const verifyProjectDiff = (project) => {
-    return new Promise((resolve, reject) => {
-        resolve(true);
-    })
-};
+let interactor = verifyBuild({
+   data: remoteRepository()
+});
 
-let interactor = verifyBuild({verifyProjectDiff});
+const jobScheduler = (({ interactor }) => {
 
-const jobScheduler = (({ verifyBuild }) => {
-
-    var jobs = [];
+    let jobs = [];
 
     const initJobs = (projects) => {
-        //TODO check db of all projects
         for (let index in projects) {
             addSchedule(projects[index]);
         }
@@ -26,8 +22,16 @@ const jobScheduler = (({ verifyBuild }) => {
 
     const addSchedule = (project) => {
 
-        let newJob = schedule.scheduleJob('*/1 * * * *', function() {
-            verifyBuild.verify(project);
+        const job = jobs.filter((aJob) => {
+            return aJob.name === project.id;
+        });
+
+        if (job.length !== 0) {
+            return;
+        }
+
+        let newJob = schedule.scheduleJob(project.id, '*/1 * * * *', function() {
+            interactor.verify(project);
         });
 
         jobs.push(newJob);
@@ -36,12 +40,13 @@ const jobScheduler = (({ verifyBuild }) => {
     const cancelSchedule = (project) => {
 
         let job = jobs.filter((aJob) => {
-            return aJob.id === project.repo.id
+            return aJob.name === project.id
         });
 
         let index = jobs.indexOf(job);
         job.cancel();
         jobs.splice(index, 0);
+
     };
 
     return {
@@ -51,7 +56,7 @@ const jobScheduler = (({ verifyBuild }) => {
     }
 
 })({
-    verifyBuild: interactor
+    interactor: interactor
 });
 
 module.exports = jobScheduler;

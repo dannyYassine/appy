@@ -29,8 +29,8 @@ export default class ProjectDetailsContainer extends Component {
         }).then((response) => {
             return response.json();
         }).then((json) => {
-            this.setState({
-                'project': json.data
+                this.setState({
+                project: json.data
             })
         });
     };
@@ -38,12 +38,11 @@ export default class ProjectDetailsContainer extends Component {
     onUpdateProject = (project) => {
         const body = {
             name: project.name,
-            script: JSON.stringify(project.shellTask.script)
+            shellTask: JSON.stringify(project.shellTask)
         };
         const projectWebService = new ProjectWebService();
         projectWebService.PUT().updateProject(project, body);
         projectWebService.execute((success) => {
-            console.log('success');
             this.props.history.push('/');
         }, (error) => {
             alert(error.code);

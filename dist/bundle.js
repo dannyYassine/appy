@@ -8784,8 +8784,8 @@ var ProjectWebService = function (_HTTPService) {
         key: 'updateProject',
         value: function updateProject(project, options) {
             this.url = this.url + ('/project/' + project.id + '/edit');
-            this.addParameter('script', options.script);
             this.addParameter('name', options.name);
+            this.addParameter('shell_task', options.shellTask);
         }
     }]);
 
@@ -28563,7 +28563,7 @@ var ProjectDetailsContainer = function (_Component) {
                 return response.json();
             }).then(function (json) {
                 _this.setState({
-                    'project': json.data
+                    project: json.data
                 });
             });
         };
@@ -28571,12 +28571,11 @@ var ProjectDetailsContainer = function (_Component) {
         _this.onUpdateProject = function (project) {
             var body = {
                 name: project.name,
-                script: JSON.stringify(project.shellTask.script)
+                shellTask: JSON.stringify(project.shellTask)
             };
             var projectWebService = new _ProjectWebService2.default();
             projectWebService.PUT().updateProject(project, body);
             projectWebService.execute(function (success) {
-                console.log('success');
                 _this.props.history.push('/');
             }, function (error) {
                 alert(error.code);
@@ -28663,8 +28662,11 @@ var ProjectDetails = function (_Component) {
 
         _this.submitScript = function (event) {
             event.preventDefault();
-            _this.state.project.shellTask.script = _this.editor.getValue();
-            _this.props.onUpdateProject(_this.state.project);
+            var project = Object.assign({}, _this.state.project);
+            project.shellTask.script = _this.editor.getValue();
+            project.shellTask.enabled = _this.state.repoEnabled;
+
+            _this.props.onUpdateProject(project);
         };
 
         _this.onNameChange = function (event) {
@@ -28678,8 +28680,68 @@ var ProjectDetails = function (_Component) {
 
         _this.runScript = function (event) {};
 
+        _this.cancelEvent = function (event) {
+            event.preventDefault();
+        };
+
+        _this.onRepoFormCheckboxChange = function (event) {
+            _this.setState({
+                repoEnabled: !_this.state.repoEnabled
+            });
+        };
+
+        _this.onGitSourceChange = function (event) {
+            var text = event.target.value;
+            var project = Object.assign({}, _this.state.project);
+            project.shellTask.source = text;
+            _this.setState({
+                project: project
+            });
+        };
+
+        _this.onGitBranchChange = function (event) {
+            var text = event.target.value;
+            var project = Object.assign({}, _this.state.project);
+            project.shellTask.branch = text;
+            _this.setState({
+                project: project
+            });
+        };
+
+        _this._repoForm = function (project) {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'form',
+                    { onSubmit: _this.cancelEvent },
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            'Git Source'
+                        ),
+                        _react2.default.createElement('input', { type: 'text', width: '200', placeholder: 'git url', value: project.shellTask.source, onChange: _this.onGitSourceChange })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            'Git branch'
+                        ),
+                        _react2.default.createElement('input', { type: 'text', placeholder: 'git branch', value: project.shellTask.branch, onChange: _this.onGitBranchChange })
+                    )
+                )
+            );
+        };
+
         _this.state = {
-            project: props.project
+            project: props.project,
+            repoEnabled: props.project.shellTask.enabled
         };
         return _this;
     }
@@ -28700,15 +28762,19 @@ var ProjectDetails = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var script = this.props.project.shellTask.script.length > 0 ? JSON.parse(this.props.project.shellTask.script) : "";
+            var script = this.props.project.shellTask.script.length > 0 ? this.props.project.shellTask.script : "";
+            var repoField = this.state.repoEnabled ? this._repoForm(this.props.project) : _react2.default.createElement('div', null);
+
             return _react2.default.createElement(
                 'div',
                 { className: 'content' },
                 _react2.default.createElement(
                     'form',
-                    { onSubmit: this.addProject },
+                    { onSubmit: this.cancelEvent },
                     _react2.default.createElement('input', { type: 'text', placeholder: 'Project name', value: this.state.project.name, onChange: this.onNameChange })
                 ),
+                _react2.default.createElement('input', { type: 'checkbox', onChange: this.onRepoFormCheckboxChange }),
+                repoField,
                 _react2.default.createElement(
                     'h4',
                     null,

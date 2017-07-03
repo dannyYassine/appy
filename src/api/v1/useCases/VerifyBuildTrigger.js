@@ -7,11 +7,16 @@ const exec = require('child_process').exec;
 const workspaceManager = require('../services/workspace');
 const scriptManager = require('../services/performScript');
 
-module.exports = verifyBuildTrigger = ({verifyProjectDiff}) => {
+module.exports = verifyBuildTrigger = ({data}) => {
 
     const verify = (project) => {
         return new Promise((resolve, reject) => {
-            verifyProjectDiff(project).then((mustTrigger) => {
+
+            if (!project.repo) {
+                return reject(Error("no valid repo to check"));
+            }
+
+            data.verifyTrigger(project).then((mustTrigger) => {
                 if (mustTrigger) {
                     return runShellScript({
                         project: project,
