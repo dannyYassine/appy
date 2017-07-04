@@ -7,11 +7,11 @@ let bodyParser      = require('body-parser');
 let fs              = require('fs');
 let nunjucks        = require('nunjucks');
 let path            = require('path');
-const routerManager = require('./api/v1/routes');
-const projectDataManager = require('./api/v1/dataSource/ProjectDataManager');
+const routerManager = require('./api/inputs/routes');
+const projectDataManager = require('./api/infrastructure/dataSource/ProjectDataManager');
 const config        = require('./../config/config');
-const jobScheduler = require('./api/v1/services/jobSheduler');
-const projectDataSource = require('./api/v1/dataSource/ProjectDataManager');
+const jobScheduler = require('./api/infrastructure/services/jobSheduler');
+const projectDataSource = require('./api/infrastructure/dataSource/ProjectDataManager');
 const Project = require('./core/models/project');
 
 /**
@@ -62,7 +62,6 @@ nunjucks.configure(path.join(__dirname, 'web', '/views'), {
  */
 app.get('*', (request, response) => {
     response.render('index.html');
-    // response.sendFile('index.html', { root: path.join(__dirname, 'web', '/views') });
 });
 
 module.exports = app;

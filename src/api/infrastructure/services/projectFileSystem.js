@@ -3,7 +3,7 @@
  */
 
 const fs = require('fs');
-const config = require('./../../../../config/config');
+const config = require('../../../../config/config');
 const path = require('path');
 const { exec } = require('child_process');
 

@@ -6,7 +6,7 @@ const chai      = require('chai');
 const expect    = chai.expect;
 const assert    = chai.assert;
 
-const settingsFactory = require('./../../../src/api/v1/controllers/settings');
+const settingsFactory = require('../../../src/api/inputs/controllers/settings');
 const mock = require('./../../mock');
 
 describe('Server/Controllers/Settings', () => {

@@ -8,7 +8,7 @@ const projectFileSystem = require('./projectFileSystem');
 
 const remoteRepository = () => {
 
-    let scriptPath = path.join(__dirname, '../..', '/core/git_trigger_check.sh');
+    let scriptPath = path.join(__dirname, '..', '/scripts/git_trigger_check.sh');
 
     /**
      * Returns BOOLEAN if project can be triggered for a build

@@ -3,7 +3,7 @@
  */
 
 const express = require('express');
-const settingsFactory = require('./../controllers/settings');
+const settingsFactory = require('../controllers/settings');
 
 module.exports = function(app) {
 

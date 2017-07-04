@@ -5,7 +5,7 @@
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
-const getProject = require('../../../src/api/v1/useCases/GetProject');
+const getProject = require('../../../src/api/application/useCases/GetProject');
 const Project = require('./../../../src/core/models/project');
 
 describe('Get project interactor', () => {

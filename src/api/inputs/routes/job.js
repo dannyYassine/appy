@@ -3,8 +3,8 @@
  */
 
 const express = require('express');
-const jobFactory = require('./../controllers/job');
-const cancelJob = require('./../useCases/CancelJob');
+const jobFactory = require('../controllers/job');
+const cancelJob = require('../../application/useCases/CancelJob');
 
 const repository =  {
     getJob() {

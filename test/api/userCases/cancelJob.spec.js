@@ -4,7 +4,7 @@
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
-const cancelJobInteractor = require('../../../src/api/v1/useCases/CancelJob');
+const cancelJobInteractor = require('../../../src/api/application/useCases/CancelJob');
 const Project = require('./../../../src/core/models/project');
 
 describe('Cancel Job Interactor',() => {

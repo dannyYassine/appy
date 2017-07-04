@@ -4,7 +4,7 @@
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
-const runScript = require('../../../src/api/v1/useCases/RunShellScript');
+const runScript = require('../../../src/api/application/useCases/RunShellScript');
 const Project = require('./../../../src/core/models/project');
 
 describe('Run Shell Script Interactor',() => {

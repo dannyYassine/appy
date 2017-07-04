@@ -5,7 +5,7 @@ process.env.NODE_ENV = 'test';
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
-const addProject = require('../../../src/api/v1/useCases/AddNewProject');
+const addProject = require('../../../src/api/application/useCases/AddNewProject');
 
 describe('AddProject', () => {
 

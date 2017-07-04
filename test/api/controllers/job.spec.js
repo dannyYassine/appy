@@ -5,9 +5,9 @@
 const chai      = require('chai');
 const expect    = chai.expect;
 const assert    = chai.assert;
-const jobControllerFactory = require('./../../../src/api/v1/controllers/job');
+const jobControllerFactory = require('../../../src/api/inputs/controllers/job');
 const mock = require('./../../mock');
-const cancelJobInteractor = require('./../../../src/api/v1/useCases/CancelJob');
+const cancelJobInteractor = require('../../../src/api/application/useCases/CancelJob');
 
 describe('Job Controller', () => {
 

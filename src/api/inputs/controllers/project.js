@@ -2,21 +2,21 @@
  * Created by dannyyassine on 2017-06-10.
  */
 
-const ProjectDataManager = require('./../dataSource/ProjectDataManager');
-const scriptManager = require('../services/performScript');
-const runShellScript = require('./../useCases/RunShellScript');
-const consoleLogger = require('../services/consoleLogger');
-const projectLog = require('./../useCases/GetProjectLog');
-const workspaceManager = require('../services/workspace');
+const ProjectDataManager = require('./../../infrastructure/dataSource/ProjectDataManager');
+const scriptManager = require('../../infrastructure/services/performScript');
+const runShellScript = require('./../../application/useCases/RunShellScript');
+const consoleLogger = require('../../infrastructure/services/consoleLogger');
+const projectLog = require('./../../application/useCases/GetProjectLog');
+const workspaceManager = require('../../infrastructure/services/workspace');
 
-const Project = require('./../../../core/models/project');
+const Project = require('../../../core/models/project');
 
-const addProjectInteractor = require('./../useCases/AddNewProject');
-const getProjectInteractor = require('./../useCases/GetProject');
-const updateProjectInteractor = require('./../useCases/UpdateProject');
-const jobScheduler = require('./../services/jobSheduler');
-const gitService = require('./../services/gitCloneService');
-const jobLogger = require('./../services/jobLogger');
+const addProjectInteractor = require('./../../application/useCases/AddNewProject');
+const getProjectInteractor = require('./../../application/useCases/GetProject');
+const updateProjectInteractor = require('./../../application/useCases/UpdateProject');
+const jobScheduler = require('./../../infrastructure/services/jobSheduler');
+const gitService = require('./../../infrastructure/services/gitCloneService');
+const jobLogger = require('./../../infrastructure/services/jobLogger');
 
 const projectController = function ({projectDataSource}) {
 

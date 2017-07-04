@@ -2,7 +2,7 @@
  * Created by dannyyassine on 2017-06-25.
  */
 const exec = require('child_process').exec;
-const cancelJobInteractor = require('./../useCases/CancelJob');
+const cancelJobInteractor = require('./../../application/useCases/CancelJob');
 
 /**
  *

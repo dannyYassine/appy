@@ -2,7 +2,7 @@
  * Created by dannyyassine on 2017-06-24.
  */
 
-const projectDataManager = require('./../dataSource/ProjectDataManager');
+const projectDataManager = require('./../../infrastructure/dataSource/ProjectDataManager');
 
 /**
  *

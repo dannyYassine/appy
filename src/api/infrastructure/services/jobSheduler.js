@@ -3,8 +3,8 @@
  */
 
 const schedule = require('node-schedule');
-let verifyBuild = require('./../useCases/VerifyBuildTrigger');
-let remoteRepository = require('./../services/remoteRepository');
+let verifyBuild = require('../../application/useCases/VerifyBuildTrigger');
+let remoteRepository = require('./remoteRepository');
 
 let interactor = verifyBuild({
    data: remoteRepository()

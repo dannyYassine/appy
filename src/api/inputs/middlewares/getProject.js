@@ -2,9 +2,9 @@
  * Created by dannyyassine on 2017-06-24.
  */
 
-const getProject = require('./../useCases/GetProject');
-const ProjectDataManager = require('./../dataSource/ProjectDataManager');
-const Project = require('./../../../core/models/project');
+const getProject = require('./../../application/useCases/GetProject');
+const ProjectDataManager = require('./../../infrastructure/dataSource/ProjectDataManager');
+const Project = require('../../../core/models/project');
 
 /**
  * Middleware to retrieve a Project with its projectId

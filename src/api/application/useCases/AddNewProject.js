@@ -2,9 +2,9 @@
  * Created by dannyyassine on 2017-06-11.
  */
 
-var Project = require('./../../../core/models/project');
-const nameValidator = require('./../../../core/validators/projectValidator').nameValidator;
-const validateAll = require('./../../../core/validators/validator');
+var Project = require('../../../core/models/project');
+const nameValidator = require('../../../core/validators/projectValidator').nameValidator;
+const validateAll = require('../../../core/validators/validator');
 
 /**
  * Business rules for adding a project

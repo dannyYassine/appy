@@ -2,7 +2,7 @@
  * Created by dannyyassine on 2017-06-25.
  */
 
-const getSettings = require('./../useCases/GetSettings');
+const getSettings = require('./../../application/useCases/GetSettings');
 
 /**
  * Settings Controller factory function

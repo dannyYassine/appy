@@ -3,9 +3,9 @@
  */
 
 const express = require('express');
-const { middlewareControllerProject } = require('./../middlewares/getProject');
-const projectFactory = require('./../controllers/project');
-const ProjectDataManager = require('./../dataSource/ProjectDataManager');
+const { middlewareControllerProject } = require('../middlewares/getProject');
+const projectFactory = require('../controllers/project');
+const ProjectDataManager = require('./../../infrastructure/dataSource/ProjectDataManager');
 
 module.exports = function(app) {
 

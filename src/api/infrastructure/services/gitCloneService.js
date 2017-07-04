@@ -8,7 +8,7 @@ const projectFileSystem = require('./projectFileSystem');
 
 const gitService = ({response}) => {
 
-    let scriptPath = path.join(__dirname, '../..', '/core/git_clone.sh');
+    let scriptPath = path.join(__dirname, '..', '/scripts/git_clone.sh');
 
     const clone = (project) => {
 

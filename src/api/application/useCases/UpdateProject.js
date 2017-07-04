@@ -2,8 +2,8 @@
  * Created by dannyyassine on 2017-06-12.
  */
 
-const { nameValidator, scriptValidator } = require('./../../../core/validators/projectValidator');
-const validateAll = require('./../../../core/validators/validator');
+const { nameValidator, scriptValidator } = require('../../../core/validators/projectValidator');
+const validateAll = require('../../../core/validators/validator');
 
 /**
  * Business rules to validate if project can be updated
