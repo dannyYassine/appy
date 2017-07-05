@@ -3,8 +3,10 @@
 
 ## Tools
 * node.js
-* React
-* React Router
+* Front-end
+* * Vue ( vuex / event-bus / vue-router 2)
+* * OR
+* * React / React Router / Redux
 * Express
 * PM2
 * Babel
