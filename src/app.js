@@ -10,7 +10,7 @@ let path            = require('path');
 const routerManager = require('./api/inputs/routes');
 const projectDataManager = require('./api/infrastructure/dataSource/ProjectDataManager');
 const config        = require('./../config/config');
-const jobScheduler = require('./api/infrastructure/services/jobSheduler');
+const jobScheduler = require('./api/infrastructure/scheduler/jobSheduler');
 const projectDataSource = require('./api/infrastructure/dataSource/ProjectDataManager');
 const Project = require('./core/models/project');
 

@@ -3,11 +3,11 @@
  */
 
 const runShellScript = require('./RunShellScript');
-const workspaceManager = require('../../infrastructure/services/workspace');
-const scriptManager = require('../../infrastructure/services/performScript');
-const gitService = require('./../../infrastructure/services/gitCloneService');
+const workspaceManager = require('../../infrastructure/fileSystem/workspace');
+const scriptManager = require('../../infrastructure/scripts/performScript');
+const gitService = require('../../infrastructure/git/gitCloneService');
 const projectDataManager = require('./../../infrastructure/dataSource/ProjectDataManager');
-const jobLogger = require('./../../infrastructure/services/jobLogger');
+const jobLogger = require('../../infrastructure/logger/jobLogger');
 
 module.exports = verifyBuildTrigger = ({data}) => {
 

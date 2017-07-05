@@ -6,11 +6,8 @@ const config = require('./../config/config');
  * Fork a new worker process
  */
 function startNewWorker() {
-    var newWorker = cluster.fork();
-    console.log('CLUSTER: Worker %d started', newWorker.id);
-
+    let newWorker = cluster.fork();
     newWorker.send('I am online' + newWorker.id);
-
 }
 
 /**
@@ -20,7 +17,7 @@ function startServer() {
     // listen (start app with node server.js) ======================================
     const app = require('./app.js');
     app.set('port', config.port || 3002);
-    var server = app.listen(app.get('port'), '0.0.0.0', function () {
+    const server = app.listen(app.get('port'), '0.0.0.0', function () {
         console.log("*\n*");
         console.log("/****************************************/");
         console.log('server listening on port ' + server.address().port);
@@ -49,7 +46,7 @@ if (process.env.CLUSTER === 'TRUE') {
             startNewWorker();
         });
 
-        for (var i = 0; i < workerCount; i++) {
+        for (let i = 0; i < workerCount; i++) {
             startNewWorker();
         }
 

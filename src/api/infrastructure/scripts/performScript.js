@@ -2,7 +2,7 @@
  * Created by dannyyassine on 2017-06-23.
  */
 const fs = require('fs');
-const projectFileSystem = require('./projectFileSystem');
+const projectFileSystem = require('../fileSystem/projectFileSystem');
 const projectDataManager = require('../dataSource/ProjectDataManager');
 const spawn = require('child_process').spawn;
 const path = require('path');

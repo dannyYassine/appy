@@ -3,20 +3,20 @@
  */
 
 const ProjectDataManager = require('./../../infrastructure/dataSource/ProjectDataManager');
-const scriptManager = require('../../infrastructure/services/performScript');
+const scriptManager = require('../../infrastructure/scripts/performScript');
 const runShellScript = require('./../../application/useCases/RunShellScript');
-const consoleLogger = require('../../infrastructure/services/consoleLogger');
+const consoleLogger = require('../../infrastructure/logger/consoleLogger');
 const projectLog = require('./../../application/useCases/GetProjectLog');
-const workspaceManager = require('../../infrastructure/services/workspace');
+const workspaceManager = require('../../infrastructure/fileSystem/workspace');
 
 const Project = require('../../../core/models/project');
 
 const addProjectInteractor = require('./../../application/useCases/AddNewProject');
 const getProjectInteractor = require('./../../application/useCases/GetProject');
 const updateProjectInteractor = require('./../../application/useCases/UpdateProject');
-const jobScheduler = require('./../../infrastructure/services/jobSheduler');
-const gitService = require('./../../infrastructure/services/gitCloneService');
-const jobLogger = require('./../../infrastructure/services/jobLogger');
+const jobScheduler = require('../../infrastructure/scheduler/jobSheduler');
+const gitService = require('../../infrastructure/git/gitCloneService');
+const jobLogger = require('../../infrastructure/logger/jobLogger');
 
 const projectController = function ({projectDataSource}) {
 
@@ -79,10 +79,18 @@ const projectController = function ({projectDataSource}) {
     const updateProject = (request, response) => {
         let project = response.locals.project;
 
+        const returnedResponse = () => {
+            response.status(400).json({'error': Error('could not update project')})
+        };
+
         let options = {};
-        options.name = request.body.name;
-        options.repo = JSON.parse(request.body.repo);
-        options.shellTask = JSON.parse(request.body.shell_task);
+        try {
+            options.name = request.body.name;
+            options.repo = JSON.parse(request.body.repo);
+            options.shellTask = JSON.parse(request.body.shell_task);
+        } catch(error) {
+            return returnedResponse();
+        }
 
         updateProjectInteractor({
             project: project,
@@ -91,7 +99,7 @@ const projectController = function ({projectDataSource}) {
         }).then((updatedProject) => {
             response.json({data: updatedProject});
         }).catch(() => {
-            response.status(400).json({'error': Error('could not update project')})
+            returnedResponse();
         });
     };
 

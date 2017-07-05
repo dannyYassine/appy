@@ -16,11 +16,18 @@ describe('AddProject', () => {
         }
     };
 
+    const addSchedule = () => {
+
+    };
+
     it('should add a new project', () => {
 
         addProject({
             request: {
                 name: "new",
+            },
+            service: {
+                addSchedule: addSchedule
             },
             data: dataSource,
             response: {
@@ -37,6 +44,9 @@ describe('AddProject', () => {
         addProject({
             request: {
                 name: "",
+            },
+            service: {
+                addSchedule: addSchedule
             },
             data: null,
             response: {

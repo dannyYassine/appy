@@ -10,6 +10,7 @@ const validateAll = require('../../../core/validators/validator');
  * Business rules for adding a project
  * @param request
  * @param data
+ * @param service
  * @param response
  */
 module.exports = function addProject ({request, data, service, response}) {
@@ -26,7 +27,7 @@ module.exports = function addProject ({request, data, service, response}) {
 
     if (data) {
         data.saveNewProject(newProject, (project, error) => {
-                service.addSchedule(project);
+            service.addSchedule(project);
             response.callback(project, error);
         });
     } else {

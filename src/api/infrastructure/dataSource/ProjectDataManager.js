@@ -3,7 +3,7 @@
  */
 
 const fs = require('fs');
-const projectFileSystem = require('../services/projectFileSystem');
+const projectFileSystem = require('../fileSystem/projectFileSystem');
 
 const ProjectDataManager = (function () {
 

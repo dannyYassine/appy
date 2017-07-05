@@ -45,7 +45,7 @@ describe('Project Validator', () => {
     it('should validate a project\'s script to FALSE', () => {
 
         let project = new Project();
-        project.shellTask.script = "";
+        project.shellTask.script = null;
 
         let result = validateAll(project, [scriptValidator()]);
         assert(result === false);

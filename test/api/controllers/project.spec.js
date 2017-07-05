@@ -18,6 +18,8 @@ const project   = require('../../../src/api/inputs/controllers/project');
 const projectDataManager = require('../../../src/api/infrastructure/dataSource/ProjectDataManager');
 const dataPath  = path.join(__dirname, '../../..', 'data.json');
 const Project   = require('./../../../src/core/models/project');
+const ShellTask = require('./../../../src/core/models/shellTask');
+const Repo   = require('./../../../src/core/models/repository');
 const config = require('./../../../config/config');
 const { removeDirectory } = require('./../../../src/core/helpers/macDeleteFolder');
 
@@ -108,10 +110,10 @@ describe('Server/Controllers/Project', () => {
             .put(`/api/project/${gettableProject.id}/edit`)
             .send({
                 name: "yo",
-                script: "hello world"
+                repo: JSON.stringify(gettableProject.repo),
+                shell_task: JSON.stringify(gettableProject.shellTask)
             })
             .end((err, res) => {
-
                 expect(res).to.have.status(200);
                 done();
             });

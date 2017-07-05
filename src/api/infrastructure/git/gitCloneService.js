@@ -4,7 +4,7 @@
 
 const { spawn } = require('child_process');
 const path = require('path');
-const projectFileSystem = require('./projectFileSystem');
+const projectFileSystem = require('../fileSystem/projectFileSystem');
 
 const gitService = ({response}) => {
 

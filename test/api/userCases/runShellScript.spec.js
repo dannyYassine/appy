@@ -28,14 +28,38 @@ describe('Run Shell Script Interactor',() => {
         }
     };
 
+    const projectDataManager = () => {
+        const updateProject = () => {
+            return new Promise((resolve, _) => { resolve() })
+        };
+        return {
+            updateProject
+        }
+    };
+
+    const gitService = () => {
+        const clone = () => {
+            return new Promise((resolve, _) => { resolve() })
+        };
+        return {
+            clone
+        }
+    };
+
     it('should run script', (done) => {
         let project = new Project();
         project.shellTask.script = "echo \"Hello\"";
 
         runScript({
-            project: project,
-            dataSource: scriptService(),
-            workspace: workspaceService()
+            request: {
+                project: project,
+            },
+            data: {
+                updateProject: projectDataManager().updateProject,
+                clone: gitService().clone,
+                clearWorkspace: workspaceService().clearWorkspace,
+                performScript: scriptService().performScript
+            }
         }).then(() => {
             done();
         }).catch((error) => {
@@ -47,9 +71,15 @@ describe('Run Shell Script Interactor',() => {
         let project = new Project();
 
         runScript({
-            project: project,
-            dataSource: scriptService(),
-            workspace: workspaceService()
+            request: {
+                project: project,
+            },
+            data: {
+                updateProject: projectDataManager().updateProject,
+                clone: gitService().clone,
+                clearWorkspace: workspaceService().clearWorkspace,
+                performScript: scriptService().performScript
+            }
         }).then(() => {
             assert.fail();
         }).catch((error) => {

@@ -3,7 +3,7 @@
  */
 
 const fs = require('fs');
-const projectFileSystem = require('./projectFileSystem');
+const projectFileSystem = require('../fileSystem/projectFileSystem');
 
 /**
  * file path of full log

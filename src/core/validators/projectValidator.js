@@ -62,7 +62,7 @@ const scriptValidator = function() {
      * @returns {boolean}
      */
     const script = function(script) {
-        if (script !== '' && script !== null && script !== undefined) {
+        if (script !== null && script !== undefined) {
             return true;
         }
         error = Error("script is invalid");

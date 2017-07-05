@@ -9,7 +9,7 @@
 module.exports = runShellScript = function ({request, data}) {
     return new Promise((resolve, reject) => {
         let project = request.project;
-        if (project.shellTask.script.length === 0 && project.isRunning) {
+        if (!project.shellTask.script && project.isRunning) {
             return reject()
         }
 

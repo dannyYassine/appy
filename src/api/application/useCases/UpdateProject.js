@@ -15,8 +15,7 @@ const validateAll = require('../../../core/validators/validator');
 const updateProject = function ({project, options, dataSource}) {
     return new Promise((resolve, reject) => {
 
-        const name = options.name;
-        project.name = name;
+        project.name = options.name;
         project.repo = options.repo;
         project.shellTask = options.shellTask;
 

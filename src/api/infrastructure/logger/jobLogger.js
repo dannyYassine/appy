@@ -1,7 +1,7 @@
 /**
  * Created by dannyyassine on 2017-07-03.
  */
-const projectFileSystem = require('./projectFileSystem');
+const projectFileSystem = require('../fileSystem/projectFileSystem');
 const fs = require('fs');
 
 module.exports = jobLogger = function (project) {
