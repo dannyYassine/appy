@@ -54,7 +54,6 @@ const scriptManager = function ({response}) {
                 projectDataManager.updateProject(project)
             });
         });
-
     };
     return {
         performScript

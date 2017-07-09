@@ -42,12 +42,15 @@ app.all('/*', function(req, res, next) {
 routerManager.setup(app);
 projectDataManager.setup(config);
 
-projectDataSource.loadAllProjects((data) => {
-    const trueProjects = data.projects.map((project) => {
-        return Object.assign(new Project, project);
-    });
-    jobScheduler.initJobs(trueProjects);
-});
+/**
+ * Set up triggers
+ */
+// projectDataSource.loadAllProjects((data) => {
+//     const trueProjects = data.projects.map((project) => {
+//         return Object.assign(new Project, project);
+//     });
+//     jobScheduler.initJobs(trueProjects);
+// });
 
 /**
  * Nunjucks for serving html pages

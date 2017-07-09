@@ -4,7 +4,7 @@
 
 const schedule = require('node-schedule');
 let verifyBuild = require('../../application/useCases/VerifyBuildTrigger');
-let remoteRepository = require('../git/remoteRepository');
+let remoteRepository = require('../git/gitTriggerService');
 
 let interactor = verifyBuild({
    data: remoteRepository()
