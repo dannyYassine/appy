@@ -14,7 +14,7 @@
 }(this, (function () { 'use strict';
 
 // Kludges for bugs and behavior differences that can't be feature
-// detected are enabled based on userAgent etc sniffing.
+// detected are enabled based on  userAgent etc sniffing.
 var userAgent = navigator.userAgent
 var platform = navigator.platform
 

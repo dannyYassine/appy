@@ -5,6 +5,7 @@
 const chai      = require('chai');
 const expect    = chai.expect;
 const assert    = chai.assert;
+const path      = require('path');
 
 let Project = require('../../../src/core/models/project');
 const gitCloneService = require('../../../src/api/infrastructure/git/gitCloneService');
@@ -26,6 +27,8 @@ describe('git clone service', () => {
             response: response()
         });
         let project = new Project();
+        project.repo.source = path.join(__dirname, '../..', '/sample');
+        project.repo.branch = 'master';
         service.clone(project).then(() => {
             done();
         }).catch(() => {

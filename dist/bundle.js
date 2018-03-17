@@ -28235,11 +28235,29 @@ var ConsoleOutput = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (ConsoleOutput.__proto__ || Object.getPrototypeOf(ConsoleOutput)).call(this, props));
 
-        _this.state = {};
+        _this.shouldScrollToBottom = false;
+        _this.state = {
+            shouldScrollToBottom: false
+        };
         return _this;
     }
 
     _createClass(ConsoleOutput, [{
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate() {
+            this.shouldScrollToBottom = window.innerHeight + window.scrollY === document.body.scrollHeight;
+        }
+    }, {
+        key: 'shouldComponentUpdate',
+        value: function shouldComponentUpdate(nextProps, nextState) {
+            return true;
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            this.shouldScrollToBottom && window.scrollTo(0, document.body.scrollHeight);
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
